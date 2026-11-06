@@ -1,0 +1,144 @@
+[
+  {
+    "version": "0.1.0",
+    "date": "2026-11-06",
+    "sections": [
+      {
+        "title": "🎉 Features",
+        "audience": "all",
+        "items": [
+          {
+            "description": "Adds the `@williamthorsen/readout` package, whose `Readout` type pairs a result's data with a list of its sensitive top-level fields, and whose `serializeReadout` and `redactReadout` leave those fields out and name them under `redacted` unless the caller passes `includeSensitive: true`. (#8)",
+            "hash": "0495317f861e1f9f71b18aa0379a62dbfc77ce4c",
+            "entry": 1
+          },
+          {
+            "description": "Adds `embedJson`, which escapes every `<` in JSON text so that the text can be the content of a `<script type=\"application/json\">` element without closing the element or opening a comment. (#8)",
+            "hash": "0495317f861e1f9f71b18aa0379a62dbfc77ce4c",
+            "entry": 2
+          },
+          {
+            "description": "Adds the `Renderers` type, which maps each type of value to its renderer and fails the typecheck when a type lacks one, and the `render` function, which dispatches a value to the renderer for its `type`. (#8)",
+            "hash": "0495317f861e1f9f71b18aa0379a62dbfc77ce4c",
+            "entry": 3
+          },
+          {
+            "description": "Adds the `@williamthorsen/readout-journal` package, whose `withJournal` wraps a reducer so that each transition appends to the journal the domain events that a derivation function finds in the state before, the action, and the state after, and whose `serializeJournal` returns the journal as JSON. (#9)",
+            "hash": "adce50ea62b9aea8185820223c9b49b714d184c5",
+            "entry": 1
+          },
+          {
+            "description": "Adds `EntryRenderers` and `renderEntry`, which render each journal entry through the renderer declared for its event type, so that the typecheck reports an event type that lacks a renderer. (#9)",
+            "hash": "adce50ea62b9aea8185820223c9b49b714d184c5",
+            "entry": 2
+          },
+          {
+            "description": "Adds `CopyButton`, which copies a text and reports the result in its label and to a screen reader, `JsonView`, which shows JSON in a scrollable region that a keyboard user can focus, and `EmbeddedJson`, which embeds JSON in a `<script type=\"application/json\">` element for a driven browser to read. (#11)",
+            "hash": "bbad5463816e41375d642e6b073513f0a75f4e20",
+            "entry": 1
+          },
+          {
+            "description": "Adds `ReadoutView`, which shows a readout on a Details tab and its JSON on a Data tab and always embeds that JSON without the sensitive fields, and `ReadoutPanel`, the Data tab's content on its own, which includes the sensitive fields only after the person turns on \"Include sensitive fields\". (#11)",
+            "hash": "bbad5463816e41375d642e6b073513f0a75f4e20",
+            "entry": 2
+          },
+          {
+            "description": "Adds `useJournal`, a hook that holds a state under a reducer and journals each transition, and `JournalDrawer`, a modal dialog that lists the journal's entries newest first and shows the journal as JSON with Copy JSON. (#11)",
+            "hash": "bbad5463816e41375d642e6b073513f0a75f4e20",
+            "entry": 3
+          },
+          {
+            "description": "Adds `@williamthorsen/readout-react/styles.css`, the stylesheet imported by a consumer to style every component, which declares each colour as a `--readout-` custom property with a dark set so that an app can override the properties to theme the components. (#11)",
+            "hash": "bbad5463816e41375d642e6b073513f0a75f4e20",
+            "entry": 4
+          }
+        ]
+      },
+      {
+        "title": "🏗️ Internal features",
+        "audience": "dev",
+        "items": [
+          {
+            "description": "Removes the template's starter apps under `apps/`, its readyup drift kit and `drift:sweep` script, its migration guides, and their `scope:*` labels, and renames the root package and the `_workspace` scaffold to the `showroom` identity. (#7)",
+            "hash": "306d69a8c52c4fc2cdd145afa66d147c3fa4debf",
+            "entry": 1
+          },
+          {
+            "description": "Licenses the repository and the `_workspace` scaffold under ISC and adds a root `LICENSE` file. (#7)",
+            "hash": "306d69a8c52c4fc2cdd145afa66d147c3fa4debf",
+            "entry": 3
+          }
+        ]
+      },
+      {
+        "title": "⚙️ Tooling",
+        "audience": "dev",
+        "items": [
+          {
+            "description": "Sets browser defaults for every package by adding the DOM libraries and `jsx: react-jsx` to the root `tsconfig.json` and adding a `vitest.shared.ts` layer that makes `jsdom` the default test environment, which a package with its own Vitest config keeps by passing the layer to `defineVitestConfig`. (#7)",
+            "hash": "306d69a8c52c4fc2cdd145afa66d147c3fa4debf",
+            "entry": 4
+          },
+          {
+            "description": "Passes `-r` to `xargs` in `nmr lint:shell` so that GNU xargs skips `shellcheck` when the repository does not track any `*.sh` file, rather than running it without arguments and failing the CI shell job. (#7)",
+            "hash": "306d69a8c52c4fc2cdd145afa66d147c3fa4debf",
+            "entry": 7
+          },
+          {
+            "description": "Adds a `typecheck:post` script that typechecks the published source of `packages/readout` through `tsconfig.src.json`, which excludes the tests, so that the DOM lib loaded by a test's `/// <reference lib=\"dom\" />` cannot hide a DOM API used in `src/`. (#8)",
+            "hash": "0495317f861e1f9f71b18aa0379a62dbfc77ce4c",
+            "entry": 4
+          }
+        ]
+      },
+      {
+        "title": "👷 CI",
+        "audience": "dev",
+        "items": [
+          {
+            "description": "Adds `.github/workflows/publish.yaml`, which publishes a workspace to npm through trusted publishing, with provenance, when the release workflow pushes the workspace's `<dir>-v<version>` tag. (#8)",
+            "hash": "0495317f861e1f9f71b18aa0379a62dbfc77ce4c",
+            "entry": 5
+          }
+        ]
+      },
+      {
+        "title": "🤖 Agentic support",
+        "audience": "dev",
+        "items": [
+          {
+            "description": "Removes the one-time `initialize-node-monorepo` skill, which the repository no longer needs after its initialization. (#7)",
+            "hash": "306d69a8c52c4fc2cdd145afa66d147c3fa4debf",
+            "entry": 2
+          },
+          {
+            "description": "Records in `AGENTS.md` the plain-CSS style policy, the shared Vitest layer with its `jsdom` default, and the browser defaults that the root `tsconfig.json` sets, and points to the README's boundary section. (#7)",
+            "hash": "306d69a8c52c4fc2cdd145afa66d147c3fa4debf",
+            "entry": 6
+          },
+          {
+            "description": "Documents in `AGENTS.md` that Vite and Vitest resolve a compiled library's `#src/*` alias, declared in tsconfig `paths`, only with `tsconfigPaths` on. (#11)",
+            "hash": "bbad5463816e41375d642e6b073513f0a75f4e20",
+            "entry": 5
+          }
+        ]
+      },
+      {
+        "title": "📚 Documentation",
+        "audience": "dev",
+        "items": [
+          {
+            "description": "Adds a \"What belongs here\" section to `README.md`, which restricts the repository to packages for browser apps and allows a package to include a Node sidecar only if the sidecar does not depend on a native module and its tests do not spawn a process. (#7)",
+            "hash": "306d69a8c52c4fc2cdd145afa66d147c3fa4debf",
+            "entry": 5
+          },
+          {
+            "description": "Changes the scope-label step in `docs/new-package.md` to add the label without a `description`, which release-kit's readyup kit reports. (#8)",
+            "hash": "0495317f861e1f9f71b18aa0379a62dbfc77ce4c",
+            "entry": 6
+          }
+        ]
+      }
+    ]
+  }
+]

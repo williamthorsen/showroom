@@ -1,6 +1,6 @@
 {
   "name": "@williamthorsen/readout",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": false,
   "description": "One result object for people and machines: redacting JSON serializer, DOM embedding, and typed renderers",
   "keywords": [

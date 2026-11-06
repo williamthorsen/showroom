@@ -1,0 +1,24 @@
+[
+  {
+    "version": "0.1.0",
+    "date": "2026-11-06",
+    "sections": [
+      {
+        "title": "🎉 Features",
+        "audience": "all",
+        "items": [
+          {
+            "description": "Adds the `@williamthorsen/readout-journal` package, whose `withJournal` wraps a reducer so that each transition appends to the journal the domain events that a derivation function finds in the state before, the action, and the state after, and whose `serializeJournal` returns the journal as JSON. (#9)",
+            "hash": "adce50ea62b9aea8185820223c9b49b714d184c5",
+            "entry": 1
+          },
+          {
+            "description": "Adds `EntryRenderers` and `renderEntry`, which render each journal entry through the renderer declared for its event type, so that the typecheck reports an event type that lacks a renderer. (#9)",
+            "hash": "adce50ea62b9aea8185820223c9b49b714d184c5",
+            "entry": 2
+          }
+        ]
+      }
+    ]
+  }
+]

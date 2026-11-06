@@ -1,0 +1,34 @@
+[
+  {
+    "version": "0.1.0",
+    "date": "2026-11-06",
+    "sections": [
+      {
+        "title": "🎉 Features",
+        "audience": "all",
+        "items": [
+          {
+            "description": "Adds `CopyButton`, which copies a text and reports the result in its label and to a screen reader, `JsonView`, which shows JSON in a scrollable region that a keyboard user can focus, and `EmbeddedJson`, which embeds JSON in a `<script type=\"application/json\">` element for a driven browser to read. (#11)",
+            "hash": "bbad5463816e41375d642e6b073513f0a75f4e20",
+            "entry": 1
+          },
+          {
+            "description": "Adds `ReadoutView`, which shows a readout on a Details tab and its JSON on a Data tab and always embeds that JSON without the sensitive fields, and `ReadoutPanel`, the Data tab's content on its own, which includes the sensitive fields only after the person turns on \"Include sensitive fields\". (#11)",
+            "hash": "bbad5463816e41375d642e6b073513f0a75f4e20",
+            "entry": 2
+          },
+          {
+            "description": "Adds `useJournal`, a hook that holds a state under a reducer and journals each transition, and `JournalDrawer`, a modal dialog that lists the journal's entries newest first and shows the journal as JSON with Copy JSON. (#11)",
+            "hash": "bbad5463816e41375d642e6b073513f0a75f4e20",
+            "entry": 3
+          },
+          {
+            "description": "Adds `@williamthorsen/readout-react/styles.css`, the stylesheet imported by a consumer to style every component, which declares each colour as a `--readout-` custom property with a dark set so that an app can override the properties to theme the components. (#11)",
+            "hash": "bbad5463816e41375d642e6b073513f0a75f4e20",
+            "entry": 4
+          }
+        ]
+      }
+    ]
+  }
+]

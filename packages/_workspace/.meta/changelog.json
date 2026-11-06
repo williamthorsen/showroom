@@ -1,0 +1,24 @@
+[
+  {
+    "version": "0.0.1",
+    "date": "2026-11-06",
+    "sections": [
+      {
+        "title": "🏗️ Internal features",
+        "audience": "dev",
+        "items": [
+          {
+            "description": "Removes the template's starter apps under `apps/`, its readyup drift kit and `drift:sweep` script, its migration guides, and their `scope:*` labels, and renames the root package and the `_workspace` scaffold to the `showroom` identity. (#7)",
+            "hash": "306d69a8c52c4fc2cdd145afa66d147c3fa4debf",
+            "entry": 1
+          },
+          {
+            "description": "Licenses the repository and the `_workspace` scaffold under ISC and adds a root `LICENSE` file. (#7)",
+            "hash": "306d69a8c52c4fc2cdd145afa66d147c3fa4debf",
+            "entry": 3
+          }
+        ]
+      }
+    ]
+  }
+]
