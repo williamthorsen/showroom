@@ -14,6 +14,12 @@ const thisFilePath = fileURLToPath(import.meta.url);
 const currentDirectory = path.dirname(thisFilePath);
 const [workspaceName] = currentDirectory.split('/').slice(-3, -2);
 
+describe('test environment', () => {
+  it('provides the DOM by default', () => {
+    expect(typeof document).toBe('object');
+  });
+});
+
 if (workspaceName === TEMPLATE_DIRECTORY) {
   describe('workspace is template', () => {
     it.todo('remove after renamed workspace passes test');
