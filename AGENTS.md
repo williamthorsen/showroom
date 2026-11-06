@@ -9,6 +9,7 @@
 - `packages/_workspace` — scaffold for a new package (no-op build)
 - `packages/readout` — `@williamthorsen/readout`: the result type, its redacting JSON serializer, DOM embedding, and typed renderers
 - `packages/readout-journal` — `@williamthorsen/readout-journal`: a journal of domain events derived from state transitions, and its sentence renderers
+- `packages/readout-react` — `@williamthorsen/readout-react`: React components over both: a copy button, a JSON view, the structured view of a readout, and the journal drawer
 - `.config/release-kit.config.ts` — release-kit configuration
 - `.config/readyup.config.ts` — readyup configuration
 - `.config/wt.toml` — worktrunk hooks, whose `[pre-start]` pipeline copies gitignored local files into a new worktree before installing dependencies
