@@ -3,9 +3,9 @@ import { type EntryDraft, type EntryRenderers, serializeJournal } from '@william
 import { type ReactElement, StrictMode, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 
-import '../styles.css';
-
 import { EmbeddedJson, JournalDrawer, ReadoutView, useJournal } from '../src/index.ts';
+
+import '../styles.css';
 
 interface Token {
   type: 'created';
