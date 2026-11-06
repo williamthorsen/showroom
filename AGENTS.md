@@ -20,6 +20,8 @@ Invoking nmr belongs to `@williamthorsen/nmr`. Its ambient rulebook carries the 
 
 `.github/workflows/code-quality.yaml` runs six parallel legs: `build`, `lint`, `static`, `test`, and `workflows`, which together run the constituents of `nmr ci`, and `shell`, which runs `nmr lint:shell` (`shellcheck` over every tracked `*.sh` file). It is the only workflow that runs an nmr command. The dependency audit runs from `.github/workflows/audit.yaml` on every pull request to `main` or `next` and on a daily schedule, through a reusable workflow rather than through `nmr audit`.
 
+Releases are dispatched by hand through `.github/workflows/release.yaml`, which pushes a `<dir>-v<version>` tag for each released workspace. Each tag triggers `.github/workflows/publish.yaml`, which publishes that workspace to npm through trusted publishing, with provenance. A new package name needs a `0.0.0` placeholder on npm and an `npm trust` entry for `publish.yaml` before its first release.
+
 Readyup kits are run by hand, never from CI: `pnpm exec rdy run --sources` runs the kits published by the sources that `.config/readyup.config.ts` lists. Run it after a dependency upgrade.
 
 Scripts not in the `nmr` registry — per-package scripts such as `dev`, `preview`, and `start` — are run with `pnpm run <script>`. Run binaries with `pnpm exec <binary>`.
