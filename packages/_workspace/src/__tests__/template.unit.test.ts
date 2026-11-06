@@ -7,8 +7,8 @@ import { describe, expect, it } from 'vitest';
 import packageJson from '../../package.json' with { type: 'json' };
 
 const TEMPLATE_DIRECTORY = '_workspace';
-const TEMPLATE_PACKAGE_NAME = 'node-monorepo-workspace-template';
-const TEMPLATE_README_TITLE = '# Workspace template';
+const TEMPLATE_PACKAGE_NAME = 'showroom-workspace-template';
+const TEMPLATE_README_TITLE = '# Showroom package scaffold';
 
 const thisFilePath = fileURLToPath(import.meta.url);
 const currentDirectory = path.dirname(thisFilePath);

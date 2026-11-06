@@ -1,8 +1,8 @@
 <!-- readme-type: internal -->
 
-# Workspace template
+# Showroom package scaffold
 
-A scaffold for creating new libraries in this monorepo. To start a library from it, follow [Starting an app or a library from a template](../../docs/new-package.md).
+A scaffold for creating new libraries in this monorepo. To start a library from it, follow [Starting a package from the scaffold](../../docs/new-package.md).
 
 <!-- section:release-notes --><!-- /section:release-notes -->
 
