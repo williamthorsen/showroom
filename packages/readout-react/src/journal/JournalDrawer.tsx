@@ -72,7 +72,7 @@ export function JournalDrawer<M>({
         <ol className="readout-journal-list">
           {entries.toReversed().map((entry) => (
             <li key={entry.id} className="readout-journal-entry">
-              <p>{renderEntry(entry, renderers)}</p>
+              <div className="readout-journal-text">{renderEntry(entry, renderers)}</div>
               <time className="readout-journal-time" dateTime={entry.at}>
                 {TIME_FORMAT.format(new Date(entry.at))}
               </time>

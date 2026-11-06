@@ -52,7 +52,7 @@ describe(JournalDrawer, () => {
     render(<JournalDrawer isOpen onClose={vi.fn()} entries={ENTRIES} renderers={RENDERERS} />);
 
     const items = screen.getAllByRole('listitem');
-    expect(items.map((item) => item.querySelector('p')?.textContent)).toStrictEqual([
+    expect(items.map((item) => item.querySelector('.readout-journal-text')?.textContent)).toStrictEqual([
       'Created token dev',
       'Created token ci',
     ]);
