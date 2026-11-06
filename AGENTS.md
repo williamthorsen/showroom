@@ -9,6 +9,7 @@
 - `packages/_workspace` — scaffold for a new package (no-op build)
 - `packages/readout` — `@williamthorsen/readout`: the result type, its redacting JSON serializer, DOM embedding, and typed renderers
 - `packages/readout-journal` — `@williamthorsen/readout-journal`: a journal of domain events derived from state transitions, and its sentence renderers
+- `packages/readout-react` — `@williamthorsen/readout-react`: React components over both: a copy button, a JSON view, the structured view of a readout, and the journal drawer
 - `.config/release-kit.config.ts` — release-kit configuration
 - `.config/readyup.config.ts` — readyup configuration
 - `.config/wt.toml` — worktrunk hooks, whose `[pre-start]` pipeline copies gitignored local files into a new worktree before installing dependencies
@@ -64,7 +65,7 @@ A dependency that two or more manifests declare is versioned once, in `pnpm-work
 
 ### Intra-package imports
 
-A package reaches its own source through the subpath import `#src/*`, which maps to `./src/*`. The package declares it in the `imports` field of its `package.json`, which Node, TypeScript, Vite, and ESLint resolve without further configuration. A compiled library declares it in tsconfig `paths` instead, because `nmr-compile` rewrites those to relative specifiers on emit. A package never declares it in both places: TypeScript consults `paths` before `imports`, and a second declaration can drift from the first without any error.
+A package reaches its own source through the subpath import `#src/*`, which maps to `./src/*`. The package declares it in the `imports` field of its `package.json`, which Node, TypeScript, Vite, and ESLint resolve without further configuration. A compiled library declares it in tsconfig `paths` instead, because `nmr-compile` rewrites those to relative specifiers on emit; Vite and Vitest resolve `paths` only with `tsconfigPaths` on, which `packages/readout-react` sets in its `vitest.config.ts` and its playground's `vite.config.ts`. A package never declares it in both places: TypeScript consults `paths` before `imports`, and a second declaration can drift from the first without any error.
 
 An import of a file under `src/` never climbs with `..`. It is relative when its target is in the importing file's directory or below, and uses `#src/` otherwise. A test file is the one exception: It reaches the directory beside its `__tests__/` with a single `..`. A file outside `src/`, such as `package.json`, is outside the alias's reach and is imported relatively. An aliased specifier keeps its `.ts` extension, as a relative one does, and `import-x/extensions` reports one that omits it.
 

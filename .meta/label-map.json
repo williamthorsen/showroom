@@ -21,6 +21,7 @@
     "_workspace": "scope:_workspace",
     "readout": "scope:readout",
     "readout-journal": "scope:readout-journal",
+    "readout-react": "scope:readout-react",
     "root": "scope:root"
   }
 }
