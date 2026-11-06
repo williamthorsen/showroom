@@ -7,7 +7,7 @@
     "scaffold",
     "workspace"
   ],
-  "license": "UNLICENSED",
+  "license": "ISC",
   "author": "William Thorsen <william@thorsen.dev> (https://github.com/williamthorsen)",
   "type": "module",
   "imports": {
