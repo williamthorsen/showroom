@@ -22,15 +22,6 @@ node_modules/
 # Distribution directory
 .dist/
 dist/
-dist-ssr/
-out/
-
-# Framework
-.aws-sam/
-.cdk.out/
-.next/
-next-env.d.ts
-.vercel
 
 # Local-only
 local/

@@ -1,26 +1,19 @@
-# Starting an app or a library from a template
+# Starting a package from the scaffold
 
-The repo keeps two kinds of workspace in two directories. `apps/` contains runnable apps that nothing imports, and each directory under it is a starter for one stack. `packages/` contains libraries that other workspaces or the public import, and `packages/_workspace` is the scaffold for a new one.
+`packages/_workspace` is the scaffold for a new package. A copy keeps the scaffold's identity until every item below is changed, and nothing checks most of them. The exception is `src/__tests__/template.unit.test.ts`: In a copy, that test fails until the package's `name` and README title both change.
 
-A copy keeps its template's identity until every item below is changed, and nothing checks most of them. The exception is a template that has a `src/__tests__/template.unit.test.ts`: In a copy of it, that test fails until the workspace's `name` and README title both change.
-
-In the steps below, `<template>` is the template's path and `<target>` is the new workspace's path:
-
-- **App:** `<template>` is `apps/<starter>` for the stack, and `<target>` is `apps/<dir>`.
-- **Library:** `<template>` is `packages/_workspace`, and `<target>` is `packages/<dir>`.
-
-`<dir>` is the new workspace's directory name.
+In the steps below, `<template>` is `packages/_workspace` and `<target>` is `packages/<dir>`, where `<dir>` is the new package's directory name.
 
 ## Copy the directory
 
-From the repo root, copy the template's committed files into the target:
+From the repo root, copy the scaffold's committed files into the target:
 
 ```shell
 mkdir -p <target>
 git archive --format=tar HEAD:<template> | tar --extract --directory <target> --exclude CHANGELOG.md
 ```
 
-`git archive` copies only what the template commits, so gitignored output such as `node_modules/`, `coverage/`, and `dist/` stays behind. `tar` writes into `<target>` whether or not it already exists, so the copy never nests a second directory inside it. The template's `CHANGELOG.md` contains the template's history and stays behind too; release-kit writes a new one on the first release.
+`git archive` copies only what the scaffold commits, so gitignored output such as `node_modules/`, `coverage/`, and `dist/` stays behind. `tar` writes into `<target>` whether or not it already exists, so the copy never nests a second directory inside it. The scaffold's `CHANGELOG.md` stays behind too; release-kit writes a new one on the first release.
 
 The directory name is the workspace's scope, whichever directory contains it: Commit titles name it (`<dir>|feat: …`), and so do its `scope:<dir>` label and its entry in `.meta/label-map.json`.
 
@@ -32,7 +25,7 @@ The directory name is the workspace's scope, whichever directory contains it: Co
   - `version`: Set it to `0.0.0`. release-kit bumps from this value on the workspace's first release.
 - **`README.md`:** Replace the title and the opening sentence.
 
-Then run `pnpm install`, which adds the workspace to `pnpm-lock.yaml`. `pnpm-workspace.yaml` already declares `apps/*` and `packages/*`.
+Then run `pnpm install`, which adds the workspace to `pnpm-lock.yaml`. `pnpm-workspace.yaml` already declares `packages/*`.
 
 ## In the repo
 
@@ -48,14 +41,14 @@ The labels reach GitHub when the change merges to `main`: `.github/workflows/syn
 
 ### Workspace lists
 
-Add the workspace to the list in the root `README.md` ("Workspaces") and in `AGENTS.md` ("Project structure").
+Add the workspace to the list in the root `README.md` ("Packages") and in `AGENTS.md` ("Project structure").
 
 ## Check for leftovers
 
-Search the new directory for the template's package name, which appears wherever the copy still identifies as its template:
+Search the new directory for the scaffold's package name, which appears wherever the copy still identifies as the scaffold:
 
 ```shell
-git grep --untracked --line-number '<template package name>' -- '<target>'
+git grep --untracked --line-number 'showroom-workspace-template' -- '<target>'
 ```
 
-A match in `src/__tests__/template.unit.test.ts` is expected, because that test compares the workspace's `name` against the template's.
+A match in `src/__tests__/template.unit.test.ts` is expected, because that test compares the package's `name` against the scaffold's.

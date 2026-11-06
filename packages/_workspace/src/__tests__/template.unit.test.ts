@@ -7,12 +7,18 @@ import { describe, expect, it } from 'vitest';
 import packageJson from '../../package.json' with { type: 'json' };
 
 const TEMPLATE_DIRECTORY = '_workspace';
-const TEMPLATE_PACKAGE_NAME = 'node-monorepo-workspace-template';
-const TEMPLATE_README_TITLE = '# Workspace template';
+const TEMPLATE_PACKAGE_NAME = 'showroom-workspace-template';
+const TEMPLATE_README_TITLE = '# Showroom package scaffold';
 
 const thisFilePath = fileURLToPath(import.meta.url);
 const currentDirectory = path.dirname(thisFilePath);
 const [workspaceName] = currentDirectory.split('/').slice(-3, -2);
+
+describe('test environment', () => {
+  it('provides the DOM by default', () => {
+    expect(typeof document).toBe('object');
+  });
+});
 
 if (workspaceName === TEMPLATE_DIRECTORY) {
   describe('workspace is template', () => {
