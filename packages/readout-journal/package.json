@@ -1,0 +1,54 @@
+{
+  "name": "@williamthorsen/readout-journal",
+  "version": "0.0.0",
+  "private": false,
+  "description": "A journal of domain events derived from state transitions, with typed sentence renderers",
+  "keywords": [
+    "event-log",
+    "journal",
+    "machine-readable",
+    "readout",
+    "reducer"
+  ],
+  "homepage": "https://github.com/williamthorsen/showroom/tree/main/packages/readout-journal#readme",
+  "bugs": {
+    "url": "https://github.com/williamthorsen/showroom/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/williamthorsen/showroom.git",
+    "directory": "packages/readout-journal"
+  },
+  "license": "ISC",
+  "author": "William Thorsen <william@thorsen.dev> (https://github.com/williamthorsen)",
+  "sideEffects": false,
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "types": "./dist/esm/index.d.ts"
+    }
+  },
+  "files": [
+    ".meta/changelog.json",
+    "CHANGELOG.md",
+    "dist"
+  ],
+  "scripts": {
+    "prepare": "nmr-compile",
+    "typecheck:post": "tsgo --noEmit --project tsconfig.src.json"
+  },
+  "dependencies": {
+    "@williamthorsen/readout": "workspace:*"
+  },
+  "devDependencies": {
+    "@williamthorsen/nmr": "catalog:",
+    "vitest": "catalog:"
+  },
+  "engines": {
+    "node": ">=24"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
