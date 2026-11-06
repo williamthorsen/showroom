@@ -72,6 +72,78 @@
   white-space: pre;
 }
 
+/* -- Readout -- */
+
+.readout-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.readout-panel-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+.readout-checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--readout-text);
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.readout-checkbox input {
+  width: 1rem;
+  height: 1rem;
+  margin: 0;
+  accent-color: var(--readout-accent);
+  cursor: pointer;
+}
+
+.readout-checkbox:hover {
+  text-decoration: underline;
+}
+
+.readout-tablist {
+  display: flex;
+  gap: 0.25rem;
+  margin-block-end: 1rem;
+  border-block-end: 1px solid var(--readout-border);
+}
+
+.readout-tab {
+  margin-block-end: -1px;
+  padding-block: 0.5rem;
+  padding-inline: 0.75rem;
+  border: 0;
+  border-block-end: 2px solid transparent;
+  background: none;
+  color: var(--readout-text-secondary);
+  font: inherit;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+.readout-tab:hover {
+  color: var(--readout-text);
+  border-block-end-color: var(--readout-border);
+}
+
+.readout-tab[aria-selected='true'] {
+  color: var(--readout-text);
+  border-block-end-color: var(--readout-accent);
+  font-weight: 600;
+}
+
+.readout-tabpanel:focus-visible {
+  outline-offset: 4px;
+}
+
 /* -- Utilities -- */
 
 .readout-visually-hidden {
