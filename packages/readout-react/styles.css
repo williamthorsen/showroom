@@ -47,6 +47,8 @@
 
 .readout-button:disabled,
 .readout-button[aria-disabled='true'] {
+  border-style: dashed;
+  color: var(--readout-text-secondary);
   cursor: default;
 }
 
@@ -130,6 +132,7 @@
 }
 
 .readout-tab:hover {
+  background-color: var(--readout-surface-code);
   color: var(--readout-text);
   border-block-end-color: var(--readout-border);
 }
