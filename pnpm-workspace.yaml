@@ -18,7 +18,6 @@ minimumReleaseAgeExclude:
   - v11y-check
 
 packages:
-  - apps/*
   - packages/*
 
 savePrefix: ''

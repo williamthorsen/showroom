@@ -25,8 +25,7 @@ jobs:
   code-quality:
     uses: williamthorsen/.github/.github/workflows/code-quality-pnpm-workflow.yaml@v8
     # The legs together run every constituent of `nmr ci`, plus `shellcheck`. Build runs in a leg of
-    # its own: no other leg reads its output (nextjs's typecheck:pre hook runs `next typegen` for the
-    # route types), and it is the longest check.
+    # its own: no other leg reads its output, and it is the longest check.
     with:
       check-commands: >-
         [
