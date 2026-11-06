@@ -35,7 +35,8 @@
     "dist"
   ],
   "scripts": {
-    "prepare": "nmr-compile"
+    "prepare": "nmr-compile",
+    "typecheck:post": "tsgo --noEmit --project tsconfig.src.json"
   },
   "devDependencies": {
     "@williamthorsen/nmr": "catalog:",
