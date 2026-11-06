@@ -3,7 +3,7 @@
   "$schema": "https://json.schemastore.org/tsconfig",
   "extends": "@williamthorsen/tsconfig/tsconfig.base.json",
   "compilerOptions": {
-    // The chrome and _workspace template suites import their package.json.
+    // The scaffold's identity test imports its package.json.
     "resolveJsonModule": true,
     // Every package here runs in the browser. `lib` replaces the base's list, so its ES libs are repeated.
     "lib": ["DOM", "DOM.Iterable", "ES2025", "ESNext.Disposable", "ESNext.Array"],

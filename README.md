@@ -4,6 +4,12 @@
 
 Open-source packages for browser apps: UI components and the framework-agnostic cores that they present. Each package lives under `packages/` and is run with [`nmr`](https://www.npmjs.com/package/@williamthorsen/nmr).
 
+## What belongs here
+
+`showroom` holds packages consumed by browser apps: UI components and the framework-agnostic cores that they present. Node tools belong in [workshop](https://github.com/williamthorsen/workshop) instead.
+
+A package may include a Node sidecar only when the sidecar has no native dependency and no test that spawns a process. Anything heavier gets a repository of its own.
+
 ## Getting started
 
 Prerequisites: The tool versions pinned in `.tool-versions`, and [pnpm](https://pnpm.io/), installed [standalone](https://pnpm.io/installation); the `packageManager` field pins the version that pnpm then activates.

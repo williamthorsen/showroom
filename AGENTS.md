@@ -2,7 +2,7 @@
 
 ## Overview
 
-`showroom` is a pnpm monorepo of open-source packages for browser apps: UI components and the framework-agnostic cores that they present. Each workspace under `packages/` is a library, starting with the `_workspace` scaffold. The repo uses `@williamthorsen/nmr` as its unified workspace script runner, `@williamthorsen/release-kit` for releases, and `readyup` for pre-release checks.
+`showroom` is a pnpm monorepo of open-source packages for browser apps: UI components and the framework-agnostic cores that they present. Each workspace under `packages/` is a library, starting with the `_workspace` scaffold. What belongs here and what goes elsewhere is stated in the README's "What belongs here" section; check a new package against it before adding it. The repo uses `@williamthorsen/nmr` as its unified workspace script runner, `@williamthorsen/release-kit` for releases, and `readyup` for pre-release checks.
 
 ## Project structure
 
@@ -41,10 +41,14 @@ The test-tier convention belongs to `@williamthorsen/nmr`. Its ambient rulebook 
 
 This repo declares nmr's conventions check in `__tests__/test-file-conventions.app.unit.test.ts`, so a test file outside `__tests__/`, or one whose tier segment is missing or misspelt, fails the test run.
 
-Two configs exist:
+`jsdom` is the default environment. `vitest.shared.ts` declares it as a layer, and every Vitest config that a package reaches folds that layer in first.
 
-- `vitest.config.ts` uses the package factory, so it sets no root and no workspace exclusions. It backs root `test:watch`, which sweeps the whole repo, and it is the config that `nmr-vitest` passes to a package that does not contain a config of its own. Do not "correct" it to the root factory.
+Two configs exist at the root:
+
+- `vitest.config.ts` uses the package factory with the shared layer, so it sets no root and no workspace exclusions. It backs root `test:watch`, which sweeps the whole repo, and it is the config that `nmr-vitest` passes to a package that does not contain a config of its own. Do not "correct" it to the root factory.
 - `vitest.root.config.ts` uses the root factory, which excludes every workspace that `pnpm-workspace.yaml` declares. Only `nmr root:test*` reaches it, by explicit `--config`.
+
+A package config is written `defineVitestConfig(shared, { … })`, importing `shared` from the root's `vitest.shared.ts`: A package config replaces the root config entirely, so a config without the layer drops the `jsdom` default. A package that needs real layout enables Vitest browser mode in its own layer.
 
 A package needs its own config when it customizes the shared one **or** when it contains a `vite.config.ts`: `nmr-vitest` passes the shared config only to a package that contains neither a `vitest.config.*` nor a `vite.config.*`. Deleting a config that "only calls the factory" is safe only in a package without a Vite config of its own; elsewhere it drops the projects model, and every tier-selecting command then fails with `No projects matched the filter`.
 
@@ -70,10 +74,11 @@ Lefthook formats staged files with `nmr fmt` in the pre-commit hook, and re-stag
 
 Uses `tsgo` (TypeScript native preview) for type checking.
 
-The language level and strictness set come from `@williamthorsen/tsconfig`, which the root `tsconfig.json` extends: `@tsconfig/strictest` plus the Node options it omits, at NodeNext/ES2025. The root adds only `resolveJsonModule` and turns off `rewriteRelativeImportExtensions`, under which the typecheck rejects the `.ts` extension on a `#src/` specifier; no package here emits with `tsc`, and `nmr-compile` turns the flag on for its own emit. A package declares only what is genuinely its own. Do not restate the base's flags here or in a package config — a second copy is what drifts.
+The language level and strictness set come from `@williamthorsen/tsconfig`, which the root `tsconfig.json` extends: `@tsconfig/strictest` plus the Node options it omits, at NodeNext/ES2025. The root adds `resolveJsonModule` and turns off `rewriteRelativeImportExtensions`, under which the typecheck rejects the `.ts` extension on a `#src/` specifier; no package here emits with `tsc`, and `nmr-compile` turns the flag on for its own emit. The root also sets the browser defaults, a DOM `lib` and `jsx`, so a package does not restate them; `tsconfig.json` contains the values. A package declares only what is genuinely its own. Do not restate the base's flags here or in a package config — a second copy is what drifts.
 
-`lib` replaces rather than extends, so a package needing DOM types repeats the ES year alongside them.
+`lib` replaces rather than extends, so a package that changes it repeats every entry that it keeps.
 
 ## Code style
 
+- A package ships its styles as plain CSS files that a consumer imports, never as CSS-in-JS.
 - Never use `any`, type assertions, or non-null assertions.
