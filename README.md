@@ -28,6 +28,7 @@ Scripts are run with `nmr`, a workspace bin. For the bare `nmr` command to resol
 ## Packages
 
 - `_workspace`: scaffold for a new package. To start one from it, follow [Starting a package from the scaffold](docs/new-package.md).
+- [`readout`](packages/readout/README.md): the result type, its redacting JSON serializer, DOM embedding, and typed renderers.
 
 ## Running scripts
 

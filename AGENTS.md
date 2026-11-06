@@ -7,6 +7,7 @@
 ## Project structure
 
 - `packages/_workspace` — scaffold for a new package (no-op build)
+- `packages/readout` — `@williamthorsen/readout`: the result type, its redacting JSON serializer, DOM embedding, and typed renderers
 - `.config/release-kit.config.ts` — release-kit configuration
 - `.config/readyup.config.ts` — readyup configuration
 - `.config/wt.toml` — worktrunk hooks, whose `[pre-start]` pipeline copies gitignored local files into a new worktree before installing dependencies
@@ -18,6 +19,8 @@
 Invoking nmr belongs to `@williamthorsen/nmr`. Its ambient rulebook carries the `nmr`-not-`pnpm run` rule, the cwd scoping, the `ci`/`prepush` split, and the check-result cache, and bare `nmr` prints every command with its expansion and every flag, so this section restates none of it.
 
 `.github/workflows/code-quality.yaml` runs six parallel legs: `build`, `lint`, `static`, `test`, and `workflows`, which together run the constituents of `nmr ci`, and `shell`, which runs `nmr lint:shell` (`shellcheck` over every tracked `*.sh` file). It is the only workflow that runs an nmr command. The dependency audit runs from `.github/workflows/audit.yaml` on every pull request to `main` or `next` and on a daily schedule, through a reusable workflow rather than through `nmr audit`.
+
+Releases are dispatched by hand through `.github/workflows/release.yaml`, which pushes a `<dir>-v<version>` tag for each released workspace. Each tag triggers `.github/workflows/publish.yaml`, which publishes that workspace to npm through trusted publishing, with provenance. A new package name needs a `0.0.0` placeholder on npm and an `npm trust` entry for `publish.yaml` before its first release.
 
 Readyup kits are run by hand, never from CI: `pnpm exec rdy run --sources` runs the kits published by the sources that `.config/readyup.config.ts` lists. Run it after a dependency upgrade.
 
