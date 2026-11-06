@@ -14,7 +14,7 @@ const config = defineConfig({
       'scope:root': { color: '00ff96' },
       'scope:_workspace': { color: '00ff96' },
       'scope:astro': { color: '00ff96', archived: true },
-      'scope:readout': { color: '00ff96', description: 'readout package' },
+      'scope:readout': { color: '00ff96' },
     },
   },
 
