@@ -10,7 +10,7 @@ interface Events {
   'token-created': { name: string };
 }
 
-const RENDERERS: EntryRenderers<Events, string> = {
+const RENDERERS: EntryRenderers<Events> = {
   'token-created': ({ data }) => `Created token ${data.name}`,
 };
 
