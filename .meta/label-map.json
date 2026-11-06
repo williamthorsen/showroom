@@ -19,6 +19,7 @@
   },
   "scopes": {
     "_workspace": "scope:_workspace",
+    "readout": "scope:readout",
     "root": "scope:root"
   }
 }

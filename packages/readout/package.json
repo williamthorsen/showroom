@@ -1,0 +1,50 @@
+{
+  "name": "@williamthorsen/readout",
+  "version": "0.0.0",
+  "private": false,
+  "description": "One result object for people and machines: redacting JSON serializer, DOM embedding, and typed renderers",
+  "keywords": [
+    "json",
+    "machine-readable",
+    "readout",
+    "redaction",
+    "renderer"
+  ],
+  "homepage": "https://github.com/williamthorsen/showroom/tree/main/packages/readout#readme",
+  "bugs": {
+    "url": "https://github.com/williamthorsen/showroom/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/williamthorsen/showroom.git",
+    "directory": "packages/readout"
+  },
+  "license": "ISC",
+  "author": "William Thorsen <william@thorsen.dev> (https://github.com/williamthorsen)",
+  "sideEffects": false,
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "types": "./dist/esm/index.d.ts"
+    }
+  },
+  "files": [
+    ".meta/changelog.json",
+    "CHANGELOG.md",
+    "dist"
+  ],
+  "scripts": {
+    "prepare": "nmr-compile"
+  },
+  "devDependencies": {
+    "@williamthorsen/nmr": "catalog:",
+    "vitest": "catalog:"
+  },
+  "engines": {
+    "node": ">=24"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

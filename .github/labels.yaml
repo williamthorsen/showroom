@@ -89,6 +89,9 @@
   color: 00ff96
   description: ''
   archived: true
+- name: scope:readout
+  color: 00ff96
+  description: readout package
 - name: scope:root
   color: 00ff96
   description: ''
