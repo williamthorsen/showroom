@@ -3,6 +3,7 @@ import { describe, expect, it } from 'vitest';
 import {
   createJournal,
   type EntryDraft,
+  type Journaled,
   type JournalEntry,
   serializeJournal,
   type StampedAction,
@@ -37,8 +38,8 @@ describe('withJournal', () => {
       { action: { type: 'add-twice', amount: 1 }, at: AT + 2000 },
     ];
 
-    const first = actions.reduce(journaledReduce, createJournal<Counter, CounterEvents>(INITIAL));
-    const second = actions.reduce(journaledReduce, createJournal<Counter, CounterEvents>(INITIAL));
+    const first = replay(actions);
+    const second = replay(actions);
 
     expect(second).toStrictEqual(first);
   });
@@ -49,7 +50,7 @@ describe('withJournal', () => {
       { action: { type: 'add', amount: 3 }, at: AT + 1000 },
     ];
 
-    const journaled = actions.reduce(journaledReduce, createJournal<Counter, CounterEvents>(INITIAL));
+    const journaled = replay(actions);
 
     expect(journaled.journal).toStrictEqual([
       {
@@ -149,5 +150,12 @@ function reduceCounter(state: Counter, action: CounterAction): Counter {
     case 'none':
       return state;
   }
+}
+
+/** Applies the stamped actions in order to a fresh journal over the initial counter. */
+function replay(actions: readonly StampedAction<CounterAction>[]): Journaled<Counter, CounterEvents> {
+  let journaled = createJournal<Counter, CounterEvents>(INITIAL);
+  for (const stamped of actions) journaled = journaledReduce(journaled, stamped);
+  return journaled;
 }
 // endregion | Helpers
