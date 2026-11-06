@@ -92,6 +92,9 @@
 - name: scope:readout
   color: 00ff96
   description: ''
+- name: scope:readout-journal
+  color: 00ff96
+  description: ''
 - name: scope:root
   color: 00ff96
   description: ''
