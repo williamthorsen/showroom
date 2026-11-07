@@ -77,14 +77,15 @@ describe(Terminal, () => {
     ]);
   });
 
-  it('applies a new theme to the open terminal', () => {
+  it('applies a new theme to the open terminal and to its container', () => {
     const transport = createFakeTransport().transport;
-    const { rerender } = render(<Terminal transport={transport} theme={{ background: '#000000' }} />);
+    const { container, rerender } = render(<Terminal transport={transport} theme={{ background: '#000000' }} />);
 
     rerender(<Terminal transport={transport} theme={{ background: '#ffffff' }} />);
 
     expect(FakeXterm.instances).toHaveLength(1);
     expect(FakeXterm.latest().options.theme).toStrictEqual({ background: '#ffffff' });
+    expect(container.firstElementChild).toHaveProperty('style.backgroundColor', 'rgb(255, 255, 255)');
   });
 
   it('disposes the terminal, stops observing, and unsubscribes on unmount', () => {

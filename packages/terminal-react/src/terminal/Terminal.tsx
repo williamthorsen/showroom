@@ -28,6 +28,9 @@ interface TerminalTransportProps extends TerminalCommonProps {
 
 export type TerminalProps = TerminalTransportProps | TerminalUrlProps;
 
+/** xterm's background when the theme does not set one, which also fills the space that the grid leaves uncovered. */
+const DEFAULT_BACKGROUND = '#000000';
+
 /**
  * A terminal that renders the bytes of a transport, sends keystrokes back on it, and fits its grid to its container,
  * reporting the grid's size on connection and after every refit. Given `url`, it connects through a WebSocket that it
@@ -106,7 +109,11 @@ export function Terminal({ className, onClose, theme, transport, url }: Terminal
   }, [transport, url]);
 
   return (
-    <div ref={containerRef} className={className === undefined ? 'terminal-react' : `terminal-react ${className}`} />
+    <div
+      ref={containerRef}
+      className={className === undefined ? 'terminal-react' : `terminal-react ${className}`}
+      style={{ backgroundColor: theme?.background ?? DEFAULT_BACKGROUND }}
+    />
   );
 }
 
