@@ -11,6 +11,8 @@
   --readout-border: #8c959f;
   --readout-focus: #0b5cd5;
   --readout-accent: #0b5cd5;
+  --readout-success: #1a7f37;
+  --readout-danger: #cf222e;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -22,6 +24,8 @@
     --readout-border: #6e7681;
     --readout-focus: #4c9aff;
     --readout-accent: #4c9aff;
+    --readout-success: #3fb950;
+    --readout-danger: #f85149;
   }
 }
 
@@ -50,6 +54,19 @@
   border-style: dashed;
   color: var(--readout-text-secondary);
   cursor: default;
+}
+
+/* The hover variants outrank the hover rule above, so that a result keeps its colour under the pointer. */
+.readout-button[data-state='copied'],
+.readout-button[data-state='copied']:hover:not(:disabled) {
+  border-color: var(--readout-success);
+  color: var(--readout-success);
+}
+
+.readout-button[data-state='failed'],
+.readout-button[data-state='failed']:hover:not(:disabled) {
+  border-color: var(--readout-danger);
+  color: var(--readout-danger);
 }
 
 :where(.readout-button, .readout-json, .readout-checkbox input, .readout-tab, .readout-tabpanel):focus-visible {
