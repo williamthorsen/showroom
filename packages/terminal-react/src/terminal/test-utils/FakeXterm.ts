@@ -17,7 +17,10 @@ export class FakeXterm {
   /** The size that the next `fit` of the fake fit addon applies. */
   proposedSize: { cols: number; rows: number } | undefined;
   element: HTMLElement | undefined;
+  /** The input element, created by `open` inside the terminal's element, as xterm's is. */
+  textarea: HTMLTextAreaElement | undefined;
   isDisposed = false;
+  private customKeyEventHandler: ((event: KeyboardEvent) => boolean) | undefined;
 
   private readonly dataListeners = new Set<(data: string) => void>();
   private readonly binaryListeners = new Set<(data: string) => void>();
@@ -37,6 +40,19 @@ export class FakeXterm {
   /** Records the element in which the terminal opens. */
   open(element: HTMLElement): void {
     this.element = element;
+    this.textarea = document.createElement('textarea');
+    element.append(this.textarea);
+  }
+
+  /** Records the handler that decides whether the terminal processes a key event. */
+  attachCustomKeyEventHandler(handler: (event: KeyboardEvent) => boolean): void {
+    this.customKeyEventHandler = handler;
+  }
+
+  /** Passes a key event to the custom handler and returns whether the terminal would process it. */
+  pressKey(key: string, init: Omit<KeyboardEventInit, 'key'> & { type?: string } = {}): boolean {
+    const { type = 'keydown', ...rest } = init;
+    return this.customKeyEventHandler?.(new KeyboardEvent(type, { key, ...rest })) ?? true;
   }
 
   /** Activates an addon against this terminal. */
