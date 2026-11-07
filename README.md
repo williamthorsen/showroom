@@ -31,6 +31,7 @@ Scripts are run with `nmr`, a workspace bin. For the bare `nmr` command to resol
 - [`readout`](packages/readout/README.md): the result type, its redacting JSON serializer, DOM embedding, and typed renderers.
 - [`readout-journal`](packages/readout-journal/README.md): a journal of domain events derived from state transitions, and its sentence renderers.
 - [`readout-react`](packages/readout-react/README.md): React components over both: a copy button, a JSON view, the structured view of a readout, and the journal drawer.
+- [`terminal-react`](packages/terminal-react/README.md): a terminal component over xterm.js that attaches to a WebSocket and reports its size.
 
 ## Running scripts
 

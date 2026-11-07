@@ -17,6 +17,7 @@ const config = defineConfig({
       'scope:readout': { color: '00ff96' },
       'scope:readout-journal': { color: '00ff96' },
       'scope:readout-react': { color: '00ff96' },
+      'scope:terminal-react': { color: '00ff96' },
     },
   },
 
