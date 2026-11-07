@@ -38,6 +38,11 @@ function Playground(): ReactElement {
       <div className="frame">
         <Terminal url={ECHO_URL} theme={isLight ? LIGHT_THEME : DARK_THEME} />
       </div>
+      <p>
+        Press Escape, then Tab or Shift+Tab, to move focus out of the terminal. See the{' '}
+        <a href="https://github.com/williamthorsen/showroom/tree/main/packages/terminal-react#readme">package README</a>
+        .
+      </p>
     </main>
   );
 }
