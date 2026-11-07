@@ -2,7 +2,7 @@
 
 # @williamthorsen/readout-react
 
-React components for readouts and journals: a copy button, a JSON view, the structured view of a readout, and the journal drawer.
+React components for readouts and journals: a copy button, a JSON view, the structured view of a readout, and the journal dock.
 
 <!-- section:release-notes --><!-- /section:release-notes -->
 
@@ -17,13 +17,13 @@ import '@williamthorsen/readout-react/styles.css';
 
 ## Why
 
-[`@williamthorsen/readout`](https://github.com/williamthorsen/showroom/tree/main/packages/readout#readme) and [`@williamthorsen/readout-journal`](https://github.com/williamthorsen/showroom/tree/main/packages/readout-journal#readme) keep a result and a journal as data, so that a person and a machine read the same object. Each app that presents them needs the same pieces: a copy button, a view of the JSON, a tab that reveals a result's data beside the result, and a drawer that lists the journal. This package supplies them on plain elements, styled by one CSS file, so that an app does not rebuild them or adopt a design system to get them. An app that uses a design system keeps its own binding to it, and can still use `ReadoutPanel` and `EmbeddedJson` inside its own tabs or drawer.
+[`@williamthorsen/readout`](https://github.com/williamthorsen/showroom/tree/main/packages/readout#readme) and [`@williamthorsen/readout-journal`](https://github.com/williamthorsen/showroom/tree/main/packages/readout-journal#readme) keep a result and a journal as data, so that a person and a machine read the same object. Each app that presents them needs the same pieces: a copy button, a view of the JSON, a tab that reveals a result's data beside the result, and a dock that lists the journal. This package supplies them on plain elements, styled by one CSS file, so that an app does not rebuild them or adopt a design system to get them. An app that uses a design system keeps its own binding to it, and can still use `ReadoutPanel` and `EmbeddedJson` inside its own tabs or drawer.
 
 React 19 is a peer dependency (`^19.0.0`).
 
 ## Copy and JSON
 
-- `CopyButton` copies `text` to the clipboard, shows "Copied" or "Not copied" for a moment, and announces the result to a screen reader. Pass `onCopy` to copy some other way.
+- `CopyButton` copies `text` to the clipboard, shows "Copied" or "Not copied" for a moment in the success or danger colour, and announces the result to a screen reader. Pass `onCopy` to copy some other way.
 - `JsonView` shows JSON in a scrollable region that a keyboard user can focus.
 - `EmbeddedJson` renders a `<script type="application/json">` element for a driven browser to read, escaped so that the content cannot close the element.
 
@@ -43,11 +43,22 @@ const { state, journal, dispatch } = useJournal(reduce, deriveEntries, () => ini
 
 <>
   <EmbeddedJson id="page-journal" json={serializeJournal(journal)} />
-  <JournalDrawer isOpen={isOpen} onClose={close} entries={journal} renderers={renderers} />
+  <JournalDrawer
+    isOpen={isOpen}
+    onOpenChange={setIsOpen}
+    entries={journal}
+    renderers={renderers}
+    defaultSize={savedSize}
+    onSizeChange={saveSize}
+  />
 </>;
 ```
 
-`useJournal` holds a state under a reducer and journals each transition through a derivation, stamping each action with the time at which it was dispatched. `JournalDrawer` is a modal dialog that lists the entries newest first through one renderer per event type, each with its time, and shows the journal as JSON with Copy JSON. The drawer does not embed the journal, so that the embedding stays on the page while the drawer is not rendered; render `EmbeddedJson` beside it.
+`useJournal` holds a state under a reducer and journals each transition through a derivation, stamping each action with the time at which it was dispatched.
+
+`JournalDrawer` is a non-modal dock, like a browser's developer tools, fixed to the bottom of the viewport or, with `side="right"`, to its right. It lists the entries newest first, one line each, through one renderer per event type, each with its time, and shows the journal as JSON with Copy JSON; neither wraps, and both scroll. The dock renders its own toggle, named by `title`, at its edge, and reports through `onOpenChange` each request to open or close it: by the toggle, by Close, or by Escape. Its separator resizes it by drag or by arrow keys. Pass `defaultSize` and `onSizeChange` to keep the size across reloads.
+
+The dock overlays the page, and its toggle covers the page's bottom-right corner. Pad the page by the size that `onSizeChange` reports to keep its end reachable. The dock does not embed the journal, so that the embedding stays on the page while the dock is not rendered; render `EmbeddedJson` beside it.
 
 ## Theming
 
@@ -60,4 +71,4 @@ const { state, journal, dispatch } = useJournal(reduce, deriveEntries, () => ini
 }
 ```
 
-The properties, all prefixed `--readout-`, are declared at the top of `styles.css`. Every class that the components render begins with `readout-`.
+The properties, all prefixed `--readout-`, are declared at the top of `styles.css`: the colours, including `--readout-success` and `--readout-danger` for `CopyButton`'s results, and `--readout-dock-layer`, the dock's `z-index`. Every class that the components render begins with `readout-`.
