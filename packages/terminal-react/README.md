@@ -31,7 +31,11 @@ React 19 is a peer dependency (`^19.0.0`). `@xterm/xterm` and `@xterm/addon-fit`
 - `theme`: xterm's `ITheme`, re-exported by this package. A change applies to the open terminal.
 - `className`: Added to the component's root element, whose class is `terminal-react`.
 
-The component fills its parent, so the parent sets its size. The terminal keeps the Tab key as terminal input, as a terminal does.
+The component fills its parent, so the parent sets its size.
+
+## Keyboard focus
+
+Tab and Shift+Tab are terminal input, as they are in any terminal. Escape, then Tab or Shift+Tab, moves focus to the next or the previous focusable element; Escape still reaches the process, and any other key after it cancels the escape. The terminal's input states the escape as its accessible description, so a screen reader announces it on focus.
 
 ## Styles
 
