@@ -131,6 +131,16 @@ describe(Terminal, () => {
       expect(terminal.pressKey('Tab')).toBe(true);
     });
 
+    it.each(['blur', 'paste'])('cancels the escape on a %s of the input', (type) => {
+      render(<Terminal transport={createFakeTransport().transport} />);
+      const terminal = FakeXterm.latest();
+
+      terminal.pressKey('Escape');
+      terminal.textarea?.dispatchEvent(new Event(type));
+
+      expect(terminal.pressKey('Tab')).toBe(true);
+    });
+
     it('ignores key events other than keydown and Tab with Ctrl, Alt, or Meta', () => {
       render(<Terminal transport={createFakeTransport().transport} />);
       const terminal = FakeXterm.latest();

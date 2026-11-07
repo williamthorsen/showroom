@@ -35,7 +35,7 @@ The component fills its parent, so the parent sets its size.
 
 ## Keyboard focus
 
-Tab and Shift+Tab are terminal input, as they are in any terminal. Escape, then Tab or Shift+Tab, moves focus to the next or the previous focusable element; Escape still reaches the process, and any other key after it cancels the escape. The terminal's input states the escape as its accessible description, so a screen reader announces it on focus.
+Tab and Shift+Tab are terminal input, as they are in any terminal. Escape, then Tab or Shift+Tab, moves focus to the next or the previous focusable element; Escape still reaches the process, and any other key after it, a paste, or a move of focus away from the terminal cancels the escape. The terminal's input states the escape as its accessible description, so a screen reader announces it on focus.
 
 ## Styles
 

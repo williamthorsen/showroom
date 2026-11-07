@@ -59,8 +59,14 @@ export function Terminal({ className, onClose, theme, transport, url }: Terminal
     const terminal = new Xterm();
     const fitAddon = new FitAddon();
     terminal.loadAddon(fitAddon);
-    terminal.attachCustomKeyEventHandler(createFocusEscapeHandler());
+    const focusEscape = createFocusEscape();
+    terminal.attachCustomKeyEventHandler(focusEscape.handleKey);
     terminal.open(container);
+    // A blur or a paste ends the key sequence, so that a later Tab is input again.
+    const textareaListeners = new AbortController();
+    for (const type of ['blur', 'paste']) {
+      terminal.textarea?.addEventListener(type, focusEscape.disarm, { signal: textareaListeners.signal });
+    }
     const hint = document.createElement('span');
     hint.id = hintId;
     hint.className = 'terminal-react__hint';
@@ -76,6 +82,7 @@ export function Terminal({ className, onClose, theme, transport, url }: Terminal
 
     return () => {
       observer.disconnect();
+      textareaListeners.abort();
       terminal.dispose();
       hint.remove();
       terminalRef.current = undefined;
@@ -134,16 +141,22 @@ export function Terminal({ className, onClose, theme, transport, url }: Terminal
 
 // region | Helpers
 /**
- * Creates xterm's custom key handler for the focus escape. It returns `false`, so that xterm leaves the key to the
- * browser's focus navigation, for a Tab or Shift+Tab keydown whose previous non-modifier keydown was Escape.
+ * Creates the focus escape: `handleKey`, xterm's custom key handler, returns `false`, so that xterm leaves the key to
+ * the browser's focus navigation, for a Tab or Shift+Tab keydown whose previous non-modifier keydown was Escape, and
+ * `disarm` cancels a pending escape.
  */
-function createFocusEscapeHandler(): (event: KeyboardEvent) => boolean {
+function createFocusEscape(): { handleKey: (event: KeyboardEvent) => boolean; disarm: () => void } {
   let isEscapeArmed = false;
-  return (event) => {
-    if (event.type !== 'keydown' || MODIFIER_KEYS.has(event.key)) return true;
-    const isFocusEscape = isEscapeArmed && event.key === 'Tab' && !event.altKey && !event.ctrlKey && !event.metaKey;
-    isEscapeArmed = event.key === 'Escape';
-    return !isFocusEscape;
+  return {
+    handleKey: (event) => {
+      if (event.type !== 'keydown' || MODIFIER_KEYS.has(event.key)) return true;
+      const isFocusEscape = isEscapeArmed && event.key === 'Tab' && !event.altKey && !event.ctrlKey && !event.metaKey;
+      isEscapeArmed = event.key === 'Escape';
+      return !isFocusEscape;
+    },
+    disarm: () => {
+      isEscapeArmed = false;
+    },
   };
 }
 
