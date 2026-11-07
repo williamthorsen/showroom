@@ -65,12 +65,7 @@ function Playground(): ReactElement {
         </button>
       </div>
       <EmbeddedJson id="page-journal" json={serializeJournal(journal)} />
-      <JournalDrawer
-        isOpen={isDrawerOpen}
-        onClose={() => setIsDrawerOpen(false)}
-        entries={journal}
-        renderers={RENDERERS}
-      />
+      <JournalDrawer isOpen={isDrawerOpen} onOpenChange={setIsDrawerOpen} entries={journal} renderers={RENDERERS} />
       <p>Tokens created: {state}</p>
     </main>
   );
