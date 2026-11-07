@@ -1,0 +1,17 @@
+/*
+ * Styles for @williamthorsen/terminal-react: xterm's own stylesheet, plus the component's sizing and focus ring. The
+ * focus ring's colour is the custom property --terminal-react-focus, which a consumer redefines to theme it.
+ */
+
+@import '@xterm/xterm/css/xterm.css';
+
+.terminal-react {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.terminal-react:focus-within {
+  outline: 2px solid var(--terminal-react-focus, #0b5cd5);
+  outline-offset: 2px;
+}
