@@ -1,0 +1,56 @@
+[
+  {
+    "version": "0.1.0",
+    "date": "2026-11-07",
+    "sections": [
+      {
+        "title": "🎉 Features",
+        "audience": "all",
+        "items": [
+          {
+            "description": "Adds the `Terminal` component, which renders a server's output with xterm.js, sends keystrokes back, refits its grid whenever its container changes size, and connects either through a WebSocket that it opens at `url` and closes on unmount or through a `transport` owned by the consumer. (#15)",
+            "hash": "36efdd58b3297f4f6c820a877a637e835bac9209",
+            "entry": 1
+          },
+          {
+            "description": "Adds `createWebSocketTransport`, the transport behind `url`, which sends terminal bytes as binary WebSocket frames and the grid's size as a JSON `resize` text frame, and the `TerminalTransport` interface, through which a consumer connects a `Terminal` to a channel of its own. (#15)",
+            "hash": "36efdd58b3297f4f6c820a877a637e835bac9209",
+            "entry": 2
+          },
+          {
+            "description": "Adds `@williamthorsen/terminal-react/styles.css`, which imports xterm's stylesheet, sizes the component to its parent, and draws a focus ring whose colour the custom property `--terminal-react-focus` sets. (#15)",
+            "hash": "36efdd58b3297f4f6c820a877a637e835bac9209",
+            "entry": 3
+          },
+          {
+            "description": "Adds a keyboard escape from the focus of `Terminal`, in which Escape followed by Tab or Shift+Tab moves focus to the next or the previous focusable element while Escape itself still reaches the process, and states the escape as the accessible description of the terminal's input. (#16)",
+            "hash": "95f61dbbf4c904c9e8b7c53aa8b0daf3934a2f36",
+            "entry": 1
+          }
+        ]
+      },
+      {
+        "title": "🏗️ Internal features",
+        "audience": "dev",
+        "items": [
+          {
+            "description": "Adds the initial `@williamthorsen/terminal-react` workspace, with a manifest that declares `@xterm/xterm` 6.0.0, `@xterm/addon-fit` 0.11.0, a React 19 peer dependency, and a `./styles.css` export, and registers the package in the README, `AGENTS.md`, the release-kit config, and the `scope:terminal-react` label. (#14)",
+            "hash": "952782a4296b0c2187289ed3e0b877055813ed99",
+            "entry": 1
+          }
+        ]
+      },
+      {
+        "title": "⚙️ Tooling",
+        "audience": "dev",
+        "items": [
+          {
+            "description": "Adds a playground that renders the `Terminal` in a resizable frame with a theme toggle and connects it to an echo WebSocket server, served by the playground's Vite config, that speaks the wire protocol. (#15)",
+            "hash": "36efdd58b3297f4f6c820a877a637e835bac9209",
+            "entry": 4
+          }
+        ]
+      }
+    ]
+  }
+]

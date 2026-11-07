@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## 0.1.1 — 2026-11-07
+
+### 🏗️ Internal features
+
+- Scaffold the terminal-react package (#14)
+
+  Adds the `@williamthorsen/terminal-react` workspace at `0.0.0`, which declares `@xterm/xterm`, `@xterm/addon-fit`, and a `./styles.css` export but doesn't contain any source yet, and registers it in the README, `AGENTS.md`, the release-kit config, and the `scope:terminal-react` label. Moves the React dependencies that it shares with `readout-react` into the `pnpm-workspace.yaml` catalog at the versions that `readout-react` already pinned.
+
 ## 0.1.0 — 2026-11-06
 
 ### 🎉 Features

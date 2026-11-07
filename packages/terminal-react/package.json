@@ -1,6 +1,6 @@
 {
   "name": "@williamthorsen/terminal-react",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": false,
   "description": "A React terminal component over xterm.js that attaches to a WebSocket and reports its size",
   "keywords": [

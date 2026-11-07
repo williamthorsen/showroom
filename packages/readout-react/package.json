@@ -1,6 +1,6 @@
 {
   "name": "@williamthorsen/readout-react",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": false,
   "description": "React components for readouts and journals: copy button, JSON view, structured view, and journal drawer",
   "keywords": [
