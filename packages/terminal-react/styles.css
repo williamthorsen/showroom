@@ -1,0 +1,25 @@
+/*
+ * Styles for @williamthorsen/terminal-react: xterm's own stylesheet, plus the component's sizing and focus ring. The
+ * ring is drawn inside the component, so that a parent that clips its overflow does not hide it, and its colour must
+ * reach 3:1 against both the terminal's background and the page's; the default does on black, #161b22, and white. A
+ * consumer redefines the custom property --terminal-react-focus to theme it.
+ */
+
+@import '@xterm/xterm/css/xterm.css';
+
+.terminal-react {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* An outline would sit under xterm's positioned layers, so the ring is an overlay above them. */
+.terminal-react:focus-within::after {
+  position: absolute;
+  z-index: 11;
+  inset: 0;
+  border: 2px solid var(--terminal-react-focus, #3b82f6);
+  content: '';
+  pointer-events: none;
+}
