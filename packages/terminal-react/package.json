@@ -1,0 +1,67 @@
+{
+  "name": "@williamthorsen/terminal-react",
+  "version": "0.0.0",
+  "private": false,
+  "description": "A React terminal component over xterm.js that attaches to a WebSocket and reports its size",
+  "keywords": [
+    "react",
+    "terminal",
+    "websocket",
+    "xterm"
+  ],
+  "homepage": "https://github.com/williamthorsen/showroom/tree/main/packages/terminal-react#readme",
+  "bugs": {
+    "url": "https://github.com/williamthorsen/showroom/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/williamthorsen/showroom.git",
+    "directory": "packages/terminal-react"
+  },
+  "license": "ISC",
+  "author": "William Thorsen <william@thorsen.dev> (https://github.com/williamthorsen)",
+  "sideEffects": [
+    "*.css"
+  ],
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "types": "./dist/esm/index.d.ts"
+    },
+    "./styles.css": "./styles.css"
+  },
+  "files": [
+    ".meta/changelog.json",
+    "CHANGELOG.md",
+    "dist",
+    "styles.css"
+  ],
+  "scripts": {
+    "dev": "vite playground",
+    "prepare": "nmr-compile"
+  },
+  "dependencies": {
+    "@xterm/addon-fit": "0.11.0",
+    "@xterm/xterm": "6.0.0"
+  },
+  "devDependencies": {
+    "@testing-library/react": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "@williamthorsen/nmr": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "vite": "catalog:",
+    "vitest": "catalog:"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0"
+  },
+  "engines": {
+    "node": ">=24"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
