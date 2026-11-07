@@ -146,8 +146,8 @@ describe(Terminal, () => {
     it('describes the escape to assistive technology and removes the description on unmount', () => {
       const { container, unmount } = render(<Terminal transport={createFakeTransport().transport} />);
 
-      const descriptionId = FakeXterm.latest().textarea?.getAttribute('aria-describedby') ?? '';
-      const description = container.ownerDocument.getElementById(descriptionId);
+      const description = container.querySelector('.terminal-react__hint');
+      expect(FakeXterm.latest().textarea?.getAttribute('aria-describedby')).toBe(description?.id);
       expect(description?.textContent).toBe('Press Escape, then Tab or Shift+Tab, to move focus out of the terminal.');
 
       unmount();
