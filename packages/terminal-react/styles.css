@@ -23,3 +23,13 @@
   content: '';
   pointer-events: none;
 }
+
+/* The accessible description of the terminal's input, read by a screen reader and hidden from view. */
+.terminal-react__hint {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

@@ -99,6 +99,73 @@ describe(Terminal, () => {
     expect(fake.subscriberCount()).toBe(0);
   });
 
+  describe('focus escape', () => {
+    it('keeps Tab and Shift+Tab as terminal input outside the escape', () => {
+      render(<Terminal transport={createFakeTransport().transport} />);
+      const terminal = FakeXterm.latest();
+
+      expect([terminal.pressKey('Tab'), terminal.pressKey('Tab', { shiftKey: true })]).toStrictEqual([true, true]);
+    });
+
+    it('passes Escape to the terminal and leaves the next Tab or Shift+Tab to the browser', () => {
+      render(<Terminal transport={createFakeTransport().transport} />);
+      const terminal = FakeXterm.latest();
+
+      expect([
+        terminal.pressKey('Escape'),
+        terminal.pressKey('Tab'),
+        terminal.pressKey('Tab'),
+        terminal.pressKey('Escape'),
+        terminal.pressKey('Shift', { shiftKey: true }),
+        terminal.pressKey('Tab', { shiftKey: true }),
+      ]).toStrictEqual([true, false, true, true, true, false]);
+    });
+
+    it('cancels the escape on any other key', () => {
+      render(<Terminal transport={createFakeTransport().transport} />);
+      const terminal = FakeXterm.latest();
+
+      terminal.pressKey('Escape');
+      terminal.pressKey('a');
+
+      expect(terminal.pressKey('Tab')).toBe(true);
+    });
+
+    it.each(['blur', 'paste'])('cancels the escape on a %s of the input', (type) => {
+      render(<Terminal transport={createFakeTransport().transport} />);
+      const terminal = FakeXterm.latest();
+
+      terminal.pressKey('Escape');
+      terminal.textarea?.dispatchEvent(new Event(type));
+
+      expect(terminal.pressKey('Tab')).toBe(true);
+    });
+
+    it('ignores key events other than keydown and Tab with Ctrl, Alt, or Meta', () => {
+      render(<Terminal transport={createFakeTransport().transport} />);
+      const terminal = FakeXterm.latest();
+
+      terminal.pressKey('Escape');
+
+      expect([terminal.pressKey('Tab', { type: 'keyup' }), terminal.pressKey('Tab', { ctrlKey: true })]).toStrictEqual([
+        true,
+        true,
+      ]);
+    });
+
+    it('describes the escape to assistive technology and removes the description on unmount', () => {
+      const { container, unmount } = render(<Terminal transport={createFakeTransport().transport} />);
+
+      const description = container.querySelector('.terminal-react__hint');
+      expect(FakeXterm.latest().textarea?.getAttribute('aria-describedby')).toBe(description?.id);
+      expect(description?.textContent).toBe('Press Escape, then Tab or Shift+Tab, to move focus out of the terminal.');
+
+      unmount();
+
+      expect(description?.isConnected).toBe(false);
+    });
+  });
+
   describe('given a URL', () => {
     it('connects to it and sends the size once the socket opens', () => {
       render(<Terminal url="ws://localhost/pty" />);
