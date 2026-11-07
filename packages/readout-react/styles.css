@@ -11,6 +11,9 @@
   --readout-border: #8c959f;
   --readout-focus: #0b5cd5;
   --readout-accent: #0b5cd5;
+  --readout-success: #1a7f37;
+  --readout-danger: #cf222e;
+  --readout-dock-layer: 100;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -22,6 +25,8 @@
     --readout-border: #6e7681;
     --readout-focus: #4c9aff;
     --readout-accent: #4c9aff;
+    --readout-success: #3fb950;
+    --readout-danger: #f85149;
   }
 }
 
@@ -52,7 +57,27 @@
   cursor: default;
 }
 
-:where(.readout-button, .readout-json, .readout-checkbox input, .readout-tab, .readout-tabpanel):focus-visible {
+/* The hover variants outrank the hover rule above, so that a result keeps its colour under the pointer. */
+.readout-button[data-state='copied'],
+.readout-button[data-state='copied']:hover:not(:disabled) {
+  border-color: var(--readout-success);
+  color: var(--readout-success);
+}
+
+.readout-button[data-state='failed'],
+.readout-button[data-state='failed']:hover:not(:disabled) {
+  border-color: var(--readout-danger);
+  color: var(--readout-danger);
+}
+
+:where(
+  .readout-button,
+  .readout-json,
+  .readout-checkbox input,
+  .readout-dock-separator,
+  .readout-tab,
+  .readout-tabpanel
+):focus-visible {
   outline: 2px solid var(--readout-focus);
   outline-offset: 2px;
 }
@@ -149,53 +174,164 @@
 
 /* -- Journal -- */
 
-.readout-drawer {
+/* The dock's own box is empty: its toggle and panel are each fixed to the viewport, so the page stays operable. */
+.readout-dock {
+  display: contents;
+}
+
+.readout-dock-toggle {
+  position: fixed;
+  z-index: var(--readout-dock-layer);
+}
+
+/* The hover variant outranks the button's hover rule, so that the open toggle keeps its pressed look under the pointer. */
+.readout-dock-toggle[aria-expanded='true'],
+.readout-dock-toggle[aria-expanded='true']:hover:not(:disabled) {
+  border-color: var(--readout-accent);
+  color: var(--readout-accent);
+}
+
+.readout-dock[data-side='bottom'] .readout-dock-toggle {
+  right: 1rem;
+  bottom: 0;
+  border-end-start-radius: 0;
+  border-end-end-radius: 0;
+  border-block-end: 0;
+}
+
+.readout-dock[data-side='bottom'][data-open] .readout-dock-toggle {
+  bottom: var(--readout-dock-size);
+}
+
+.readout-dock[data-side='right'] .readout-dock-toggle {
+  right: 0;
+  bottom: 1rem;
+  border-start-end-radius: 0;
+  border-end-end-radius: 0;
+  border-inline-end: 0;
+}
+
+.readout-dock[data-side='right'][data-open] .readout-dock-toggle {
+  right: var(--readout-dock-size);
+}
+
+.readout-dock-panel {
   box-sizing: border-box;
   position: fixed;
-  inset-block: 0;
-  inset-inline: auto 0;
-  width: min(32rem, 100vw);
-  max-width: 100vw;
-  height: 100dvh;
-  max-height: 100dvh;
-  margin: 0;
-  padding: 1.5rem;
-  overflow-y: auto;
-  border: 0;
-  border-inline-start: 1px solid var(--readout-border);
+  z-index: var(--readout-dock-layer);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding-block: 0.75rem;
+  padding-inline: 1rem;
   background-color: var(--readout-surface);
   color: var(--readout-text);
   font-size: 0.875rem;
 }
 
-.readout-drawer[open] {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+.readout-dock-panel[hidden] {
+  display: none;
 }
 
-.readout-drawer::backdrop {
-  background-color: rgb(0 0 0 / 40%);
+.readout-dock[data-side='bottom'] .readout-dock-panel {
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: var(--readout-dock-size);
+  border-top: 1px solid var(--readout-border);
 }
 
-.readout-drawer-header {
+.readout-dock[data-side='right'] .readout-dock-panel {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: var(--readout-dock-size);
+  border-left: 1px solid var(--readout-border);
+}
+
+.readout-dock-separator {
+  position: absolute;
+  touch-action: none;
+}
+
+.readout-dock-separator::after {
+  position: absolute;
+  background-color: transparent;
+  content: '';
+}
+
+.readout-dock-separator:hover::after,
+.readout-dock-separator:focus-visible::after,
+.readout-dock-separator:active::after {
+  background-color: var(--readout-text-secondary);
+}
+
+.readout-dock-separator[aria-orientation='horizontal'] {
+  top: -4px;
+  right: 0;
+  left: 0;
+  height: 8px;
+  cursor: ns-resize;
+}
+
+.readout-dock-separator[aria-orientation='horizontal']::after {
+  top: 3px;
+  right: 0;
+  left: 0;
+  height: 2px;
+}
+
+.readout-dock-separator[aria-orientation='vertical'] {
+  top: 0;
+  bottom: 0;
+  left: -4px;
+  width: 8px;
+  cursor: ew-resize;
+}
+
+.readout-dock-separator[aria-orientation='vertical']::after {
+  top: 0;
+  bottom: 0;
+  left: 3px;
+  width: 2px;
+}
+
+.readout-dock-header {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
+  gap: 0.5rem 1rem;
 }
 
-.readout-drawer-header h2 {
+.readout-dock-header h2 {
   margin: 0;
-  font-size: 1.25rem;
+  font-size: 1rem;
 }
 
-.readout-drawer-empty {
+.readout-dock-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+  overflow: auto;
+}
+
+/* Inside the dock, the JSON fills the body and scrolls on its own. */
+.readout-dock-body > .readout-json {
+  flex: 1;
+  min-height: 0;
+  max-height: none;
+}
+
+.readout-dock-empty {
   margin: 0;
   color: var(--readout-text-secondary);
 }
 
 .readout-journal-list {
+  min-width: 100%;
+  width: max-content;
   margin: 0;
   padding-inline: 0;
   list-style: none;
@@ -203,10 +339,12 @@
 
 .readout-journal-entry {
   display: flex;
-  flex-direction: column;
-  gap: 0.125rem;
-  padding-block: 0.5rem;
+  align-items: baseline;
+  gap: 1rem;
+  padding-block: 0.25rem;
   border-block-end: 1px solid var(--readout-border);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  white-space: nowrap;
 }
 
 .readout-journal-time {

@@ -40,7 +40,13 @@ export function CopyButton({ text, label, onCopy = copyText, ref }: CopyButtonPr
 
   return (
     <>
-      <button ref={ref} type="button" className="readout-button" onClick={() => void handleCopy()}>
+      <button
+        ref={ref}
+        type="button"
+        className="readout-button"
+        data-state={copyState === 'idle' ? undefined : copyState}
+        onClick={() => void handleCopy()}
+      >
         {copyState === 'idle' ? label : resultText}
       </button>
       {/* A screen reader does not reliably announce a change to the label of the focused button. */}

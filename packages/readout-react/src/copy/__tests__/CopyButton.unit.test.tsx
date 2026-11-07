@@ -19,6 +19,7 @@ describe(CopyButton, () => {
     expect(onCopy).toHaveBeenCalledWith('payload');
     expect(screen.getByRole('button').textContent).toBe('Copied');
     expect(screen.getByRole('status').textContent).toBe('Copied');
+    expect(screen.getByRole('button').dataset['state']).toBe('copied');
   });
 
   it('reports a failed copy', async () => {
@@ -28,6 +29,7 @@ describe(CopyButton, () => {
 
     expect(screen.getByRole('button').textContent).toBe('Not copied');
     expect(screen.getByRole('status').textContent).toBe('Not copied');
+    expect(screen.getByRole('button').dataset['state']).toBe('failed');
   });
 
   it('shows its label again once the feedback time has passed', async () => {
@@ -41,6 +43,7 @@ describe(CopyButton, () => {
 
     expect(screen.getByRole('button').textContent).toBe('Copy JSON');
     expect(screen.getByRole('status').textContent).toBe('');
+    expect(screen.getByRole('button').dataset['state']).toBeUndefined();
   });
 
   it('writes to the clipboard when no copy handler is given', async () => {

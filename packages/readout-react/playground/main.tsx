@@ -21,7 +21,12 @@ interface Events {
 
 interface Action {
   type: 'create';
+  name?: string;
 }
+
+const LONG_NAME = 'deploy-pipeline-for-the-production-cluster-in-the-eu-west-region-with-rotation';
+
+const PARAGRAPH_COUNT = 30;
 
 const TOKEN: Readout<Token> = {
   data: { type: 'created', id: 'tok-1', name: 'ci', expiresAt: '2026-11-12T00:00:00Z', secret: 'ATATT-example' },
@@ -43,10 +48,14 @@ createRoot(root).render(
 /** The page that renders every component of the package over sample data. */
 function Playground(): ReactElement {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [side, setSide] = useState<'bottom' | 'right'>('bottom');
+  const [dockSize, setDockSize] = useState(320);
   const { state, journal, dispatch } = useJournal(countTokens, deriveEntries, () => 0);
+  // Reserve the dock's space, so that the end of the page stays reachable under it.
+  const reserved = isDrawerOpen ? `${String(dockSize)}px` : undefined;
 
   return (
-    <main>
+    <main style={side === 'bottom' ? { paddingBlockEnd: reserved } : { paddingInlineEnd: reserved, maxWidth: 'none' }}>
       <h1>readout-react playground</h1>
       <ReadoutView readout={TOKEN} embedId="token-data">
         <p>
@@ -57,8 +66,15 @@ function Playground(): ReactElement {
         <button type="button" className="readout-button" onClick={() => dispatch({ type: 'create' })}>
           Create token
         </button>
-        <button type="button" className="readout-button" onClick={() => setIsDrawerOpen(true)}>
-          Open activity
+        <button type="button" className="readout-button" onClick={() => dispatch({ type: 'create', name: LONG_NAME })}>
+          Create long-named token
+        </button>
+        <button
+          type="button"
+          className="readout-button"
+          onClick={() => setSide((current) => (current === 'bottom' ? 'right' : 'bottom'))}
+        >
+          {side === 'bottom' ? 'Dock to right' : 'Dock to bottom'}
         </button>
         <button type="button" className="readout-button" disabled>
           Disabled
@@ -67,11 +83,23 @@ function Playground(): ReactElement {
       <EmbeddedJson id="page-journal" json={serializeJournal(journal)} />
       <JournalDrawer
         isOpen={isDrawerOpen}
-        onClose={() => setIsDrawerOpen(false)}
+        onOpenChange={setIsDrawerOpen}
         entries={journal}
         renderers={RENDERERS}
+        side={side}
+        onSizeChange={setDockSize}
       />
       <p>Tokens created: {state}</p>
+      <ol>
+        {Array.from({ length: PARAGRAPH_COUNT }, (_, index) => (
+          <li key={index}>
+            <p>Paragraph {index + 1} keeps the page taller than the window.</p>
+            <button type="button" className="readout-button" onClick={() => dispatch({ type: 'create' })}>
+              Create token from paragraph {index + 1}
+            </button>
+          </li>
+        ))}
+      </ol>
     </main>
   );
 }
@@ -82,8 +110,9 @@ function countTokens(count: number, _action: Action): number {
   return count + 1;
 }
 
-/** Derives a `token-created` entry from each creation. */
-function deriveEntries(_before: number, _action: Action, after: number): readonly EntryDraft<Events>[] {
-  return [{ type: 'token-created', subjects: [`tok-${String(after)}`], data: { name: `token-${String(after)}` } }];
+/** Derives a `token-created` entry from each creation, named by the action or by the count. */
+function deriveEntries(_before: number, action: Action, after: number): readonly EntryDraft<Events>[] {
+  const name = action.name ?? `token-${String(after)}`;
+  return [{ type: 'token-created', subjects: [`tok-${String(after)}`], data: { name } }];
 }
 // endregion | Helpers
