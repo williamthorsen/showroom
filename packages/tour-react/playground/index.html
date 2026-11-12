@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>tour-react playground</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 2rem 1rem;
+        background-color: var(--tour-surface);
+        color: var(--tour-text);
+        font-family: system-ui, sans-serif;
+        font-size: 1rem;
+      }
+      main {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        max-width: 40rem;
+        margin-inline: auto;
+      }
+      h1 {
+        margin: 0;
+        font-size: 1.5rem;
+      }
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.75rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="./main.tsx"></script>
+  </body>
+</html>
