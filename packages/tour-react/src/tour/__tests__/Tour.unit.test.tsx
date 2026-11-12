@@ -46,6 +46,14 @@ describe(Tour, () => {
       expect(document.activeElement).toBe(getButton('Next'));
     });
 
+    it('opens once steps arrive while isOpen is already true', () => {
+      const { rerender } = renderTour({ steps: [] });
+
+      rerender(<Tour {...buildProps()} />);
+      expect(getDialog().open).toBe(true);
+      expect(document.activeElement).toBe(getButton('Next'));
+    });
+
     it('renders nothing without steps', () => {
       const { container } = renderTour({ steps: [] });
 

@@ -39,8 +39,10 @@ export function Tour({ isOpen, onOpenChange, steps, label = 'Product tour', acti
   const lastIndex = steps.length - 1;
   const currentIndex = Math.min(index, lastIndex);
   const isLast = currentIndex === lastIndex;
+  const hasSteps = steps.length > 0;
 
-  // Run before paint, so that a reopened tour never shows the step at which it last closed.
+  // Run before paint, so that a reopened tour never shows the step at which it last closed. `hasSteps` re-runs the
+  // effect when the dialog mounts late, because its steps arrived after `isOpen` became true.
   useLayoutEffect(() => {
     const dialog = dialogRef.current;
     if (dialog === null) return;
@@ -52,7 +54,7 @@ export function Tour({ isOpen, onOpenChange, steps, label = 'Product tour', acti
     } else if (!isOpen && dialog.open) {
       dialog.close();
     }
-  }, [isOpen]);
+  }, [hasSteps, isOpen]);
 
   const step = steps[currentIndex];
   if (step === undefined) return null;
