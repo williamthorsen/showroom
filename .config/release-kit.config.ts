@@ -18,6 +18,7 @@ const config = defineConfig({
       'scope:readout-journal': { color: '00ff96' },
       'scope:readout-react': { color: '00ff96' },
       'scope:terminal-react': { color: '00ff96' },
+      'scope:tour-react': { color: '00ff96' },
     },
   },
 
