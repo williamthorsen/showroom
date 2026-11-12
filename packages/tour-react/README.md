@@ -89,6 +89,7 @@ The left and right arrow keys move between steps, except while focus is in an ed
 ```css
 :root {
   --tour-accent: #6f42c1;
+  --tour-accent-hover: #59359a;
   --tour-focus: #6f42c1;
 }
 ```
