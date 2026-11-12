@@ -157,6 +157,7 @@
 .tour-visual[data-kind='grid'] {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr));
+  align-items: stretch;
 }
 
 .tour-visual[data-kind='scatter'] {
