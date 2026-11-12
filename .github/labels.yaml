@@ -92,6 +92,9 @@
 - name: scope:terminal-react
   color: 00ff96
   description: ''
+- name: scope:tour-react
+  color: 00ff96
+  description: ''
 - name: security
   color: b60205
   description: Security vulnerability or hardening

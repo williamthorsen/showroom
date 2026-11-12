@@ -48,7 +48,7 @@
   },
   "devDependencies": {
     "@testing-library/react": "catalog:",
-    "@testing-library/user-event": "14.6.9",
+    "@testing-library/user-event": "catalog:",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",
     "@williamthorsen/nmr": "catalog:",

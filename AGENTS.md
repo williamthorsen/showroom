@@ -11,6 +11,7 @@
 - `packages/readout-journal` — `@williamthorsen/readout-journal`: a journal of domain events derived from state transitions, and its sentence renderers
 - `packages/readout-react` — `@williamthorsen/readout-react`: React components over both: a copy button, a JSON view, the structured view of a readout, and the journal drawer
 - `packages/terminal-react` — `@williamthorsen/terminal-react`: a terminal component over xterm.js that attaches to a WebSocket and reports its size
+- `packages/tour-react` — `@williamthorsen/tour-react`: a step-by-step product tour in a modal dialog, with a first-run helper
 - `.config/release-kit.config.ts` — release-kit configuration
 - `.config/readyup.config.ts` — readyup configuration
 - `.config/wt.toml` — worktrunk hooks, whose `[pre-start]` pipeline copies gitignored local files into a new worktree before installing dependencies
