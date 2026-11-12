@@ -90,7 +90,7 @@ export function Tour({ isOpen, onOpenChange, steps, label = 'Product tour', acti
   return (
     <dialog
       ref={dialogRef}
-      className="tour"
+      className="tour-dialog"
       aria-labelledby={labelId}
       onCancel={handleCancel}
       onClose={handleClose}
