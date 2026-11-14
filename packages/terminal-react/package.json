@@ -55,7 +55,7 @@
     "react-dom": "catalog:",
     "vite": "catalog:",
     "vitest": "catalog:",
-    "ws": "8.22.2"
+    "ws": "8.23.0"
   },
   "peerDependencies": {
     "react": "^19.0.0"
