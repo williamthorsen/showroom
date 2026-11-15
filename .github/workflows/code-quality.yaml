@@ -37,3 +37,16 @@ jobs:
           { "name": "workflows", "command": "pnpm exec nmr lint:workflows" }
         ]
       shellcheck-version: '0.11.0'
+
+  code-quality-node-24:
+    uses: williamthorsen/.github/.github/workflows/code-quality-pnpm-workflow.yaml@v8
+    # Holds the published packages' `engines.node` floor of `>=24`. Only build and test depend on the
+    # Node.js runtime; the other checks run once, in the job above.
+    with:
+      check-commands: >-
+        [
+          { "name": "build", "command": "pnpm exec nmr build" },
+          { "name": "test", "command": "pnpm exec nmr test" }
+        ]
+      lint-workflows: false
+      node-version: '24'
