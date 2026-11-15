@@ -2,6 +2,30 @@
 
 All notable changes to this project will be documented in this file.
 
+## 0.3.0 — 2026-11-15
+
+### 🎉 Features
+
+- 🚨 **Breaking:** Replaces `JournalDrawer`'s modal `<dialog>` with a non-modal dock that overlays the page from the bottom edge or, with `side="right"`, the right edge, renders its own toggle, can be resized by drag or arrow keys through a separator, and reports its size through `onSizeChange` so that an app can keep the size across reloads by passing it back as `defaultSize`. (#18)
+- Colours `CopyButton`'s copied and failed states with the new `--readout-success` and `--readout-danger` custom properties, which have light and dark values. (#18)
+- Adds the `Tour` component, which shows each `TourStep` in a fixed-size modal dialog with progress dots, Previous and Next buttons, arrow-key navigation, a built-in `flow`, `grid`, or `scatter` visual of icon tiles or a custom React element, and an optional call to action on the last step. (#20)
+- Adds the `useFirstRunTour` hook, which opens a tour on the first visit for a storage key, records in `localStorage` that the tour was seen when it closes, and returns props that spread into `Tour`. (#20)
+- Adds `@williamthorsen/tour-react/styles.css`, which themes the tour through `--tour-` custom properties and contains a dark set under `prefers-color-scheme: dark`. (#20)
+
+### ⚙️ Tooling
+
+- Adds a playground to `packages/tour-react`, started by `pnpm run dev`, whose controls reopen the tour and reset the first-run marker. (#20)
+- Raises the Node.js version in `.tool-versions` from 24.22.3 to 26.13.1 and leaves every `engines` field unchanged, so the published packages still support Node 24. (#23)
+- Adds `.meta/changelog-overrides.json`, which excludes the unreleased "Require Node 26" commit from the generated changelogs. (#26)
+
+### 👷 CI
+
+- Adds a `code-quality-node-24` job to `.github/workflows/code-quality.yaml`, which runs the `build` and `test` checks on Node 24 to verify the packages against their `engines.node` floor. (#26)
+
+### 📦 Dependencies
+
+- Sets `engines.node` back to `>=24` in every package and to `>=24.16.0` at the root, reversing the unreleased raise to `>=26`, and pins `@types/node` to 24.19.2 in the catalog to match. (#26)
+
 ## 0.2.0 — 2026-11-07
 
 ### 🎉 Features

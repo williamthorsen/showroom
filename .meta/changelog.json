@@ -1,5 +1,87 @@
 [
   {
+    "version": "0.3.0",
+    "date": "2026-11-15",
+    "sections": [
+      {
+        "title": "🎉 Features",
+        "audience": "all",
+        "items": [
+          {
+            "description": "Replaces `JournalDrawer`'s modal `<dialog>` with a non-modal dock that overlays the page from the bottom edge or, with `side=\"right\"`, the right edge, renders its own toggle, can be resized by drag or arrow keys through a separator, and reports its size through `onSizeChange` so that an app can keep the size across reloads by passing it back as `defaultSize`. (#18)",
+            "breaking": true,
+            "migration": "Replace `onClose` with `onOpenChange`, which receives the next open state and must set it, because the dock's own toggle now opens the dock as well as closing it; rename any `.readout-drawer*` selectors to `.readout-dock*`; and pad the page by the size that `onSizeChange` reports, because the dock and its toggle now cover the page's bottom edge or right edge instead of blocking the page.",
+            "hash": "9a6a8f6f5bf3e98ac00dd24b64ae48aceb11c6a7",
+            "entry": 1
+          },
+          {
+            "description": "Colours `CopyButton`'s copied and failed states with the new `--readout-success` and `--readout-danger` custom properties, which have light and dark values. (#18)",
+            "hash": "9a6a8f6f5bf3e98ac00dd24b64ae48aceb11c6a7",
+            "entry": 2
+          },
+          {
+            "description": "Adds the `Tour` component, which shows each `TourStep` in a fixed-size modal dialog with progress dots, Previous and Next buttons, arrow-key navigation, a built-in `flow`, `grid`, or `scatter` visual of icon tiles or a custom React element, and an optional call to action on the last step. (#20)",
+            "hash": "d261afc491dff7c599934f5a394acd3f42d837e0",
+            "entry": 1
+          },
+          {
+            "description": "Adds the `useFirstRunTour` hook, which opens a tour on the first visit for a storage key, records in `localStorage` that the tour was seen when it closes, and returns props that spread into `Tour`. (#20)",
+            "hash": "d261afc491dff7c599934f5a394acd3f42d837e0",
+            "entry": 2
+          },
+          {
+            "description": "Adds `@williamthorsen/tour-react/styles.css`, which themes the tour through `--tour-` custom properties and contains a dark set under `prefers-color-scheme: dark`. (#20)",
+            "hash": "d261afc491dff7c599934f5a394acd3f42d837e0",
+            "entry": 3
+          }
+        ]
+      },
+      {
+        "title": "⚙️ Tooling",
+        "audience": "dev",
+        "items": [
+          {
+            "description": "Adds a playground to `packages/tour-react`, started by `pnpm run dev`, whose controls reopen the tour and reset the first-run marker. (#20)",
+            "hash": "d261afc491dff7c599934f5a394acd3f42d837e0",
+            "entry": 4
+          },
+          {
+            "description": "Raises the Node.js version in `.tool-versions` from 24.22.3 to 26.13.1 and leaves every `engines` field unchanged, so the published packages still support Node 24. (#23)",
+            "hash": "73e67ebac839227026a0cb1785dfe6019b2ae9ce",
+            "entry": 1
+          },
+          {
+            "description": "Adds `.meta/changelog-overrides.json`, which excludes the unreleased \"Require Node 26\" commit from the generated changelogs. (#26)",
+            "hash": "8c734bbaba19f8184790a1dfc9f2fef09f430142",
+            "entry": 2
+          }
+        ]
+      },
+      {
+        "title": "👷 CI",
+        "audience": "dev",
+        "items": [
+          {
+            "description": "Adds a `code-quality-node-24` job to `.github/workflows/code-quality.yaml`, which runs the `build` and `test` checks on Node 24 to verify the packages against their `engines.node` floor. (#26)",
+            "hash": "8c734bbaba19f8184790a1dfc9f2fef09f430142",
+            "entry": 3
+          }
+        ]
+      },
+      {
+        "title": "📦 Dependencies",
+        "audience": "dev",
+        "items": [
+          {
+            "description": "Sets `engines.node` back to `>=24` in every package and to `>=24.16.0` at the root, reversing the unreleased raise to `>=26`, and pins `@types/node` to 24.19.2 in the catalog to match. (#26)",
+            "hash": "8c734bbaba19f8184790a1dfc9f2fef09f430142",
+            "entry": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
     "version": "0.2.0",
     "date": "2026-11-07",
     "sections": [

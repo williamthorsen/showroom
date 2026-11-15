@@ -1,6 +1,6 @@
 {
   "name": "@williamthorsen/tour-react",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": false,
   "description": "A React product tour: a step-by-step slide deck in a modal dialog, with a first-run helper",
   "keywords": [

@@ -2,6 +2,20 @@
 
 All notable changes to this project will be documented in this file.
 
+## 0.2.0 — 2026-11-15
+
+### 🎉 Features
+
+- 🚨 **Breaking:** Replaces `JournalDrawer`'s modal `<dialog>` with a non-modal dock that overlays the page from the bottom edge or, with `side="right"`, the right edge, renders its own toggle, can be resized by drag or arrow keys through a separator, and reports its size through `onSizeChange` so that an app can keep the size across reloads by passing it back as `defaultSize`. (#18)
+- Colours `CopyButton`'s copied and failed states with the new `--readout-success` and `--readout-danger` custom properties, which have light and dark values. (#18)
+- Add tour-react, a step-by-step product tour in a dialog (#20)
+
+  Adds the `@williamthorsen/tour-react` package, a React product tour that shows an ordered list of steps as slides in a modal dialog, and a `useFirstRunTour` hook that opens the tour once, on an app's first launch.
+
+### 📦 Dependencies
+
+- Sets `engines.node` back to `>=24` in every package and to `>=24.16.0` at the root, reversing the unreleased raise to `>=26`, and pins `@types/node` to 24.19.2 in the catalog to match. (#26)
+
 ## 0.1.1 — 2026-11-07
 
 ### 🏗️ Internal features

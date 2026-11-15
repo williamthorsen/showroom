@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## 0.2.0 — 2026-11-15
+
+### 📦 Dependencies
+
+- Sets `engines.node` back to `>=24` in every package and to `>=24.16.0` at the root, reversing the unreleased raise to `>=26`, and pins `@types/node` to 24.19.2 in the catalog to match. (#26)
+
 ## 0.1.0 — 2026-11-06
 
 ### 🎉 Features
