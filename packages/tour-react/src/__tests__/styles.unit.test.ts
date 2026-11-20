@@ -48,6 +48,14 @@ describe('styles.css', () => {
 
     expect(Object.fromEntries(placement)).toStrictEqual({ inset: '0', margin: 'auto' });
   });
+
+  it('declares the bullets of the points, so that a host reset of `list-style` does not remove them', () => {
+    const bullets = parseDeclarations(STYLES).filter(
+      ({ context, property }) => context.join(' ') === '.tour-points' && property === 'list-style-type',
+    );
+
+    expect(bullets.map(({ value }) => value)).toStrictEqual(['disc']);
+  });
 });
 
 // region | Helpers
