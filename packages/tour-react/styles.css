@@ -53,8 +53,14 @@
 
 /* -- Dialog -- */
 
-/* The dialog declares its own placement, so that a host stylesheet that resets `margin` does not uncentre it. */
+/*
+ * The dialog declares its own placement, so that a host stylesheet that resets `margin` does not uncentre it. The
+ * gutters stay off the :root theming surface, because the step dots' offset depends on both.
+ */
 .tour-dialog {
+  --tour-stage-inline: 2.5rem;
+  --tour-footer-inline: 1.5rem;
+
   box-sizing: border-box;
   inset: 0;
   margin: auto;
@@ -94,7 +100,7 @@
 .tour-stage {
   overflow: hidden auto;
   padding-block: 0 1.5rem;
-  padding-inline: 2.5rem;
+  padding-inline: var(--tour-stage-inline);
 }
 
 /* -- Slide -- */
@@ -102,9 +108,9 @@
 .tour-slide {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: start;
   gap: 0.75rem;
-  text-align: center;
+  text-align: start;
 }
 
 .tour-eyebrow {
@@ -139,7 +145,6 @@
   padding-inline-start: 1.25rem;
   list-style-type: disc;
   font-size: 0.9375rem;
-  text-align: start;
 }
 
 /* -- Visuals -- */
@@ -245,13 +250,19 @@
   align-items: center;
   justify-content: space-between;
   gap: 0.75rem 1rem;
-  padding: 1rem 1.5rem;
+  padding-block: 1rem;
+  padding-inline: var(--tour-footer-inline);
   border-top: 1px solid var(--tour-divider);
 }
 
+/*
+ * The offset places the first visible dot on the stage's content edge. 0.4375rem is half the difference between a
+ * dot's 1.5rem target and its 0.625rem visible width.
+ */
 .tour-dots {
   display: flex;
   flex-wrap: wrap;
+  margin-inline-start: calc(var(--tour-stage-inline) - var(--tour-footer-inline) - 0.4375rem);
 }
 
 /* Each dot is a 24px target around a smaller visible dot, so that adjacent dots meet the target-size minimum. */
@@ -377,8 +388,9 @@
 /* -- Narrow viewports -- */
 
 @media (max-width: 40rem) {
-  .tour-stage {
-    padding-inline: 1.25rem;
+  .tour-dialog {
+    --tour-stage-inline: 1.25rem;
+    --tour-footer-inline: 1rem;
   }
 
   .tour-title {
@@ -397,10 +409,6 @@
   .tour-tile {
     min-width: 5.5rem;
     padding: 0.625rem;
-  }
-
-  .tour-footer {
-    padding-inline: 1rem;
   }
 }
 
