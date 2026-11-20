@@ -39,12 +39,22 @@ describe('styles.css', () => {
   it('declares a dark set of the colours', () => {
     expect(STYLES).toMatch(/@media\s*\(prefers-color-scheme:\s*dark\)\s*{\s*:root\s*{[^}]*--tour-surface:/);
   });
+
+  // A class selector outranks the universal selector of a host reset such as `* { margin: 0 }`.
+  it('centres the dialog by declarations of its own', () => {
+    const placement = parseDeclarations(STYLES)
+      .filter(({ context, property }) => context.join(' ') === '.tour-dialog' && /^(inset|margin)$/.test(property))
+      .map(({ property, value }) => [property, value]);
+
+    expect(Object.fromEntries(placement)).toStrictEqual({ inset: '0', margin: 'auto' });
+  });
 });
 
 // region | Helpers
 
 interface Declaration {
   property: string;
+  value: string;
   /** The preludes of the blocks that enclose the declaration, outermost first. */
   context: readonly string[];
 }
@@ -60,8 +70,10 @@ function parseDeclarations(css: string): Declaration[] {
       context.push(buffer.trim());
       buffer = '';
     } else if (character === '}' || character === ';') {
-      const property = /^\s*([-\w]+)\s*:/.exec(buffer)?.[1];
-      if (property !== undefined) declarations.push({ property, context: [...context] });
+      const match = /^\s*([-\w]+)\s*:([\s\S]*)$/.exec(buffer);
+      if (match?.[1] !== undefined) {
+        declarations.push({ property: match[1], value: (match[2] ?? '').trim(), context: [...context] });
+      }
       buffer = '';
       if (character === '}') context.pop();
     } else {

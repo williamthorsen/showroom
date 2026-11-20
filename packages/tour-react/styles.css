@@ -53,8 +53,11 @@
 
 /* -- Dialog -- */
 
+/* The dialog declares its own placement, so that a host stylesheet that resets `margin` does not uncentre it. */
 .tour-dialog {
   box-sizing: border-box;
+  inset: 0;
+  margin: auto;
   width: min(var(--tour-width), 100vw - 2rem);
   max-width: none;
   height: min(var(--tour-height), 100dvh - 2rem);
