@@ -49,6 +49,16 @@ describe('styles.css', () => {
     expect(Object.fromEntries(placement)).toStrictEqual({ inset: '0', margin: 'auto' });
   });
 
+  it('start-aligns the blocks of a slide', () => {
+    const alignment = parseDeclarations(STYLES)
+      .filter(
+        ({ context, property }) => context.join(' ') === '.tour-slide' && /^(align-items|text-align)$/.test(property),
+      )
+      .map(({ property, value }) => [property, value]);
+
+    expect(Object.fromEntries(alignment)).toStrictEqual({ 'align-items': 'start', 'text-align': 'start' });
+  });
+
   it('declares the bullets of the points, so that a host reset of `list-style` does not remove them', () => {
     const bullets = parseDeclarations(STYLES).filter(
       ({ context, property }) => context.join(' ') === '.tour-points' && property === 'list-style-type',
