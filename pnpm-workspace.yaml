@@ -5,15 +5,15 @@ allowBuilds:
 
 catalog:
   '@testing-library/react': 16.3.3
-  '@testing-library/user-event': 14.6.12
+  '@testing-library/user-event': 14.6.13
   '@types/node': 24.19.2
   '@types/react': 19.3.0
   '@types/react-dom': 19.3.0
-  '@williamthorsen/nmr': 2.2.2
+  '@williamthorsen/nmr': 2.3.0
   react: 19.3.1
   react-dom: 19.3.1
   vite: 8.3.8
-  vitest: 5.1.0
+  vitest: 5.1.1
 
 # Keep pnpm 11's 24h minimumReleaseAge soak (supply-chain protection), set explicitly to pin the policy, but exclude
 # first-party packages so that a freshly published version can be consumed downstream without waiting out the soak.
