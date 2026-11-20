@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## 0.4.0 — 2026-11-20
+
+### 🎉 Features
+
+- Start-aligns the eyebrow, title, and lead of each slide, which were centered, so that they share an edge with the slide's bulleted points. (#30)
+- Aligns the first step dot in the dialog's footer with the start edge of the slide content, at every viewport width. (#30)
+
+### 🐛 Bug fixes
+
+- Fixes the issue that the tour dialog rendered in the top-left corner of the viewport, rather than centred, on a page whose stylesheet resets `margin`, such as one using Tailwind's preflight. (#29)
+- Fixes the issue that the points on a tour slide lost their bullets on a page whose stylesheet resets `list-style`, such as one using Tailwind's preflight. (#29)
+
 ## 0.3.0 — 2026-11-15
 
 ### 🎉 Features
