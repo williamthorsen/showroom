@@ -151,7 +151,7 @@ A site can represent the balance in many forms, such as a bar, a ring, a battery
 - `useTankMeter(tank, { label, formatValueText, readyText })` returns the props of an element with `role="meter"`, which follows the WAI-ARIA meter pattern; the props and text of a polite live region; and an animation description: a key that changes at each `revision`, the start fraction, the delay, the duration to full, and the live fraction.
 - `TankMeter` is the default bar over the hook, with a mark at the `required` fraction when it is below capacity. It does not use a native `<meter>`, whose fill cannot be animated or styled consistently across browser engines.
 - `TankCountdown` and `formatCountdown` write the time until ready, including the time to repay a negative balance.
-- `aria-valuetext`, such as "62% full, ready in about 4 minutes", comes from a sample that is replaced once a minute and whenever the status changes, so that it never contradicts the status. The live region announces only the change from recharging to ready, and not a tank that is ready on load.
+- `aria-valuetext`, such as "62% full, ready in about 4 minutes", comes from a sample that is replaced on every snapshot and status change, which are discrete events, and otherwise once a minute, so that it never describes a balance from before a spend or contradicts the status. The live region announces only the change from recharging to ready, and not a tank that is ready on load.
 - The text is English by default, and the formatters replace it. The components do not take a unit label or an amount formatter: The site defines the units, such as micro-dollars, and a visitor cannot read them, so the text states a percentage and a time.
 
 ### Styles and theming

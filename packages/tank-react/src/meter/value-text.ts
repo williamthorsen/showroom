@@ -14,7 +14,7 @@ export function formatDefaultValueText(sample: TankMeterSample): string {
   }
 }
 
-/** The fields of a tank from which a meter's value text is written, sampled at most once per minute. */
+/** The fields of a tank from which a meter's value text is written, sampled at most once a minute between revisions. */
 export type TankMeterSample = Pick<UseTankResult, 'status' | 'balance' | 'fraction' | 'msUntilReady'>;
 
 // region | Helpers

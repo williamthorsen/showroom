@@ -88,7 +88,7 @@ describe(useTankMeter, () => {
   });
 
   describe('value text', () => {
-    it('changes at most once per minute while the status stays the same', async () => {
+    it('changes at most once per minute while the revision and the status stay the same', async () => {
       const { result } = renderMeter(serve(10), 90);
       await flush();
 
@@ -118,6 +118,18 @@ describe(useTankMeter, () => {
       await advance(10_000);
 
       expect(result.current.meter.meterProps['aria-valuetext']).toBe('Ready, 20% full');
+    });
+
+    it('changes at once on a new revision', async () => {
+      const { result } = renderMeter(serve(100), 20);
+      await flush();
+
+      act(() => result.current.tank.applySnapshot({ ...BASE, balance: 60, asOf: Date.now() }));
+
+      expect(result.current.meter.meterProps).toMatchObject({
+        'aria-valuenow': 60,
+        'aria-valuetext': 'Ready, 60% full',
+      });
     });
 
     it('clamps the value of a negative balance to 0', async () => {

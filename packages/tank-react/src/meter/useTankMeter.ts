@@ -22,11 +22,12 @@ export function useTankMeter(tank: UseTankResult, options: UseTankMeterOptions):
     setDescribed({ revision, animation });
   }
 
-  const [sampled, setSampled] = useState(() => ({ sample: readSample(tank), sampledAt: now }));
+  // Resample on a new revision and a new status, which are discrete events, and otherwise once per minute.
+  const [sampled, setSampled] = useState(() => ({ sample: readSample(tank), revision, sampledAt: now }));
   let { sample } = sampled;
-  if (sample.status !== status || now - sampled.sampledAt >= SAMPLE_INTERVAL_MS) {
+  if (sampled.revision !== revision || sample.status !== status || now - sampled.sampledAt >= SAMPLE_INTERVAL_MS) {
     sample = readSample(tank);
-    setSampled({ sample, sampledAt: now });
+    setSampled({ sample, revision, sampledAt: now });
   }
 
   const [announced, setAnnounced] = useState({ status, announcement: '' });
@@ -64,8 +65,8 @@ export interface UseTankMeterOptions {
   /** The meter's accessible name, such as "Free conversions". */
   label: string;
   /**
-   * Writes the meter's `aria-valuetext`, which changes at most once per minute while the status stays the same. The
-   * default writes English, such as "62% full, ready in about 4 minutes".
+   * Writes the meter's `aria-valuetext`, which changes at most once per minute between revisions and status changes.
+   * The default writes English, such as "62% full, ready in about 4 minutes".
    */
   formatValueText?: (sample: TankMeterSample) => string;
   /** The live region's announcement of the change from recharging to ready; "Ready" when omitted. */
