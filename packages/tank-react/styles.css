@@ -1,0 +1,106 @@
+/*
+ * Styles for @williamthorsen/tank-react. Every colour, size, and radius is a custom property on :root, so that a
+ * consumer themes the components by redefining the properties. The fill's animation is declared inside the
+ * reduced-motion query at the end, so that a reader who asks for reduced motion sees the fill move once per second.
+ */
+
+:root {
+  --tank-meter-height: 0.5rem;
+  --tank-meter-radius: 999px;
+  --tank-meter-track: #e6e8eb;
+  --tank-meter-border: #6e7781;
+  --tank-meter-fill: #0b5cd5;
+  --tank-meter-fill-ready: #1a7f37;
+  --tank-meter-mark: #1f2328;
+  --tank-meter-mark-overhang: 0.1875rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --tank-meter-track: #30363d;
+    --tank-meter-border: #8b949e;
+    --tank-meter-fill: #4c9aff;
+    --tank-meter-fill-ready: #3fb950;
+    --tank-meter-mark: #e6edf3;
+  }
+}
+
+/* -- Meter -- */
+
+/* The vertical padding makes room for the mark's overhang. */
+.tank-meter {
+  display: block;
+  position: relative;
+  padding-block: var(--tank-meter-mark-overhang);
+}
+
+/* The track clips the fill to its rounded ends, so that scaling the fill does not distort them. */
+.tank-meter-track {
+  position: relative;
+  overflow: hidden;
+  height: var(--tank-meter-height);
+  border: 1px solid var(--tank-meter-border);
+  border-radius: var(--tank-meter-radius);
+  background-color: var(--tank-meter-track);
+}
+
+.tank-meter-fill {
+  position: absolute;
+  inset: 0;
+  background-color: var(--tank-meter-fill);
+  transform: scaleX(var(--tank-meter-now));
+  transform-origin: left;
+}
+
+.tank-meter-fill:dir(rtl) {
+  transform-origin: right;
+}
+
+.tank-meter[data-status='ready'] .tank-meter-fill {
+  background-color: var(--tank-meter-fill-ready);
+}
+
+/* The mark overhangs the track, so that it stands against the surface whatever colour the fill behind it has. */
+.tank-meter-mark {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: calc(var(--tank-meter-mark-at) * 100%);
+  width: 2px;
+  margin-inline-start: -1px;
+  background-color: var(--tank-meter-mark);
+}
+
+/* -- Countdown -- */
+
+.tank-countdown {
+  color: var(--tank-countdown-text, currentColor);
+  font-variant-numeric: tabular-nums;
+}
+
+/* -- Utilities -- */
+
+.tank-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* -- Motion -- */
+
+@media (prefers-reduced-motion: no-preference) {
+  .tank-meter-fill {
+    animation: tank-meter-fill var(--tank-meter-duration) linear var(--tank-meter-delay) both;
+  }
+
+  @keyframes tank-meter-fill {
+    from {
+      transform: scaleX(var(--tank-meter-from));
+    }
+    to {
+      transform: scaleX(var(--tank-meter-to));
+    }
+  }
+}

@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>tank-react playground</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+        --surface: #ffffff;
+        --text: #1f2328;
+        --border: #6e7781;
+        --button-hover: #f3f4f6;
+        --focus: #0b5cd5;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --surface: #161b22;
+          --text: #e6edf3;
+          --border: #8b949e;
+          --button-hover: #21262d;
+          --focus: #4c9aff;
+        }
+      }
+      body {
+        margin: 0;
+        padding: 2rem 1rem;
+        background-color: var(--surface);
+        color: var(--text);
+        font-family: system-ui, sans-serif;
+        font-size: 1rem;
+      }
+      main {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        max-width: 40rem;
+        margin-inline: auto;
+      }
+      h1 {
+        margin: 0;
+        font-size: 1.5rem;
+      }
+      h2 {
+        margin: 0 0 0.5rem;
+        font-size: 1.125rem;
+      }
+      section {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+      }
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.75rem;
+      }
+      button,
+      select {
+        padding: 0.375rem 0.75rem;
+        border: 1px solid var(--border);
+        border-radius: 0.375rem;
+        background-color: var(--surface);
+        color: var(--text);
+        font: inherit;
+        cursor: pointer;
+      }
+      button:hover,
+      select:hover {
+        background-color: var(--button-hover);
+      }
+      button:focus-visible,
+      select:focus-visible {
+        outline: 2px solid var(--focus);
+        outline-offset: 2px;
+      }
+      .message {
+        margin: 0;
+        min-height: 1.5em;
+      }
+
+      /* -- Ring: a second form, styled here from the hook's animation description alone -- */
+      @property --ring-fraction {
+        syntax: '<number>';
+        inherits: false;
+        initial-value: 0;
+      }
+      .ring {
+        width: 6rem;
+        height: 6rem;
+        border-radius: 50%;
+        background-color: var(--tank-meter-track);
+        border: 1px solid var(--tank-meter-border);
+        overflow: hidden;
+        mask: radial-gradient(circle, transparent 55%, #000 56%);
+      }
+      .ring-fill {
+        --ring-fraction: var(--ring-now);
+        width: 100%;
+        height: 100%;
+        background: conic-gradient(var(--tank-meter-fill) calc(var(--ring-fraction) * 1turn), transparent 0);
+      }
+      .ring[data-status='ready'] .ring-fill {
+        background: conic-gradient(var(--tank-meter-fill-ready) calc(var(--ring-fraction) * 1turn), transparent 0);
+      }
+      @media (prefers-reduced-motion: no-preference) {
+        .ring-fill {
+          animation: ring-fill var(--ring-duration) linear var(--ring-delay) both;
+        }
+        @keyframes ring-fill {
+          from {
+            --ring-fraction: var(--ring-from);
+          }
+          to {
+            --ring-fraction: var(--ring-to);
+          }
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="./main.tsx"></script>
+  </body>
+</html>

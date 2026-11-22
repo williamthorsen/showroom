@@ -127,7 +127,15 @@ export function useTank(options: UseTankOptions): UseTankResult {
     [applied],
   );
 
-  const common = { error: state.error, revision: state.revision, projectAt, refresh, applySnapshot };
+  const common = {
+    error: state.error,
+    revision: state.revision,
+    snapshot: applied?.snapshot,
+    required,
+    projectAt,
+    refresh,
+    applySnapshot,
+  };
   if (projection === undefined) {
     return {
       ...common,
@@ -185,6 +193,13 @@ export interface UseTankResult {
   /** When the balance covers `required`; `Infinity` for a tank that does not refill or an invalid `required`. */
   readyAt: number | undefined;
   msUntilReady: number | undefined;
+  /**
+   * The applied snapshot as the server sent it, so its `asOf` is on the server's clock; `undefined` until one arrives.
+   * Keeps its identity until a newer snapshot is applied.
+   */
+  snapshot: Snapshot | undefined;
+  /** The `required` option that the hook was given. */
+  required: number;
   /**
    * Increments whenever the projection restarts: on a snapshot, on a change of `required`, and when the tab becomes
    * visible.
