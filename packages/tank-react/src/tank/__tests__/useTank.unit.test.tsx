@@ -2,6 +2,8 @@ import { act, cleanup, renderHook } from '@testing-library/react';
 import type { Snapshot } from '@williamthorsen/tank';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
+import { advance, flush } from '#src/test-utils/act-timers.ts';
+
 import { useTank, type UseTankOptions } from '../useTank.ts';
 
 const START = 1_000_000;
@@ -359,20 +361,12 @@ describe(useTank, () => {
 });
 
 // region | Helpers
-async function advance(ms: number): Promise<void> {
-  await act(() => vi.advanceTimersByTimeAsync(ms));
-}
-
 async function changeVisibility(state: DocumentVisibilityState): Promise<void> {
   setVisibility(state);
   await act(async () => {
     document.dispatchEvent(new Event('visibilitychange'));
     await Promise.resolve();
   });
-}
-
-async function flush(): Promise<void> {
-  await act(() => vi.advanceTimersByTimeAsync(0));
 }
 
 // Returns the snapshot that a server holding `balanceAtStart` at `START` answers with now.
