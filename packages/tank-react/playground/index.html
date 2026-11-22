@@ -93,13 +93,13 @@
         background-color: var(--tank-meter-track);
         border: 1px solid var(--tank-meter-border);
         overflow: hidden;
+        mask: radial-gradient(circle, transparent 55%, #000 56%);
       }
       .ring-fill {
         --ring-fraction: var(--ring-now);
         width: 100%;
         height: 100%;
         background: conic-gradient(var(--tank-meter-fill) calc(var(--ring-fraction) * 1turn), transparent 0);
-        mask: radial-gradient(circle, transparent 55%, #000 56%);
       }
       .ring[data-status='ready'] .ring-fill {
         background: conic-gradient(var(--tank-meter-fill-ready) calc(var(--ring-fraction) * 1turn), transparent 0);
