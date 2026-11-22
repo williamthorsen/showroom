@@ -1,0 +1,28 @@
+{
+  "name": "@williamthorsen/tank",
+  "version": "0.0.0",
+  "private": true,
+  "description": "A regenerating balance that gates and meters an action whose cost the site operator pays",
+  "keywords": [
+    "metering",
+    "quota",
+    "rate-limit",
+    "token-bucket"
+  ],
+  "license": "ISC",
+  "author": "William Thorsen <william@thorsen.dev> (https://github.com/williamthorsen)",
+  "type": "module",
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "scripts": {
+    "build": ":"
+  },
+  "devDependencies": {
+    "@williamthorsen/nmr": "catalog:",
+    "vitest": "catalog:"
+  },
+  "engines": {
+    "node": ">=24"
+  }
+}
