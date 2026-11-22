@@ -1,0 +1,28 @@
+{
+  "name": "@williamthorsen/tank-react",
+  "version": "0.0.0",
+  "private": true,
+  "description": "React components for a tank: a hook, a meter, and a countdown",
+  "keywords": [
+    "meter",
+    "quota",
+    "rate-limit",
+    "react"
+  ],
+  "license": "ISC",
+  "author": "William Thorsen <william@thorsen.dev> (https://github.com/williamthorsen)",
+  "type": "module",
+  "imports": {
+    "#src/*": "./src/*"
+  },
+  "scripts": {
+    "build": ":"
+  },
+  "devDependencies": {
+    "@williamthorsen/nmr": "catalog:",
+    "vitest": "catalog:"
+  },
+  "engines": {
+    "node": ">=24"
+  }
+}

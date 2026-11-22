@@ -113,6 +113,9 @@
 - name: scope:tank
   color: 00ff96
   description: ''
+- name: scope:tank-react
+  color: 00ff96
+  description: ''
 - name: scope:terminal-react
   color: 00ff96
   description: ''

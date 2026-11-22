@@ -10,10 +10,10 @@ From the repo root, copy the scaffold's committed files into the target:
 
 ```shell
 mkdir -p <target>
-git archive --format=tar HEAD:<template> | tar --extract --directory <target> --exclude CHANGELOG.md
+git archive --format=tar HEAD:<template> | tar --extract --directory <target> --exclude CHANGELOG.md --exclude .meta
 ```
 
-`git archive` copies only what the scaffold commits, so gitignored output such as `node_modules/`, `coverage/`, and `dist/` stays behind. `tar` writes into `<target>` whether or not it already exists, so the copy never nests a second directory inside it. The scaffold's `CHANGELOG.md` stays behind too; release-kit writes a new one on the first release.
+`git archive` copies only what the scaffold commits, so gitignored output such as `node_modules/`, `coverage/`, and `dist/` stays behind. `tar` writes into `<target>` whether or not it already exists, so the copy never nests a second directory inside it. The scaffold's `CHANGELOG.md` and `.meta/changelog.json` stay behind too, because they record the scaffold's own releases; release-kit writes new ones on the first release.
 
 The directory name is the workspace's scope, whichever directory contains it: Commit titles name it (`<dir>|feat: …`), and so do its `scope:<dir>` label and its entry in `.meta/label-map.json`.
 

@@ -32,6 +32,7 @@ Scripts are run with `nmr`, a workspace bin. For the bare `nmr` command to resol
 - [`readout-journal`](packages/readout-journal/README.md): a journal of domain events derived from state transitions, and its sentence renderers.
 - [`readout-react`](packages/readout-react/README.md): React components over both: a copy button, a JSON view, the structured view of a readout, and the journal drawer.
 - [`tank`](packages/tank/README.md): the framework-agnostic core of a site-wide balance that regenerates at a configured rate: the pure balance functions, a tank that reserves and settles against a store, an in-memory store, and the contract suite that a store adapter runs.
+- [`tank-react`](packages/tank-react/README.md): React components over `tank`: a hook, a meter, and a countdown. The package does not contain any code yet.
 - [`terminal-react`](packages/terminal-react/README.md): a terminal component over xterm.js that attaches to a WebSocket and reports its size.
 - [`tour-react`](packages/tour-react/README.md): a step-by-step product tour in a modal dialog, with a first-run helper.
 
