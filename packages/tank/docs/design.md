@@ -132,7 +132,7 @@ A serverless consumer needs a shared store. The adapter for Redis-compatible sto
 const tank = useTank({ fetchSnapshot, required, refreshIntervalMs });
 // tank.status: 'loading' | 'ready' | 'recharging' | 'error'
 // tank.balance, tank.fraction, tank.readyAt, tank.msUntilReady, tank.error
-// tank.revision, tank.projectAt(time)
+// tank.revision, tank.projectAt(time), tank.snapshot, tank.required
 // tank.refresh(), tank.applySnapshot(snapshot)
 ```
 
@@ -140,21 +140,27 @@ const tank = useTank({ fetchSnapshot, required, refreshIntervalMs });
 - `required` is the amount that the next action reserves, as the site's endpoint reported it. `ready` means that the projected balance covers it. An invalid `required`, such as one above the capacity, is reported as the `error` status rather than thrown.
 - The balance is shared, so another visitor can spend it at any time. The hook refetches on mount, when the tab becomes visible, at the projected `readyAt` plus a random delay of up to 3 seconds, and every `refreshIntervalMs` while the tab is visible. The random delay keeps every open tab from calling the endpoint at the same instant. The site calls `applySnapshot` with the snapshot that its own action returns, including a refusal's. The snapshot with the latest `asOf` wins.
 - A failed fetch sets `error` and keeps projecting the last snapshot, so that the meter does not blank.
-- `revision` increments whenever the projection restarts: on a snapshot, on a change of `required`, and when the tab becomes visible. With `projectAt`, it lets the meter restart its transition without the hook knowing about CSS.
+- `revision` increments whenever the projection restarts: on a snapshot, on a change of `required`, and when the tab becomes visible. With `projectAt`, it lets the meter restart its animation without the hook knowing about CSS.
 - The server's `reserve` is the authority. The site's UI must handle a refusal that arrives while the meter shows `ready`.
+- `snapshot` is the applied snapshot and `required` is the option, so that the meter reads the capacity, the refill rate, and the mark from the result rather than taking them again.
 
-### Components
+### Meter and countdown
 
-- `TankMeter`: a bar that fills as the balance regenerates. It sets `role="meter"` with `aria-valuenow`, `aria-valuemin`, `aria-valuemax`, and an `aria-valuetext` such as "62% recharged, ready in about 4 minutes", which changes at most once per minute. A separate polite live region announces only the change to ready.
-- `TankCountdown`: the text of the time until ready.
+A site can represent the balance in many forms, such as a bar, a ring, a battery, or segmented pips, so the package follows the headless-plus-default model of React Aria's `useMeter` and `Meter`: a hook that holds every decision that does not depend on the form, and default components over it.
 
-Both take the hook's result, a unit label, and a formatter for amounts. The meter displays a negative balance as empty, and the countdown includes the time to repay it.
+- `useTankMeter(tank, { label, formatValueText, readyText })` returns the props of an element with `role="meter"`, which follows the WAI-ARIA meter pattern; the props and text of a polite live region; and an animation description: a key that changes at each `revision`, the start fraction, the delay, the duration to full, and the live fraction.
+- `TankMeter` is the default bar over the hook, with a mark at the `required` fraction when it is below capacity. It does not use a native `<meter>`, whose fill cannot be animated or styled consistently across browser engines.
+- `TankCountdown` and `formatCountdown` write the time until ready, including the time to repay a negative balance.
+- `aria-valuetext`, such as "62% full, ready in about 4 minutes", comes from a sample that is replaced once a minute and whenever the status changes, so that it never contradicts the status. The live region announces only the change from recharging to ready, and not a tank that is ready on load.
+- The text is English by default, and the formatters replace it. The components do not take a unit label or an amount formatter: The site defines the units, such as micro-dollars, and a visitor cannot read them, so the text states a percentage and a time.
 
 ### Styles and theming
 
-The package ships its styles as a plain CSS file that the consumer imports, as [Code style](../../../AGENTS.md#code-style) in `AGENTS.md` requires. Every colour, size, and radius is a custom property with a default, so a theme is a block of property overrides. The fill animates with one CSS transition from the current fraction to the ready fraction over the remaining time, so that the component does not render on every frame. On every snapshot, on a change of `required`, and when the tab becomes visible, the component sets the fill to the projected value without a transition and then starts a new one. The countdown text updates once per second. Under `prefers-reduced-motion`, the fill does not transition and moves once per second with the countdown.
+The package ships its styles as a plain CSS file that the consumer imports, as [Code style](../../../AGENTS.md#code-style) in `AGENTS.md` requires. Every colour, size, and radius is a custom property with a default, so a theme is a block of property overrides.
 
-A playground, as in `readout-react` and `tour-react`, demonstrates the components over the memory store with a simulated action.
+The fill animates linearly from the projected fraction to a full tank over the time until full, because the balance keeps regenerating past ready. A negative balance holds the fill at empty, through the animation's delay, until the balance reaches zero. `TankMeter` runs one CSS keyframe animation, so that the component does not render on every frame, and remounts the animated element on the animation key, which restarts the animation from the projected value on every snapshot, on a change of `required`, and when the tab becomes visible. The countdown text updates once per second. Under `prefers-reduced-motion`, the fill does not animate and moves once per second with the countdown.
+
+A playground, as in `readout-react` and `tour-react`, demonstrates the components over the memory store with a simulated action, and renders a ring from `useTankMeter` alone.
 
 ## Extension to per-visitor balances
 
