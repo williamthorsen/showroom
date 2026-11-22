@@ -2,6 +2,27 @@
 
 All notable changes to this project will be documented in this file.
 
+## 0.5.0 — 2026-11-22
+
+### 🎉 Features
+
+- Adds `createTank`, whose `reserve` grants a reservation only when the balance covers the requested amount and whose `settle` refunds the unused part up to `capacity` or debits an overage down to `floor`, which defaults to `-capacity`, against a `BalanceStore` that provides `read` and an atomic `compareAndSet`. (#37)
+- Exports the pure balance functions `projectBalance`, `computeReadyAt`, `applyReserve`, and `applySettle`, together with `parseSnapshot`, which validates a `Snapshot` received as JSON, so that a browser can project the balance between server responses. (#37)
+- Adds `createMemoryStore`, an in-memory `BalanceStore` for tests and single-process servers. (#37)
+- Adds `describeStoreContract` at the `@williamthorsen/tank/testing` entry point, which registers a Vitest suite that checks a `BalanceStore` adapter against the store contract, including that exactly one of two concurrent writes succeeds. (#37)
+
+### 🏗️ Internal features
+
+- Adds `@williamthorsen/tank` as a private package that does not contain any code yet, copied from the `_workspace` scaffold and listed in `README.md` and `AGENTS.md`. (#36)
+
+### ⚙️ Tooling
+
+- Adds the `scope:tank` label to `.config/release-kit.config.ts` and to the generated `.github/labels.yaml` and `.meta/label-map.json`. (#36)
+
+### 📚 Documentation
+
+- Adds `packages/tank/docs/design.md`, which specifies a token bucket shared by the whole site, in which the site reserves the most that a call might consume and then settles with the actual consumption, along with a replaceable store and a React package, `@williamthorsen/tank-react`, that displays the balance. (#36)
+
 ## 0.4.0 — 2026-11-20
 
 ### 🎉 Features

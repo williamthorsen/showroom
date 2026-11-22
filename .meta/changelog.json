@@ -1,5 +1,70 @@
 [
   {
+    "version": "0.5.0",
+    "date": "2026-11-22",
+    "sections": [
+      {
+        "title": "🎉 Features",
+        "audience": "all",
+        "items": [
+          {
+            "description": "Adds `createTank`, whose `reserve` grants a reservation only when the balance covers the requested amount and whose `settle` refunds the unused part up to `capacity` or debits an overage down to `floor`, which defaults to `-capacity`, against a `BalanceStore` that provides `read` and an atomic `compareAndSet`. (#37)",
+            "hash": "1d0bf7e1734489528b851d464b73594cce6e8b45",
+            "entry": 1
+          },
+          {
+            "description": "Exports the pure balance functions `projectBalance`, `computeReadyAt`, `applyReserve`, and `applySettle`, together with `parseSnapshot`, which validates a `Snapshot` received as JSON, so that a browser can project the balance between server responses. (#37)",
+            "hash": "1d0bf7e1734489528b851d464b73594cce6e8b45",
+            "entry": 2
+          },
+          {
+            "description": "Adds `createMemoryStore`, an in-memory `BalanceStore` for tests and single-process servers. (#37)",
+            "hash": "1d0bf7e1734489528b851d464b73594cce6e8b45",
+            "entry": 3
+          },
+          {
+            "description": "Adds `describeStoreContract` at the `@williamthorsen/tank/testing` entry point, which registers a Vitest suite that checks a `BalanceStore` adapter against the store contract, including that exactly one of two concurrent writes succeeds. (#37)",
+            "hash": "1d0bf7e1734489528b851d464b73594cce6e8b45",
+            "entry": 4
+          }
+        ]
+      },
+      {
+        "title": "🏗️ Internal features",
+        "audience": "dev",
+        "items": [
+          {
+            "description": "Adds `@williamthorsen/tank` as a private package that does not contain any code yet, copied from the `_workspace` scaffold and listed in `README.md` and `AGENTS.md`. (#36)",
+            "hash": "8a43f557daede7f8da6158857852b367a48bc85f",
+            "entry": 1
+          }
+        ]
+      },
+      {
+        "title": "⚙️ Tooling",
+        "audience": "dev",
+        "items": [
+          {
+            "description": "Adds the `scope:tank` label to `.config/release-kit.config.ts` and to the generated `.github/labels.yaml` and `.meta/label-map.json`. (#36)",
+            "hash": "8a43f557daede7f8da6158857852b367a48bc85f",
+            "entry": 3
+          }
+        ]
+      },
+      {
+        "title": "📚 Documentation",
+        "audience": "dev",
+        "items": [
+          {
+            "description": "Adds `packages/tank/docs/design.md`, which specifies a token bucket shared by the whole site, in which the site reserves the most that a call might consume and then settles with the actual consumption, along with a replaceable store and a React package, `@williamthorsen/tank-react`, that displays the balance. (#36)",
+            "hash": "8a43f557daede7f8da6158857852b367a48bc85f",
+            "entry": 2
+          }
+        ]
+      }
+    ]
+  },
+  {
     "version": "0.4.0",
     "date": "2026-11-20",
     "sections": [
