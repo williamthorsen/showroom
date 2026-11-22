@@ -72,7 +72,7 @@ describe(projectSnapshot, () => {
     });
   });
 
-  it.each([-1, Number.NaN, 101])('reports a required amount of %s as an error', (required) => {
+  it.each([-1, NaN, 101])('reports a required amount of %s as an error', (required) => {
     const applied = { snapshot: SNAPSHOT, offsetMs: 0 };
 
     const projection = projectSnapshot(applied, required, 15_000);
