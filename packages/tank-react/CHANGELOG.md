@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## 0.2.0 — 2026-11-22
+
+### 🎉 Features
+
+- Adds `TankMeter`, a bar with the `meter` role that fills toward a full tank in one CSS animation and marks the `required` amount, and `TankCountdown`, which writes text such as "Ready in 3:42". (#41)
+- Adds the stylesheet `@williamthorsen/tank-react/styles.css`, which styles both components and declares each colour, size, and radius as a `--tank-*` custom property that a theme overrides. (#41)
+- Adds `useTankMeter`, which returns the meter's ARIA props, the live-region announcement, and the fill-animation description from which a meter of another form, such as a ring, is built, and `formatCountdown`, which writes the countdown text for a custom component. (#41)
+- Adds `snapshot`, the applied snapshot as the server sent it, and `required`, the option that the hook was given, to the result of `useTank`. (#41)
+
+### ⚙️ Tooling
+
+- Adds a Vite playground, served by `pnpm run dev` in `packages/tank-react`, that demonstrates `TankMeter`, `TankCountdown`, and a ring built from `useTankMeter` over the in-memory store. (#41)
+
 ## 0.1.0 — 2026-11-22
 
 ### 🎉 Features

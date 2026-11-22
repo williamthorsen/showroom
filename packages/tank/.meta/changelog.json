@@ -1,5 +1,22 @@
 [
   {
+    "version": "0.3.0",
+    "date": "2026-11-22",
+    "sections": [
+      {
+        "title": "🎉 Features",
+        "audience": "all",
+        "items": [
+          {
+            "description": "Add a meter and a countdown that show a tank's balance refilling (#41)",
+            "body": "Adds the default `TankMeter` and `TankCountdown` components to `@williamthorsen/tank-react`, which show a visitor how much of a tank's balance is available and when the next action is covered, along with the headless `useTankMeter` hook for building a meter in another form. The components' styles are in `@williamthorsen/tank-react/styles.css`, which a consumer imports and themes through `--tank-*` custom properties.",
+            "hash": "61d7a55250a3173dae4f3f876aeb19cc154890dd"
+          }
+        ]
+      }
+    ]
+  },
+  {
     "version": "0.2.0",
     "date": "2026-11-22",
     "sections": [

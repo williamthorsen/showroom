@@ -1,5 +1,48 @@
 [
   {
+    "version": "0.7.0",
+    "date": "2026-11-22",
+    "sections": [
+      {
+        "title": "🎉 Features",
+        "audience": "all",
+        "items": [
+          {
+            "description": "Adds `TankMeter`, a bar with the `meter` role that fills toward a full tank in one CSS animation and marks the `required` amount, and `TankCountdown`, which writes text such as \"Ready in 3:42\". (#41)",
+            "hash": "61d7a55250a3173dae4f3f876aeb19cc154890dd",
+            "entry": 1
+          },
+          {
+            "description": "Adds the stylesheet `@williamthorsen/tank-react/styles.css`, which styles both components and declares each colour, size, and radius as a `--tank-*` custom property that a theme overrides. (#41)",
+            "hash": "61d7a55250a3173dae4f3f876aeb19cc154890dd",
+            "entry": 2
+          },
+          {
+            "description": "Adds `useTankMeter`, which returns the meter's ARIA props, the live-region announcement, and the fill-animation description from which a meter of another form, such as a ring, is built, and `formatCountdown`, which writes the countdown text for a custom component. (#41)",
+            "hash": "61d7a55250a3173dae4f3f876aeb19cc154890dd",
+            "entry": 3
+          },
+          {
+            "description": "Adds `snapshot`, the applied snapshot as the server sent it, and `required`, the option that the hook was given, to the result of `useTank`. (#41)",
+            "hash": "61d7a55250a3173dae4f3f876aeb19cc154890dd",
+            "entry": 4
+          }
+        ]
+      },
+      {
+        "title": "⚙️ Tooling",
+        "audience": "dev",
+        "items": [
+          {
+            "description": "Adds a Vite playground, served by `pnpm run dev` in `packages/tank-react`, that demonstrates `TankMeter`, `TankCountdown`, and a ring built from `useTankMeter` over the in-memory store. (#41)",
+            "hash": "61d7a55250a3173dae4f3f876aeb19cc154890dd",
+            "entry": 5
+          }
+        ]
+      }
+    ]
+  },
+  {
     "version": "0.6.0",
     "date": "2026-11-22",
     "sections": [
