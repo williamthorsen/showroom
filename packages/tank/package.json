@@ -1,7 +1,7 @@
 {
   "name": "@williamthorsen/tank",
   "version": "0.0.0",
-  "private": true,
+  "private": false,
   "description": "A regenerating balance that gates and meters an action whose cost the site operator pays",
   "keywords": [
     "metering",
@@ -9,20 +9,55 @@
     "rate-limit",
     "token-bucket"
   ],
+  "homepage": "https://github.com/williamthorsen/showroom/tree/main/packages/tank#readme",
+  "bugs": {
+    "url": "https://github.com/williamthorsen/showroom/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/williamthorsen/showroom.git",
+    "directory": "packages/tank"
+  },
   "license": "ISC",
   "author": "William Thorsen <william@thorsen.dev> (https://github.com/williamthorsen)",
+  "sideEffects": false,
   "type": "module",
-  "imports": {
-    "#src/*": "./src/*"
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "types": "./dist/esm/index.d.ts"
+    },
+    "./testing": {
+      "import": "./dist/esm/testing/index.js",
+      "types": "./dist/esm/testing/index.d.ts"
+    }
   },
+  "files": [
+    ".meta/changelog.json",
+    "CHANGELOG.md",
+    "dist"
+  ],
   "scripts": {
-    "build": ":"
+    "prepare": "nmr-compile",
+    "typecheck:post": "tsgo --noEmit --project tsconfig.src.json"
   },
   "devDependencies": {
     "@williamthorsen/nmr": "catalog:",
+    "fast-check": "4.10.3",
     "vitest": "catalog:"
+  },
+  "peerDependencies": {
+    "vitest": "^5.0.0"
+  },
+  "peerDependenciesMeta": {
+    "vitest": {
+      "optional": true
+    }
   },
   "engines": {
     "node": ">=24"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
