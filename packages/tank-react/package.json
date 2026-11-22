@@ -38,6 +38,7 @@
     "styles.css"
   ],
   "scripts": {
+    "dev": "vite playground",
     "prepare": "nmr-compile"
   },
   "dependencies": {
@@ -51,6 +52,7 @@
     "@williamthorsen/nmr": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
+    "vite": "catalog:",
     "vitest": "catalog:"
   },
   "peerDependencies": {
