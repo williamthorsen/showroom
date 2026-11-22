@@ -1,0 +1,7 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  // Typechecks the published source as a program of its own, which a test's `/// <reference lib="dom" />` cannot
+  // reach, so that a DOM or Node API in `src/` fails the typecheck.
+  "extends": "./tsconfig.json",
+  "exclude": ["src/**/__tests__/**"],
+}
