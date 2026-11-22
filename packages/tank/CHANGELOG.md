@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## 0.2.0 — 2026-11-22
+
+### 🎉 Features
+
+- Add useTank to project a tank's shared balance in React (#40)
+
+  Adds `useTank` to `@williamthorsen/tank-react`, a React hook that shows how much of a tank's shared balance is available and when the next action is covered, and that projects the balance on the browser's clock between server snapshots rather than fetching it every second. Makes the package a compiled library that depends on `@williamthorsen/tank` and takes React 19 as a peer dependency.
+
 ## 0.1.0 — 2026-11-22
 
 ### 🎉 Features

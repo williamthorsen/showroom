@@ -1,6 +1,6 @@
 {
   "name": "@williamthorsen/tank-react",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "private": false,
   "description": "React components for a tank: a hook, a meter, and a countdown",
   "keywords": [
