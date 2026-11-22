@@ -317,6 +317,45 @@ describe(useTank, () => {
       expect(renders).toBe(rendersWhenHidden);
     });
   });
+  describe('result fields', () => {
+    it('reports the required amount and no snapshot while loading', () => {
+      const { result } = renderHook(() => useTank({ fetchSnapshot: () => new Promise(() => {}), required: 60 }));
+
+      expect(result.current).toMatchObject({ snapshot: undefined, required: 60 });
+    });
+
+    it('reports the applied snapshot and keeps its identity across ticks', async () => {
+      const { result } = renderHook(() => useTank({ fetchSnapshot: () => Promise.resolve(BASE), required: 60 }));
+      await flush();
+      const applied = result.current.snapshot;
+
+      await advance(3000);
+
+      expect(applied).toStrictEqual(BASE);
+      expect(result.current.snapshot).toBe(applied);
+    });
+
+    it('replaces the snapshot only with a newer one', async () => {
+      const { result } = renderHook(() => useTank({ fetchSnapshot: () => Promise.resolve(BASE), required: 60 }));
+      await flush();
+      const newer = { ...BASE, balance: 10, asOf: START + 1 };
+
+      act(() => result.current.applySnapshot({ ...BASE, asOf: START - 1 }));
+
+      expect(result.current.snapshot).toStrictEqual(BASE);
+
+      act(() => result.current.applySnapshot(newer));
+
+      expect(result.current.snapshot).toBe(newer);
+    });
+
+    it('reports the snapshot and the required amount in the error status', async () => {
+      const { result } = renderHook(() => useTank({ fetchSnapshot: () => Promise.resolve(BASE), required: 101 }));
+      await flush();
+
+      expect(result.current).toMatchObject({ status: 'error', snapshot: BASE, required: 101 });
+    });
+  });
 });
 
 // region | Helpers
