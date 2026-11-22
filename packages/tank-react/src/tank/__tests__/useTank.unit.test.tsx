@@ -256,7 +256,8 @@ describe(useTank, () => {
     });
 
     it('wraps a non-Error rejection with the rejected value as its cause', async () => {
-      const fetchSnapshot = vi.fn(() => Promise.reject('offline')); // eslint-disable-line @typescript-eslint/prefer-promise-reject-errors -- the test covers a non-Error rejection.
+      // eslint-disable-next-line @typescript-eslint/prefer-promise-reject-errors -- covers a non-Error rejection.
+      const fetchSnapshot = vi.fn(() => Promise.reject('offline'));
       const { result } = renderHook(() => useTank({ fetchSnapshot, required: 60 }));
       await flush();
 

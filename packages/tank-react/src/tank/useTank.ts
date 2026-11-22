@@ -185,11 +185,17 @@ export interface UseTankResult {
   /** When the balance covers `required`; `Infinity` for a tank that does not refill or an invalid `required`. */
   readyAt: number | undefined;
   msUntilReady: number | undefined;
-  /** Increments whenever the projection restarts: on a snapshot, a change of `required`, and the tab becoming visible. */
+  /**
+   * Increments whenever the projection restarts: on a snapshot, on a change of `required`, and when the tab becomes
+   * visible.
+   */
   revision: number;
   /** Returns the projected balance at a time on the browser's clock; keeps its identity until the next snapshot. */
   projectAt: (browserTime: number) => number | undefined;
-  /** Fetches a snapshot now, aborting any fetch in flight. Resolves once the fetch settles or is aborted; never rejects. */
+  /**
+   * Fetches a snapshot now, aborting any fetch in flight. Resolves once its fetch settles or is aborted, and never
+   * rejects.
+   */
   refresh: () => Promise<void>;
   /** Applies a snapshot that the site obtained itself, such as from its own action. An older snapshot is ignored. */
   applySnapshot: (snapshot: Snapshot) => void;

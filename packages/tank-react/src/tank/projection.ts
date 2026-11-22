@@ -1,8 +1,8 @@
 import { computeReadyAt, projectBalance, type Snapshot } from '@williamthorsen/tank';
 
 /**
- * Projects `applied` at `browserNow`: the balance, how full the tank is, and when the balance covers `required`. Reports
- * a `required` that the core rejects as an error rather than throwing.
+ * Projects `applied` at `browserNow`: the balance, how full the tank is, and when the balance covers `required`.
+ * Reports a `required` that the core rejects as an error rather than throwing.
  */
 export function projectSnapshot(applied: AppliedSnapshot, required: number, browserNow: number): Projection {
   const balance = projectAppliedBalance(applied, browserNow);
