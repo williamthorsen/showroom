@@ -10,7 +10,7 @@
 - `packages/readout` — `@williamthorsen/readout`: the result type, its redacting JSON serializer, DOM embedding, and typed renderers
 - `packages/readout-journal` — `@williamthorsen/readout-journal`: a journal of domain events derived from state transitions, and its sentence renderers
 - `packages/readout-react` — `@williamthorsen/readout-react`: React components over both: a copy button, a JSON view, the structured view of a readout, and the journal drawer
-- `packages/tank` — `@williamthorsen/tank`: the framework-agnostic core of a site-wide balance that regenerates at a configured rate; so far only its design, in `docs/design.md`
+- `packages/tank` — `@williamthorsen/tank`: the framework-agnostic core of a site-wide balance that regenerates at a configured rate, with reserve and settle against a replaceable store; its design is in `docs/design.md`
 - `packages/terminal-react` — `@williamthorsen/terminal-react`: a terminal component over xterm.js that attaches to a WebSocket and reports its size
 - `packages/tour-react` — `@williamthorsen/tour-react`: a step-by-step product tour in a modal dialog, with a first-run helper
 - `.config/release-kit.config.ts` — release-kit configuration

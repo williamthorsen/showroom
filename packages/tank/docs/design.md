@@ -19,7 +19,7 @@ The first consumer is the Prompt Visualizer app in `williamthorsen/codeassembly-
 2. The site reserves the maximum that a call might consume, then settles with the actual consumption. "The balance must be full" is the case in which the reserved amount equals the capacity.
 3. The packages gate and meter only.
 4. Build rather than adopt. The design session surveyed five libraries from their READMEs: `@convex-dev/rate-limiter`, `throttlekit`, `@upstash/ratelimit`, `rate-limiter-flexible`, and `token-bucket-rate-limiter`. The Convex component is closest in design but requires a Convex backend, and each of the five lacks at least one of settle-after-use, replaceable storage, and display components.
-5. The Redis-compatible store adapter lives in [workshop](https://github.com/williamthorsen/workshop), not here: Only a test against a running Redis shows that the adapter is atomic, and [What belongs here](../../../README.md#what-belongs-here) excludes a package with such a test from this repository.
+5. The Redis-compatible store adapter, `@williamthorsen/tank-redis` (williamthorsen/workshop#999), lives in [workshop](https://github.com/williamthorsen/workshop), not here: Only a test against a running Redis shows that the adapter is atomic, and [What belongs here](../../../README.md#what-belongs-here) excludes a package with such a test from this repository.
 
 ## Limits that the design accepts
 
@@ -122,7 +122,7 @@ The core exports `parseSnapshot`, which validates an unknown value. The browser 
 
 ## Store adapter
 
-A serverless consumer needs a shared store. The adapter for Redis-compatible stores is a package in `workshop` (decision 5). It implements `compareAndSet` as one Lua script, because a `WATCH` transaction does not work over a stateless HTTP client, and its tests run the script against a real Redis. The core exports the store-contract test suite, which the adapter runs.
+A serverless consumer needs a shared store. The adapter for Redis-compatible stores is `@williamthorsen/tank-redis`, a package in `workshop` (decision 5). It implements `compareAndSet` as one Lua script, because a `WATCH` transaction does not work over a stateless HTTP client, and its tests run the script against a real Redis. The core exports the store-contract test suite at `@williamthorsen/tank/testing`, which the adapter runs.
 
 ## React package: `@williamthorsen/tank-react`
 
@@ -176,8 +176,3 @@ The deployed Prompt Visualizer is a static build on Vercel without a server, and
 The function must not be a general proxy to the provider on the operator's key. It accepts only a prompt to convert, runs only the conversion job, uses a model from a fixed list, and caps the output so that the call cannot consume more than it reserved.
 
 That work is one ticket in `williamthorsen/codeassembly-studio`, blocked by the packages' first release and by the adapter's.
-
-## Open questions
-
-1. The adapter package's name in `workshop`; `tank-redis` is the working name.
-2. The default `floor`.
