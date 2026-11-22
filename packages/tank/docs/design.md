@@ -129,15 +129,18 @@ A serverless consumer needs a shared store. The adapter for Redis-compatible sto
 ### Hook
 
 ```ts
-const tank = useTank({ fetchSnapshot, required });
+const tank = useTank({ fetchSnapshot, required, refreshIntervalMs });
 // tank.status: 'loading' | 'ready' | 'recharging' | 'error'
-// tank.balance, tank.fraction, tank.readyAt, tank.msUntilReady
+// tank.balance, tank.fraction, tank.readyAt, tank.msUntilReady, tank.error
+// tank.revision, tank.projectAt(time)
 // tank.refresh(), tank.applySnapshot(snapshot)
 ```
 
-- `fetchSnapshot` is the site's function. The package does not know the transport.
-- `required` is the amount that the next action reserves, as the site's endpoint reported it. `ready` means that the projected balance covers it.
-- The balance is shared, so another visitor can spend it at any time. The hook refetches on mount, when the tab becomes visible, at the projected `readyAt` plus a random delay of up to a few seconds, and at an optional interval. The random delay keeps every open tab from calling the endpoint at the same instant. The site calls `applySnapshot` with the snapshot that its own action returns, including a refusal's.
+- `fetchSnapshot` is the site's function, and it receives an `AbortSignal`. The package does not know the transport, so the site validates the response with `parseSnapshot`.
+- `required` is the amount that the next action reserves, as the site's endpoint reported it. `ready` means that the projected balance covers it. An invalid `required`, such as one above the capacity, is reported as the `error` status rather than thrown.
+- The balance is shared, so another visitor can spend it at any time. The hook refetches on mount, when the tab becomes visible, at the projected `readyAt` plus a random delay of up to 3 seconds, and every `refreshIntervalMs` while the tab is visible. The random delay keeps every open tab from calling the endpoint at the same instant. The site calls `applySnapshot` with the snapshot that its own action returns, including a refusal's. The snapshot with the latest `asOf` wins.
+- A failed fetch sets `error` and keeps projecting the last snapshot, so that the meter does not blank.
+- `revision` increments whenever the projection restarts: on a snapshot, on a change of `required`, and when the tab becomes visible. With `projectAt`, it lets the meter restart its transition without the hook knowing about CSS.
 - The server's `reserve` is the authority. The site's UI must handle a refusal that arrives while the meter shows `ready`.
 
 ### Components
