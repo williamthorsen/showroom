@@ -5,6 +5,8 @@
     "paths": {
       "#src/*": ["./src/*"],
     },
+    // The stylesheet test reads `styles.css` through `node:fs`.
+    "types": ["node"],
   },
-  "include": ["src/", "*.ts"],
+  "include": ["playground/", "src/", "*.ts"],
 }
