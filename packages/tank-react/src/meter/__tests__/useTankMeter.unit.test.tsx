@@ -39,7 +39,7 @@ describe(useTankMeter, () => {
         },
         liveRegionProps: { role: 'status', 'aria-live': 'polite', 'aria-atomic': true },
         announcement: '',
-        animation: { key: 0, fromFraction: 0, delayMs: 0, durationMs: 0 },
+        animation: { key: 0, fromFraction: 0, toFraction: 0, delayMs: 0, durationMs: 0 },
         fraction: 0,
         requiredFraction: undefined,
         status: 'loading',
@@ -55,6 +55,7 @@ describe(useTankMeter, () => {
       expect(result.current.meter.animation).toStrictEqual({
         key: 1,
         fromFraction: 0.1,
+        toFraction: 1,
         delayMs: 0,
         durationMs: 90_000,
       });
@@ -81,6 +82,7 @@ describe(useTankMeter, () => {
       expect(result.current.meter.animation).toStrictEqual({
         key: 2,
         fromFraction: 0,
+        toFraction: 1,
         delayMs: 5000,
         durationMs: 100_000,
       });

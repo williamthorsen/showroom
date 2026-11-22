@@ -100,7 +100,7 @@
       transform: scaleX(var(--tank-meter-from));
     }
     to {
-      transform: scaleX(1);
+      transform: scaleX(var(--tank-meter-to));
     }
   }
 }

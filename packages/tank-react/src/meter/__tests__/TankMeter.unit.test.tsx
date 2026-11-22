@@ -45,6 +45,7 @@ describe(TankMeter, () => {
     await flush();
 
     expect(readFill().style.getPropertyValue('--tank-meter-from')).toBe('0.2');
+    expect(readFill().style.getPropertyValue('--tank-meter-to')).toBe('1');
     expect(readFill().style.getPropertyValue('--tank-meter-delay')).toBe('0ms');
     expect(readFill().style.getPropertyValue('--tank-meter-duration')).toBe('8000ms');
   });

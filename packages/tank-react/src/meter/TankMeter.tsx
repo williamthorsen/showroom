@@ -12,6 +12,7 @@ export function TankMeter(props: TankMeterProps): ReactElement {
   type CustomStyle = CSSProperties & Record<`--${string}`, string>;
   const fillStyle: CustomStyle = {
     '--tank-meter-from': String(animation.fromFraction),
+    '--tank-meter-to': String(animation.toFraction),
     '--tank-meter-now': String(meter.fraction),
     '--tank-meter-delay': `${animation.delayMs}ms`,
     '--tank-meter-duration': `${animation.durationMs}ms`,

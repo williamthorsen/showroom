@@ -9,6 +9,7 @@ describe(describeFillAnimation, () => {
   it('fills from a partial balance to full over the time until full', () => {
     expect(describeFillAnimation({ ...TANK, balance: 4 })).toStrictEqual({
       fromFraction: 0.4,
+      toFraction: 1,
       delayMs: 0,
       durationMs: 6000,
     });
@@ -17,6 +18,7 @@ describe(describeFillAnimation, () => {
   it('holds a negative balance at empty until it is repaid, then fills over the whole capacity', () => {
     expect(describeFillAnimation({ ...TANK, balance: -4 })).toStrictEqual({
       fromFraction: 0,
+      toFraction: 1,
       delayMs: 4000,
       durationMs: 10_000,
     });
@@ -25,14 +27,16 @@ describe(describeFillAnimation, () => {
   it('does not move a full tank', () => {
     expect(describeFillAnimation({ ...TANK, balance: 10 })).toStrictEqual({
       fromFraction: 1,
+      toFraction: 1,
       delayMs: 0,
       durationMs: 0,
     });
   });
 
-  it('does not move a tank that does not refill', () => {
-    expect(describeFillAnimation({ ...TANK, balance: -4, ratePerMs: 0 })).toStrictEqual({
-      fromFraction: 0,
+  it('holds a tank that does not refill where it is', () => {
+    expect(describeFillAnimation({ ...TANK, balance: 3, ratePerMs: 0 })).toStrictEqual({
+      fromFraction: 0.3,
+      toFraction: 0.3,
       delayMs: 0,
       durationMs: 0,
     });

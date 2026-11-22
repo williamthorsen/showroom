@@ -88,6 +88,7 @@ function TankRing({ tank: result }: { tank: UseTankResult }): ReactElement {
   type CustomStyle = CSSProperties & Record<`--${string}`, string>;
   const style: CustomStyle = {
     '--ring-from': String(animation.fromFraction),
+    '--ring-to': String(animation.toFraction),
     '--ring-now': String(meter.fraction),
     '--ring-delay': `${animation.delayMs}ms`,
     '--ring-duration': `${animation.durationMs}ms`,

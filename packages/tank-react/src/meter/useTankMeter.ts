@@ -89,8 +89,8 @@ export interface TankMeterState {
   /** `readyText` after a change from recharging to ready, until the status changes again; otherwise empty. */
   announcement: string;
   /**
-   * A linear fill from `fromFraction` to a full tank. `key` changes whenever the animation must restart, so a form
-   * that animates in CSS remounts the animated element on it.
+   * A linear fill from `fromFraction` to `toFraction`, which is a full tank unless the fill does not move. `key`
+   * changes whenever the animation must restart, so a form that animates in CSS remounts the animated element on it.
    */
   animation: FillAnimation & { key: number };
   /**
@@ -117,7 +117,7 @@ const SAMPLE_INTERVAL_MS = 60_000;
 function describeAt(tank: UseTankResult, now: number): FillAnimation {
   const balance = tank.projectAt(now);
   if (tank.snapshot === undefined || balance === undefined) {
-    return { fromFraction: 0, delayMs: 0, durationMs: 0 };
+    return { fromFraction: 0, toFraction: 0, delayMs: 0, durationMs: 0 };
   }
   const { capacity, refillAmount, refillIntervalMs } = tank.snapshot;
   return describeFillAnimation({ balance, capacity, ratePerMs: refillAmount / refillIntervalMs });
