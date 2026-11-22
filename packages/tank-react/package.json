@@ -1,7 +1,7 @@
 {
   "name": "@williamthorsen/tank-react",
   "version": "0.0.0",
-  "private": true,
+  "private": false,
   "description": "React components for a tank: a hook, a meter, and a countdown",
   "keywords": [
     "meter",
@@ -9,20 +9,52 @@
     "rate-limit",
     "react"
   ],
+  "homepage": "https://github.com/williamthorsen/showroom/tree/main/packages/tank-react#readme",
+  "bugs": {
+    "url": "https://github.com/williamthorsen/showroom/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/williamthorsen/showroom.git",
+    "directory": "packages/tank-react"
+  },
   "license": "ISC",
   "author": "William Thorsen <william@thorsen.dev> (https://github.com/williamthorsen)",
+  "sideEffects": false,
   "type": "module",
-  "imports": {
-    "#src/*": "./src/*"
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "types": "./dist/esm/index.d.ts"
+    }
   },
+  "files": [
+    ".meta/changelog.json",
+    "CHANGELOG.md",
+    "dist"
+  ],
   "scripts": {
-    "build": ":"
+    "prepare": "nmr-compile"
+  },
+  "dependencies": {
+    "@williamthorsen/tank": "workspace:*"
   },
   "devDependencies": {
+    "@testing-library/react": "catalog:",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
     "@williamthorsen/nmr": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
     "vitest": "catalog:"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0"
   },
   "engines": {
     "node": ">=24"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
