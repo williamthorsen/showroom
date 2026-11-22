@@ -85,8 +85,10 @@ export interface Reservation {
   readonly amount: number;
   /**
    * Settles the reservation with the amount that the action consumed. Rejects with `RangeError` for an amount that is
-   * negative or not finite, without settling; with `TankContentionError` when the attempts are exhausted; and with
-   * `Error` when the reservation is already settled or cancelled.
+   * negative or not finite, without settling; with `TankContentionError` when the attempts are exhausted; with the
+   * store's error when the store fails; and with `Error` when the reservation is already settled or cancelled. After
+   * any rejection other than `RangeError`, the reservation stays charged at its reserved amount and cannot be settled
+   * again.
    */
   settle(actual: number): Promise<Snapshot>;
   /** Refunds the whole reservation, as a settle of 0 does. */
