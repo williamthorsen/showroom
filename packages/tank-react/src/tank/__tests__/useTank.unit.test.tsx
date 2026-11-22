@@ -107,6 +107,21 @@ describe(useTank, () => {
       expect(fetchSnapshot).toHaveBeenCalledTimes(1);
     });
 
+    it('arms the ready refetch for a ready time beyond the longest delay of one timeout', async () => {
+      // The ready time is 2 ** 32 ms away, past the 2 ** 31 - 1 ms that one `setTimeout` can wait.
+      const fetchSnapshot = vi.fn(() => Promise.resolve({ ...BASE, refillIntervalMs: 2 ** 31 }));
+      renderHook(() => useTank({ fetchSnapshot, required: 42 }));
+      await flush();
+      // Hide the tab so that the once-per-second tick does not run across the long advance.
+      await changeVisibility('hidden');
+
+      await advance(2 ** 32 - 1);
+      expect(fetchSnapshot).toHaveBeenCalledTimes(1);
+
+      await advance(1);
+      expect(fetchSnapshot).toHaveBeenCalledTimes(2);
+    });
+
     it('refetches when the tab becomes visible, and pauses the interval while it is hidden', async () => {
       const fetchSnapshot = vi.fn(() => Promise.resolve({ ...BASE, balance: 100 }));
       renderHook(() => useTank({ fetchSnapshot, required: 60, refreshIntervalMs: 10_000 }));
