@@ -31,6 +31,22 @@ describe(TankCountdown, () => {
     expect(screen.getByText('Ready in 3:42').className).toBe('tank-countdown');
   });
 
+  it('writes an empty text while the required amount is undefined', () => {
+    const loading: UseTankResult = {
+      ...TANK,
+      status: 'loading',
+      balance: undefined,
+      fraction: undefined,
+      readyAt: undefined,
+      msUntilReady: undefined,
+      required: undefined,
+      projectAt: () => undefined,
+    };
+    const { container } = render(<TankCountdown tank={loading} />);
+
+    expect(container.querySelector('.tank-countdown')?.textContent).toBe('');
+  });
+
   it('writes a custom text', () => {
     render(<TankCountdown tank={TANK} format={(tank) => `${tank.msUntilReady} ms`} />);
 
