@@ -1,5 +1,23 @@
 [
   {
+    "version": "0.8.0",
+    "date": "2026-11-23",
+    "sections": [
+      {
+        "title": "🎉 Features",
+        "audience": "all",
+        "items": [
+          {
+            "description": "Lets `useTank` accept an undefined `required` amount, for which it reports `loading` and then projects the snapshot that it already fetched once the amount is defined, without fetching again. (#43)",
+            "migration": "Handle `undefined` wherever code reads `required` from the result of `useTank`, whose type widens from `number` to `number | undefined`.",
+            "hash": "66516c9fc63f47d42f863ea136da90a7bec9225d",
+            "entry": 1
+          }
+        ]
+      }
+    ]
+  },
+  {
     "version": "0.7.0",
     "date": "2026-11-22",
     "sections": [

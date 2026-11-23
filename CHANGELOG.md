@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## 0.8.0 — 2026-11-23
+
+### 🎉 Features
+
+- Lets `useTank` accept an undefined `required` amount, for which it reports `loading` and then projects the snapshot that it already fetched once the amount is defined, without fetching again. (#43)
+
 ## 0.7.0 — 2026-11-22
 
 ### 🎉 Features
