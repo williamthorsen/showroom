@@ -83,6 +83,69 @@ describe(useTank, () => {
     });
   });
 
+  describe('undefined required amount', () => {
+    it('reports loading with the applied snapshot and without a projection', async () => {
+      const { result } = renderHook(() => useTank({ fetchSnapshot: () => Promise.resolve(BASE), required: undefined }));
+      await flush();
+
+      expect(result.current).toMatchObject({
+        status: 'loading',
+        error: undefined,
+        balance: undefined,
+        fraction: undefined,
+        readyAt: undefined,
+        msUntilReady: undefined,
+        snapshot: BASE,
+        required: undefined,
+      });
+      expect(result.current.projectAt(START)).toBeUndefined();
+    });
+
+    it('projects the applied snapshot without fetching once the amount is defined', async () => {
+      const fetchSnapshot = vi.fn(() => Promise.resolve(BASE));
+      const { result, rerender } = renderHook((required: number | undefined) => useTank({ fetchSnapshot, required }), {
+        initialProps: undefined,
+      });
+      await flush();
+      const { revision } = result.current;
+
+      rerender(60);
+
+      expect(result.current).toMatchObject({ status: 'recharging', balance: 40, revision: revision + 1 });
+      expect(result.current.projectAt(START + 2000)).toBe(42);
+      expect(fetchSnapshot).toHaveBeenCalledTimes(1);
+    });
+
+    it('does not arm the ready refetch', async () => {
+      const fetchSnapshot = vi.fn(() => Promise.resolve(BASE));
+      renderHook(() => useTank({ fetchSnapshot, required: undefined }));
+      await flush();
+
+      await advance(10 * 60_000);
+
+      expect(fetchSnapshot).toHaveBeenCalledTimes(1);
+    });
+
+    it('reports a failure before any snapshot as the error status', async () => {
+      const fetchSnapshot = vi.fn(() => Promise.reject(new Error('offline')));
+      const { result } = renderHook(() => useTank({ fetchSnapshot, required: undefined }));
+      await flush();
+
+      expect(result.current).toMatchObject({ status: 'error', error: new Error('offline') });
+    });
+
+    it('stays loading after a failure that follows a snapshot, and reports the failure', async () => {
+      const fetchSnapshot = vi.fn<UseTankOptions['fetchSnapshot']>().mockResolvedValueOnce(BASE);
+      fetchSnapshot.mockRejectedValueOnce(new Error('offline'));
+      const { result } = renderHook(() => useTank({ fetchSnapshot, required: undefined }));
+      await flush();
+
+      await act(() => result.current.refresh());
+
+      expect(result.current).toMatchObject({ status: 'loading', error: new Error('offline') });
+    });
+  });
+
   describe('fetch triggers', () => {
     it('refetches after the projected ready time plus the random delay', async () => {
       vi.mocked(Math.random).mockReturnValue(0.5);
