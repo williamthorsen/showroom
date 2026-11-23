@@ -86,6 +86,17 @@ describe(TankMeter, () => {
     expect(readMark()).toBeNull();
   });
 
+  it('renders as loading, without a mark or a fill, while the required amount is undefined', async () => {
+    renderMeter(undefined);
+    await flush();
+
+    const meter = screen.getByRole('meter', { name: 'Credits' });
+    expect(meter.getAttribute('aria-valuetext')).toBe('Loading');
+    expect(meter.dataset['status']).toBe('loading');
+    expect(readMark()).toBeNull();
+    expect(readFill().style.getPropertyValue('--tank-meter-to')).toBe('0');
+  });
+
   it('renders the live region from mount, and fills it on the change to ready', async () => {
     renderMeter(4);
 
@@ -122,7 +133,7 @@ function serveBase(): Promise<Snapshot> {
 }
 
 /** Renders a meter over a tank that holds `BASE`, and returns a handle to the tank's latest result. */
-function renderMeter(required: number): Handle {
+function renderMeter(required: number | undefined): Handle {
   const handle: Handle = { current: undefined };
   function Harness(): ReactElement {
     const tank = useTank({ fetchSnapshot: serveBase, required });

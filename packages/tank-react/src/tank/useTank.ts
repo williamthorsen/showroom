@@ -85,7 +85,7 @@ export function useTank(options: UseTankOptions): UseTankResult {
   // Refetch shortly after the projected ready time; the random delay keeps open tabs from fetching at one instant.
   const { applied } = state;
   useEffect(() => {
-    if (applied === undefined) {
+    if (applied === undefined || required === undefined) {
       return;
     }
     const projection = projectSnapshot(applied, required, Date.now());
@@ -104,7 +104,8 @@ export function useTank(options: UseTankOptions): UseTankResult {
   }, [isVisible, refreshIntervalMs, refresh]);
 
   const now = Date.now();
-  const projection = applied === undefined ? undefined : projectSnapshot(applied, required, now);
+  const projection =
+    applied === undefined || required === undefined ? undefined : projectSnapshot(applied, required, now);
   const isRefilling =
     applied !== undefined &&
     projection !== undefined &&
@@ -121,10 +122,11 @@ export function useTank(options: UseTankOptions): UseTankResult {
     return () => clearInterval(interval);
   }, [shouldTick]);
 
+  const hasRequired = required !== undefined;
   const projectAt = useCallback(
     (browserTime: number): number | undefined =>
-      applied === undefined ? undefined : projectAppliedBalance(applied, browserTime),
-    [applied],
+      applied === undefined || !hasRequired ? undefined : projectAppliedBalance(applied, browserTime),
+    [applied, hasRequired],
   );
 
   const common = {
@@ -139,7 +141,7 @@ export function useTank(options: UseTankOptions): UseTankResult {
   if (projection === undefined) {
     return {
       ...common,
-      status: state.error === undefined ? 'loading' : 'error',
+      status: applied === undefined && state.error !== undefined ? 'error' : 'loading',
       balance: undefined,
       fraction: undefined,
       readyAt: undefined,
@@ -165,20 +167,23 @@ export interface UseTankOptions {
    * function does not restart fetches or timers.
    */
   fetchSnapshot: (signal: AbortSignal) => Promise<Snapshot>;
-  /** The amount that the next action reserves, as the site's endpoint reports it. */
-  required: number;
+  /**
+   * The amount that the next action reserves, as the site's endpoint reports it; `undefined` while the site waits for
+   * it, which holds the status at `loading`. Defining it later projects the applied snapshot without fetching again.
+   */
+  required: number | undefined;
   /** Fetches at this interval while the tab is visible, in addition to the other triggers. */
   refreshIntervalMs?: number;
 }
 
 /**
  * The projected state of a tank. Times are epoch milliseconds on the browser's clock, and the numeric fields are
- * `undefined` until a snapshot arrives.
+ * `undefined` until a snapshot has arrived and `required` is defined.
  */
 export interface UseTankResult {
   /**
-   * `ready` when the projected balance covers `required`. `error` when `required` is invalid, or when a fetch failed
-   * before any snapshot arrived.
+   * `ready` when the projected balance covers `required`. `loading` until a snapshot has arrived and `required` is
+   * defined. `error` when `required` is invalid, or when a fetch failed before any snapshot arrived.
    */
   status: 'loading' | 'ready' | 'recharging' | 'error';
   /**
@@ -199,13 +204,16 @@ export interface UseTankResult {
    */
   snapshot: Snapshot | undefined;
   /** The `required` option that the hook was given. */
-  required: number;
+  required: number | undefined;
   /**
    * Increments whenever the projection restarts: on a snapshot, on a change of `required`, and when the tab becomes
    * visible.
    */
   revision: number;
-  /** Returns the projected balance at a time on the browser's clock; keeps its identity until the next snapshot. */
+  /**
+   * Returns the projected balance at a time on the browser's clock, or `undefined` until a snapshot has arrived and
+   * `required` is defined; keeps its identity until either changes.
+   */
   projectAt: (browserTime: number) => number | undefined;
   /**
    * Fetches a snapshot now, aborting any fetch in flight. Resolves once its fetch settles or is aborted, and never

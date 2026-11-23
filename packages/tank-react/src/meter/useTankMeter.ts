@@ -38,7 +38,6 @@ export function useTankMeter(tank: UseTankResult, options: UseTankMeterOptions):
   }
 
   const capacity = snapshot?.capacity;
-  const hasProjection = snapshot !== undefined && status !== 'loading' && status !== 'error';
   return {
     meterProps: {
       role: 'meter',
@@ -52,10 +51,7 @@ export function useTankMeter(tank: UseTankResult, options: UseTankMeterOptions):
     announcement,
     animation: { key: revision, ...animation },
     fraction: tank.fraction ?? 0,
-    requiredFraction:
-      hasProjection && tank.required > 0 && tank.required < snapshot.capacity
-        ? tank.required / snapshot.capacity
-        : undefined,
+    requiredFraction: readRequiredFraction(tank),
     status,
   };
 }
@@ -94,8 +90,8 @@ export interface TankMeterState {
    */
   animation: FillAnimation & { key: number };
   /**
-   * The current fraction, from 0 to 1, for a form that renders once per second rather than animating; 0 until a
-   * snapshot arrives.
+   * The current fraction, from 0 to 1, for a form that renders once per second rather than animating; 0 while the
+   * tank's `fraction` is `undefined`.
    */
   fraction: number;
   /** The fraction at which the next action is covered, when it is below capacity and the projection is valid. */
@@ -121,6 +117,14 @@ function describeAt(tank: UseTankResult, now: number): FillAnimation {
   }
   const { capacity, refillAmount, refillIntervalMs } = tank.snapshot;
   return describeFillAnimation({ balance, capacity, ratePerMs: refillAmount / refillIntervalMs });
+}
+
+/** Returns the fraction of the capacity at which the next action is covered, while the projection is valid. */
+function readRequiredFraction({ required, snapshot, status }: UseTankResult): number | undefined {
+  if (snapshot === undefined || required === undefined || status === 'loading' || status === 'error') {
+    return undefined;
+  }
+  return required > 0 && required < snapshot.capacity ? required / snapshot.capacity : undefined;
 }
 
 function readSample(tank: UseTankResult): TankMeterSample {
