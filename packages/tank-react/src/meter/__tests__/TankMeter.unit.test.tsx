@@ -6,7 +6,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { useTank, type UseTankResult } from '#src/tank/useTank.ts';
 import { advance, flush } from '#src/test-utils/act-timers.ts';
 
-import { TankMeter } from '../TankMeter.tsx';
+import { TankMeter, type TankMeterProps } from '../TankMeter.tsx';
 
 const START = 1_000_000;
 
@@ -72,28 +72,83 @@ describe(TankMeter, () => {
     expect(readFill().style.getPropertyValue('--tank-meter-delay')).toBe('3000ms');
   });
 
-  it('places the mark at the required fraction', async () => {
+  it('shows the label and the value as text inside the meter', async () => {
+    renderMeter(8);
+    await flush();
+
+    const meter = screen.getByRole('meter', { name: 'Credits' });
+    expect(meter.querySelector('.tank-meter-label')?.textContent).toBe('Credits');
+    expect(meter.querySelector('.tank-meter-value')?.textContent).toBe('20%');
+  });
+
+  it('describes the meter by its description, and hides its icon', async () => {
+    renderMeter(8, { icon: <svg data-testid="icon" />, description: 'Shared by every visitor' });
+    await flush();
+
+    expect(screen.getByRole('meter', { name: 'Credits', description: 'Shared by every visitor' })).toBeDefined();
+    expect(screen.getByTestId('icon').closest('[aria-hidden="true"]')).not.toBeNull();
+  });
+
+  it('places the segment at the end of the fill while the balance covers the reservation', async () => {
+    renderMeter(1);
+    await flush();
+
+    expect(readSegmentStyle()).toStrictEqual({
+      size: '0.1',
+      from: '0.2',
+      to: '1',
+      now: '0.2',
+      delay: '0ms',
+      duration: '8000ms',
+    });
+  });
+
+  it('holds the segment at the start of the track until the fill reaches the reservation', async () => {
     renderMeter(4);
     await flush();
 
-    expect(readMark()?.style.getPropertyValue('--tank-meter-mark-at')).toBe('0.4');
+    expect(readSegmentStyle()).toStrictEqual({
+      size: '0.4',
+      from: '0.4',
+      to: '1',
+      now: '0.4',
+      delay: '2000ms',
+      duration: '6000ms',
+    });
   });
 
-  it('omits the mark when the next action needs the whole capacity', async () => {
+  it('names the segment in a legend', async () => {
+    renderMeter(4);
+    await flush();
+
+    expect(readLegend()?.textContent).toBe('Needs 40%');
+  });
+
+  it('takes a custom legend', async () => {
+    renderMeter(4, { formatRequired: (required, capacity) => `${required} of ${capacity} per use` });
+    await flush();
+
+    expect(readLegend()?.textContent).toBe('4 of 10 per use');
+  });
+
+  it('omits the segment and the legend when the next action needs the whole capacity', async () => {
     renderMeter(10);
     await flush();
 
-    expect(readMark()).toBeNull();
+    expect(document.querySelector('.tank-meter-segment')).toBeNull();
+    expect(readLegend()).toBeNull();
   });
 
-  it('renders as loading, without a mark or a fill, while the required amount is undefined', async () => {
+  it('renders as loading, without a segment or a fill, while the required amount is undefined', async () => {
     renderMeter(undefined);
     await flush();
 
     const meter = screen.getByRole('meter', { name: 'Credits' });
     expect(meter.getAttribute('aria-valuetext')).toBe('Loading');
     expect(meter.dataset['status']).toBe('loading');
-    expect(readMark()).toBeNull();
+    expect(meter.querySelector('.tank-meter-value')?.textContent).toBe('Loading');
+    expect(document.querySelector('.tank-meter-segment')).toBeNull();
+    expect(readLegend()).toBeNull();
     expect(readFill().style.getPropertyValue('--tank-meter-to')).toBe('0');
   });
 
@@ -122,8 +177,17 @@ function readFill(): HTMLElement {
   return fill;
 }
 
-function readMark(): HTMLElement | null {
-  return document.querySelector<HTMLElement>('.tank-meter-mark');
+function readLegend(): HTMLElement | null {
+  return document.querySelector<HTMLElement>('.tank-meter-legend');
+}
+
+function readSegmentStyle(): Record<string, string> {
+  const end = document.querySelector<HTMLElement>('.tank-meter-segment-end');
+  if (end === null) {
+    throw new Error('The segment is not rendered');
+  }
+  const names = ['size', 'from', 'to', 'now', 'delay', 'duration'];
+  return Object.fromEntries(names.map((name) => [name, end.style.getPropertyValue(`--tank-meter-segment-${name}`)]));
 }
 
 // Answers with the snapshot of a server that held `BASE` at `START`, as the ready refetch would receive it.
@@ -133,12 +197,12 @@ function serveBase(): Promise<Snapshot> {
 }
 
 /** Renders a meter over a tank that holds `BASE`, and returns a handle to the tank's latest result. */
-function renderMeter(required: number | undefined): Handle {
+function renderMeter(required: number | undefined, props: Partial<TankMeterProps> = {}): Handle {
   const handle: Handle = { current: undefined };
   function Harness(): ReactElement {
     const tank = useTank({ fetchSnapshot: serveBase, required });
     useImperativeHandle(handle, () => tank);
-    return <TankMeter tank={tank} label="Credits" />;
+    return <TankMeter tank={tank} label="Credits" {...props} />;
   }
   render(<Harness />);
   return handle;

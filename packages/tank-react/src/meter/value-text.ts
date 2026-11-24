@@ -1,5 +1,10 @@
 import type { UseTankResult } from '#src/tank/useTank.ts';
 
+/** Writes the default legend of a meter's reservation segment, such as "Needs 40%". */
+export function formatDefaultRequired(required: number, capacity: number): string {
+  return `Needs ${formatPercent(required / capacity)}`;
+}
+
 /** Writes the default visible value of a meter: the balance as a percentage of the capacity, such as "62%". */
 export function formatDefaultValue(input: TankMeterValueInput): string {
   switch (input.status) {
@@ -40,7 +45,8 @@ export interface TankMeterValueInput extends Pick<UseTankResult, 'status' | 'bal
 const MS_PER_MINUTE = 60_000;
 
 function formatPercent(fraction: number | undefined): string {
-  return `${Math.floor((fraction ?? 0) * 100)}%`;
+  // Round away the binary error first, so that a fraction of 0.29 writes 29% rather than 28%.
+  return `${Math.floor(Math.round((fraction ?? 0) * 1e6) / 1e4)}%`;
 }
 
 function formatWait(msUntilReady: number | undefined): string {

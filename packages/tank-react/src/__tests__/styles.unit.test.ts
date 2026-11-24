@@ -10,9 +10,11 @@ const MOTION_QUERY = /@media\s*\(prefers-reduced-motion:\s*no-preference\)/;
 const THEMED_PROPERTIES = new Set([
   'background',
   'background-color',
+  'background-image',
   'border',
   'border-color',
   'border-radius',
+  'box-shadow',
   'color',
   'height',
 ]);
