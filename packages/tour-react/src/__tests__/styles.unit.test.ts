@@ -59,6 +59,17 @@ describe('styles.css', () => {
     expect(Object.fromEntries(alignment)).toStrictEqual({ 'align-items': 'start', 'text-align': 'start' });
   });
 
+  it('hides a disabled button in the footer and does not draw a dashed border', () => {
+    const declarations = parseDeclarations(STYLES);
+    const hidden = declarations.filter(
+      ({ context, property }) =>
+        context.join(' ') === '.tour-footer .tour-button:disabled' && property === 'visibility',
+    );
+
+    expect(hidden.map(({ value }) => value)).toStrictEqual(['hidden']);
+    expect(declarations.filter(({ value }) => value.includes('dashed'))).toStrictEqual([]);
+  });
+
   it('declares the bullets of the points, so that a host reset of `list-style` does not remove them', () => {
     const bullets = parseDeclarations(STYLES).filter(
       ({ context, property }) => context.join(' ') === '.tour-points' && property === 'list-style-type',

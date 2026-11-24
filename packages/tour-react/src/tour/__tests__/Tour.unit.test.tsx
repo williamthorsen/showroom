@@ -67,6 +67,14 @@ describe(Tour, () => {
   });
 
   describe('dismissal', () => {
+    it('draws the close button as an icon named "Close"', () => {
+      renderTour();
+
+      const close = getButton('Close');
+      expect(close.querySelector('svg[aria-hidden="true"]')).not.toBeNull();
+      expect(close.textContent).toBe('');
+    });
+
     it('reports a close from the close button', async () => {
       const user = userEvent.setup();
       const onOpenChange = vi.fn();
