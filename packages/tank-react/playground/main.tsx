@@ -44,7 +44,12 @@ function App(): ReactElement {
       <h1>tank-react playground</h1>
       <section>
         <h2>Bar</h2>
-        <TankMeter tank={result} label="Free conversions" />
+        <TankMeter
+          tank={result}
+          label="Free conversions"
+          icon={<BoltIcon />}
+          description="Shared by every visitor. Refills 1 every 2 seconds."
+        />
         <TankCountdown tank={result} />
       </section>
       <section>
@@ -77,6 +82,15 @@ function App(): ReactElement {
 }
 
 // region | Helpers
+/** A lightning bolt, sized to the text. */
+function BoltIcon(): ReactElement {
+  return (
+    <svg width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor">
+      <path d="M9.5 1 3 9h4l-1 6 6.5-8h-4z" />
+    </svg>
+  );
+}
+
 function fetchSnapshot(): Promise<Snapshot> {
   return tank.peek();
 }

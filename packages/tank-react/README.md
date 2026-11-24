@@ -46,11 +46,13 @@ A tank's balance is shared by every visitor, and it regenerates continuously. As
 
 ## Meter and countdown
 
-- **`TankMeter`** takes the tank and a `label`, its accessible name. It is a bar with the `meter` role that fills toward a full tank in one CSS animation, without a render on every frame, and restarts from the projected value at each `revision`. A negative balance holds the fill at empty until it is repaid. A mark shows the `required` fraction when it is below capacity. Its `aria-valuetext`, such as "62% full, ready in about 4 minutes", changes at once on a new snapshot or status and otherwise at most once per minute, and a polite live region announces the change to ready.
+- **`TankMeter`** takes the tank and a `label`, its accessible name. It is a bar with the `meter` role that fills toward a full tank in one CSS animation, without a render on every frame, and restarts from the projected value at each `revision`. A negative balance holds the fill at empty until it is repaid. Its `aria-valuetext`, such as "62% full, ready in about 4 minutes", changes at once on a new snapshot or status and otherwise at most once per minute, and a polite live region announces the change to ready.
+- **Header.** Above the bar, the meter shows the label and its value, such as "62%", which follows the balance on every render. An optional `icon` precedes the label and is hidden from assistive technology. An optional one-line `description`, which says what the balance is and when it refills, sits under the label and is the meter's accessible description. The visible text is hidden from assistive technology, which reads the name, the value, and the description from the meter's attributes, so a screen reader announces each once.
+- **Reservation segment.** A hatched segment as wide as `required` shows what the next action needs and the most that it can deduct. While the balance covers `required`, the segment sits at the end of the fill; while it does not, it spans the start of the track, and its unfilled part is the shortfall. It moves with the fill. A legend under the bar names it, such as "Needs 40%", and joins the description in the meter's accessible description. The segment and the legend are omitted when `required` is not below capacity.
 - **`TankCountdown`** takes the tank and writes "Ready in 3:42" or "Ready", including the time to repay a negative balance. `formatCountdown` writes the same text for a component of its own.
-- **`useTankMeter(tank, options)`** returns what a meter of any other form needs: the meter element's props, the live region's props and text, and an animation description (`key`, `fromFraction`, `toFraction`, `delayMs`, `durationMs`) with the live `fraction`. A ring, a battery, or a row of pips renders from it with CSS, the Web Animations API, or a render once per second. The [playground](playground/main.tsx) builds a ring this way.
-- **Text.** The text is English. `formatValueText` and `readyText` replace the meter's, and `format` replaces the countdown's.
-- **Reduced motion.** Under `prefers-reduced-motion`, the fill does not animate and moves once per second.
+- **`useTankMeter(tank, options)`** returns what a meter of any other form needs: the meter element's props, the visible value as `valueLabel`, the live region's props and text, and an animation description (`key`, `fromFraction`, `toFraction`, `delayMs`, `durationMs`) with the live `fraction`. A ring, a battery, or a row of pips renders from it with CSS, the Web Animations API, or a render once per second. The [playground](playground/main.tsx) builds a ring this way.
+- **Text.** The text is English, and states percentages rather than amounts, because a visitor cannot read the units that a site defines. `formatValue` (the visible value), `formatValueText`, and `readyText` replace the meter's, `formatRequired` replaces the legend's, and `format` replaces the countdown's. A site whose units a visitor can read writes an amount with `formatValue` and `formatRequired`; `formatDefaultValue` and `formatDefaultRequired` write the defaults, for a formatter that wraps them.
+- **Reduced motion.** Under `prefers-reduced-motion`, the fill and the segment do not animate and move once per second.
 
 ## Theming
 
@@ -63,7 +65,9 @@ A tank's balance is shared by every visitor, and it regenerates continuously. As
 }
 ```
 
-The `:root` block of [`styles.css`](styles.css) lists the properties. `--tank-countdown-text` sets the countdown's colour, which otherwise inherits from the host, so the host's text colour decides its contrast.
+The `:root` block of [`styles.css`](styles.css) lists the properties. The meter's text and the countdown inherit the host's colour, so the host's text colour decides their contrast; `--tank-meter-description-text` and `--tank-countdown-text` set the description's and the countdown's colours. Each edge of the reservation segment has a halo in `--tank-meter-segment-halo`, which a host whose surface is not white (or `#0d1117` in the dark scheme) sets to its surface colour, so that the edge stands against the fill.
+
+The `--tank-meter-segment-*` properties replace `--tank-meter-mark` and `--tank-meter-mark-overhang`, so a theme that set those renames them.
 
 The [design](../tank/docs/design.md#react-package-williamthorsentank-react) states the refresh policy and the meter's model.
 

@@ -1,18 +1,22 @@
 /*
  * Styles for @williamthorsen/tank-react. Every colour, size, and radius is a custom property on :root, so that a
- * consumer themes the components by redefining the properties. The fill's animation is declared inside the
- * reduced-motion query at the end, so that a reader who asks for reduced motion sees the fill move once per second.
+ * consumer themes the components by redefining the properties. The animations are declared inside the reduced-motion
+ * query at the end, so that a reader who asks for reduced motion sees the fill move once per second.
  */
 
 :root {
+  --tank-meter-gap: 0.25rem;
+  --tank-meter-small-text: 0.875rem;
   --tank-meter-height: 0.5rem;
   --tank-meter-radius: 999px;
   --tank-meter-track: #e6e8eb;
   --tank-meter-border: #6e7781;
   --tank-meter-fill: #0b5cd5;
   --tank-meter-fill-ready: #1a7f37;
-  --tank-meter-mark: #1f2328;
-  --tank-meter-mark-overhang: 0.1875rem;
+  --tank-meter-segment-edge: #1f2328;
+  --tank-meter-segment-halo: #ffffff;
+  --tank-meter-segment-hatch: rgb(31 35 40 / 45%);
+  --tank-meter-segment-overhang: 0.1875rem;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -21,20 +25,62 @@
     --tank-meter-border: #8b949e;
     --tank-meter-fill: #4c9aff;
     --tank-meter-fill-ready: #3fb950;
-    --tank-meter-mark: #e6edf3;
+    --tank-meter-segment-edge: #e6edf3;
+    --tank-meter-segment-halo: #0d1117;
+    --tank-meter-segment-hatch: rgb(230 237 243 / 45%);
   }
 }
 
 /* -- Meter -- */
 
-/* The vertical padding makes room for the mark's overhang. */
+/* The fill and the segment move along the inline axis, which runs leftward in a right-to-left context. */
 .tank-meter {
-  display: block;
-  position: relative;
-  padding-block: var(--tank-meter-mark-overhang);
+  --tank-meter-direction: 1;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--tank-meter-gap);
 }
 
-/* The track clips the fill to its rounded ends, so that scaling the fill does not distort them. */
+.tank-meter:dir(rtl) {
+  --tank-meter-direction: -1;
+}
+
+/* The description starts in the label's column, under it, and runs under the value. */
+.tank-meter-header {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+}
+
+.tank-meter-icon {
+  display: inline-flex;
+  margin-inline-end: var(--tank-meter-gap);
+}
+
+.tank-meter-label {
+  grid-column: 2;
+}
+
+.tank-meter-value {
+  grid-column: 3;
+  margin-inline-start: var(--tank-meter-gap);
+  font-variant-numeric: tabular-nums;
+}
+
+.tank-meter-description {
+  grid-column: 2 / 4;
+  color: var(--tank-meter-description-text, currentColor);
+  font-size: var(--tank-meter-small-text);
+}
+
+/* The vertical padding makes room for the segment's edges, which overhang the track. */
+.tank-meter-bar {
+  position: relative;
+  padding-block: var(--tank-meter-segment-overhang);
+}
+
+/* The track clips the fill to its rounded ends. */
 .tank-meter-track {
   position: relative;
   overflow: hidden;
@@ -48,26 +94,76 @@
   position: absolute;
   inset: 0;
   background-color: var(--tank-meter-fill);
-  transform: scaleX(var(--tank-meter-now));
-  transform-origin: left;
-}
-
-.tank-meter-fill:dir(rtl) {
-  transform-origin: right;
+  transform: translateX(calc((var(--tank-meter-now) - 1) * 100% * var(--tank-meter-direction)));
 }
 
 .tank-meter[data-status='ready'] .tank-meter-fill {
   background-color: var(--tank-meter-fill-ready);
 }
 
-/* The mark overhangs the track, so that it stands against the surface whatever colour the fill behind it has. */
-.tank-meter-mark {
+/* The layer clips the segment along the track and lets its edges overhang above and below. */
+.tank-meter-segment-layer {
   position: absolute;
-  inset-block: 0;
-  inset-inline-start: calc(var(--tank-meter-mark-at) * 100%);
+  inset: 0;
+  overflow-x: clip;
+}
+
+/* The end spans the track and moves as the fill does; the segment sits at its inline end. */
+.tank-meter-segment-end {
+  position: absolute;
+  inset: 0;
+  transform: translateX(calc((var(--tank-meter-segment-now) - 1) * 100% * var(--tank-meter-direction)));
+}
+
+.tank-meter-segment {
+  position: absolute;
+  inset-block: var(--tank-meter-segment-overhang);
+  inset-inline-end: 0;
+  width: calc(var(--tank-meter-segment-size) * 100%);
+}
+
+.tank-meter-segment,
+.tank-meter-swatch {
+  background-image: repeating-linear-gradient(135deg, var(--tank-meter-segment-hatch) 0 2px, transparent 2px 5px);
+}
+
+/* Each edge has a halo, so that it stands against whatever colour lies behind it. */
+.tank-meter-segment::before,
+.tank-meter-segment::after,
+.tank-meter-swatch::before,
+.tank-meter-swatch::after {
+  content: '';
+  position: absolute;
+  inset-block: calc(-1 * var(--tank-meter-segment-overhang));
   width: 2px;
-  margin-inline-start: -1px;
-  background-color: var(--tank-meter-mark);
+  background-color: var(--tank-meter-segment-edge);
+  box-shadow: 0 0 0 1px var(--tank-meter-segment-halo);
+}
+
+.tank-meter-segment::before,
+.tank-meter-swatch::before {
+  inset-inline-start: 0;
+}
+
+.tank-meter-segment::after,
+.tank-meter-swatch::after {
+  inset-inline-end: 0;
+}
+
+.tank-meter-legend {
+  display: flex;
+  align-items: center;
+  gap: var(--tank-meter-gap);
+  font-size: var(--tank-meter-small-text);
+}
+
+.tank-meter-swatch {
+  position: relative;
+  flex: none;
+  width: calc(3 * var(--tank-meter-height));
+  height: var(--tank-meter-height);
+  margin-block: var(--tank-meter-segment-overhang);
+  background-color: var(--tank-meter-track);
 }
 
 /* -- Countdown -- */
@@ -95,12 +191,25 @@
     animation: tank-meter-fill var(--tank-meter-duration) linear var(--tank-meter-delay) both;
   }
 
+  .tank-meter-segment-end {
+    animation: tank-meter-segment var(--tank-meter-segment-duration) linear var(--tank-meter-segment-delay) both;
+  }
+
   @keyframes tank-meter-fill {
     from {
-      transform: scaleX(var(--tank-meter-from));
+      transform: translateX(calc((var(--tank-meter-from) - 1) * 100% * var(--tank-meter-direction)));
     }
     to {
-      transform: scaleX(var(--tank-meter-to));
+      transform: translateX(calc((var(--tank-meter-to) - 1) * 100% * var(--tank-meter-direction)));
+    }
+  }
+
+  @keyframes tank-meter-segment {
+    from {
+      transform: translateX(calc((var(--tank-meter-segment-from) - 1) * 100% * var(--tank-meter-direction)));
+    }
+    to {
+      transform: translateX(calc((var(--tank-meter-segment-to) - 1) * 100% * var(--tank-meter-direction)));
     }
   }
 }
