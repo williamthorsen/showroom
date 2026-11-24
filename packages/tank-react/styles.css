@@ -46,7 +46,7 @@
   --tank-meter-direction: -1;
 }
 
-/* The description shares the label's column, under it. */
+/* The description starts in the label's column, under it, and runs under the value. */
 .tank-meter-header {
   display: grid;
   grid-template-columns: auto 1fr auto;
