@@ -72,20 +72,24 @@ describe(TankMeter, () => {
     expect(readFill().style.getPropertyValue('--tank-meter-delay')).toBe('3000ms');
   });
 
-  it('shows the label and the value as text inside the meter', async () => {
+  it('shows the label and the value as text, hidden from assistive technology, which reads the attributes', async () => {
     renderMeter(8);
     await flush();
 
     const meter = screen.getByRole('meter', { name: 'Credits' });
-    expect(meter.querySelector('.tank-meter-label')?.textContent).toBe('Credits');
-    expect(meter.querySelector('.tank-meter-value')?.textContent).toBe('20%');
+    const header = meter.querySelector('.tank-meter-header');
+    expect(header?.getAttribute('aria-hidden')).toBe('true');
+    expect(header?.querySelector('.tank-meter-label')?.textContent).toBe('Credits');
+    expect(header?.querySelector('.tank-meter-value')?.textContent).toBe('20%');
   });
 
-  it('describes the meter by its description, and hides its icon', async () => {
-    renderMeter(8, { icon: <svg data-testid="icon" />, description: 'Shared by every visitor' });
+  it('describes the meter by its description and its legend', async () => {
+    renderMeter(4, { icon: <svg data-testid="icon" />, description: 'Shared by every visitor' });
     await flush();
 
-    expect(screen.getByRole('meter', { name: 'Credits', description: 'Shared by every visitor' })).toBeDefined();
+    expect(
+      screen.getByRole('meter', { name: 'Credits', description: 'Shared by every visitor Needs 40%' }),
+    ).toBeDefined();
     expect(screen.getByTestId('icon').closest('[aria-hidden="true"]')).not.toBeNull();
   });
 

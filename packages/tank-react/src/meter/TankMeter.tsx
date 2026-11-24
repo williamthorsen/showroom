@@ -14,7 +14,9 @@ import { formatDefaultRequired } from './value-text.ts';
 export function TankMeter(props: TankMeterProps): ReactElement {
   const { tank, icon, description, formatRequired = formatDefaultRequired, ...options } = props;
   const meter = useTankMeter(tank, options);
-  const descriptionId = useId();
+  const id = useId();
+  const descriptionId = `${id}-description`;
+  const legendId = `${id}-legend`;
   const { animation, requiredFraction } = meter;
   const fillStyle: CustomStyle = {
     '--tank-meter-from': String(animation.fromFraction),
@@ -28,20 +30,21 @@ export function TankMeter(props: TankMeterProps): ReactElement {
     requiredFraction === undefined || required === undefined || snapshot === undefined
       ? undefined
       : { fraction: requiredFraction, text: formatRequired(required, snapshot.capacity) };
+  const describedBy = [description === undefined ? '' : descriptionId, reservation === undefined ? '' : legendId]
+    .filter(Boolean)
+    .join(' ');
+  // The visible text is hidden from assistive technology, which reads the name, the value, and the description from
+  // the meter's attributes; browsers expose a meter's children rather than treating them as presentational.
   return (
     <>
       <div
         className="tank-meter"
         data-status={meter.status}
-        aria-describedby={description === undefined ? undefined : descriptionId}
+        aria-describedby={describedBy === '' ? undefined : describedBy}
         {...meter.meterProps}
       >
-        <div className="tank-meter-header">
-          {icon === undefined ? undefined : (
-            <span className="tank-meter-icon" aria-hidden="true">
-              {icon}
-            </span>
-          )}
+        <div className="tank-meter-header" aria-hidden="true">
+          {icon === undefined ? undefined : <span className="tank-meter-icon">{icon}</span>}
           <span className="tank-meter-label">{options.label}</span>
           <span className="tank-meter-value">{meter.valueLabel}</span>
           {description === undefined ? undefined : (
@@ -67,7 +70,7 @@ export function TankMeter(props: TankMeterProps): ReactElement {
           )}
         </div>
         {reservation === undefined ? undefined : (
-          <div className="tank-meter-legend">
+          <div id={legendId} className="tank-meter-legend" aria-hidden="true">
             <span className="tank-meter-swatch" />
             {reservation.text}
           </div>
@@ -82,7 +85,7 @@ export function TankMeter(props: TankMeterProps): ReactElement {
 
 export interface TankMeterProps extends UseTankMeterOptions {
   tank: UseTankResult;
-  /** A decorative icon before the label, hidden from assistive technology. */
+  /** A decorative icon before the label. */
   icon?: ReactNode;
   /** One line under the label that says what the balance is and when it refills; the meter's accessible description. */
   description?: ReactNode;
