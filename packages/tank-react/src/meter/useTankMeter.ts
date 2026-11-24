@@ -3,14 +3,24 @@ import { useState } from 'react';
 import type { UseTankResult } from '#src/tank/useTank.ts';
 
 import { describeFillAnimation, type FillAnimation } from './fill-animation.ts';
-import { formatDefaultValueText, type TankMeterSample } from './value-text.ts';
+import {
+  formatDefaultValue,
+  formatDefaultValueText,
+  type TankMeterSample,
+  type TankMeterValueInput,
+} from './value-text.ts';
 
 /**
  * Derives everything that a meter of any form needs from a tank: the props of the meter element, a live region that
  * announces the change to ready, and a description of the fill's animation, which restarts at each `revision`.
  */
 export function useTankMeter(tank: UseTankResult, options: UseTankMeterOptions): TankMeterState {
-  const { label, formatValueText = formatDefaultValueText, readyText = DEFAULT_READY_TEXT } = options;
+  const {
+    label,
+    formatValue = formatDefaultValue,
+    formatValueText = formatDefaultValueText,
+    readyText = DEFAULT_READY_TEXT,
+  } = options;
   const { revision, snapshot, status } = tank;
   const now = Date.now();
 
@@ -53,6 +63,7 @@ export function useTankMeter(tank: UseTankResult, options: UseTankMeterOptions):
     fraction: tank.fraction ?? 0,
     requiredFraction: readRequiredFraction(tank),
     status,
+    valueLabel: formatValue({ status, balance: tank.balance, fraction: tank.fraction, capacity }),
   };
 }
 
@@ -60,6 +71,11 @@ export function useTankMeter(tank: UseTankResult, options: UseTankMeterOptions):
 export interface UseTankMeterOptions {
   /** The meter's accessible name, such as "Free conversions". */
   label: string;
+  /**
+   * Writes the meter's visible value, which changes on every render. The default writes the balance as a percentage
+   * of the capacity, such as "62%", because a visitor cannot read the units that a site defines.
+   */
+  formatValue?: (input: TankMeterValueInput) => string;
   /**
    * Writes the meter's `aria-valuetext`, which changes at most once per minute between revisions and status changes.
    * The default writes English, such as "62% full, ready in about 4 minutes".
@@ -97,6 +113,8 @@ export interface TankMeterState {
   /** The fraction at which the next action is covered, when it is below capacity and the projection is valid. */
   requiredFraction: number | undefined;
   status: UseTankResult['status'];
+  /** The meter's visible value, written by `formatValue` from the live balance. */
+  valueLabel: string;
 }
 
 // region | Helpers

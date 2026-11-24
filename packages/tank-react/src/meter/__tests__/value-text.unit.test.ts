@@ -1,8 +1,25 @@
 import { describe, expect, it } from 'vitest';
 
-import { formatDefaultValueText, type TankMeterSample } from '../value-text.ts';
+import {
+  formatDefaultValue,
+  formatDefaultValueText,
+  type TankMeterSample,
+  type TankMeterValueInput,
+} from '../value-text.ts';
 
 const RECHARGING: TankMeterSample = { status: 'recharging', balance: 6.29, fraction: 0.629, msUntilReady: 0 };
+
+describe(formatDefaultValue, () => {
+  it.each([
+    [{ status: 'recharging', balance: 6.29, fraction: 0.629, capacity: 10 }, '62%'],
+    [{ status: 'ready', balance: 10, fraction: 1, capacity: 10 }, '100%'],
+    [{ status: 'recharging', balance: -3, fraction: 0, capacity: 10 }, '0%'],
+    [{ status: 'loading', balance: undefined, fraction: undefined, capacity: undefined }, 'Loading'],
+    [{ status: 'error', balance: undefined, fraction: undefined, capacity: undefined }, 'Unavailable'],
+  ] satisfies [TankMeterValueInput, string][])('writes %o as %j', (input, text) => {
+    expect(formatDefaultValue(input)).toBe(text);
+  });
+});
 
 describe(formatDefaultValueText, () => {
   it.each([

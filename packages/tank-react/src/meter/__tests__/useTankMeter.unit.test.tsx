@@ -43,6 +43,7 @@ describe(useTankMeter, () => {
         fraction: 0,
         requiredFraction: undefined,
         status: 'loading',
+        valueLabel: 'Loading',
       });
     });
   });
@@ -152,6 +153,42 @@ describe(useTankMeter, () => {
       await flush();
 
       expect(result.current.meterProps['aria-valuetext']).toBe('recharging 10');
+    });
+  });
+
+  describe('visible value', () => {
+    it('follows the live balance on every render, rather than the once-a-minute sample', async () => {
+      const { result } = renderMeter(serve(10), 90);
+      await flush();
+
+      expect(result.current.meter.valueLabel).toBe('10%');
+
+      await advance(5000);
+
+      expect(result.current.meter).toMatchObject({
+        valueLabel: '15%',
+        meterProps: { 'aria-valuetext': '10% full, ready in about 2 minutes' },
+      });
+    });
+
+    it('shows 0% for a negative balance', async () => {
+      const { result } = renderMeter(serve(-4), 20);
+      await flush();
+
+      expect(result.current.meter.valueLabel).toBe('0%');
+    });
+
+    it('takes a custom formatter', async () => {
+      const { result } = renderHook(() => {
+        const tank = useTank({ fetchSnapshot: serve(10), required: 20 });
+        return useTankMeter(tank, {
+          label: 'Credits',
+          formatValue: ({ balance, capacity }) => `${balance} of ${capacity}`,
+        });
+      });
+      await flush();
+
+      expect(result.current.valueLabel).toBe('10 of 100');
     });
   });
 
