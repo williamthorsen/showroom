@@ -147,6 +147,10 @@
   font-size: 0.9375rem;
 }
 
+.tour-step-action {
+  margin-block-start: 0.5rem;
+}
+
 /* -- Visuals -- */
 
 .tour-visual {
@@ -307,7 +311,10 @@
   margin-inline-start: auto;
 }
 
+/* A link with the class renders as the same button: one line of label, centred, without an underline. */
 .tour-button {
+  box-sizing: border-box;
+  display: inline-block;
   min-width: 6rem;
   padding-block: 0.5rem;
   padding-inline: 1rem;
@@ -319,6 +326,8 @@
   font-size: 0.875rem;
   font-weight: 600;
   line-height: 1.25rem;
+  text-align: center;
+  text-decoration: none;
   cursor: pointer;
 }
 
@@ -429,7 +438,8 @@
   .tour-eyebrow,
   .tour-title,
   .tour-lead,
-  .tour-points {
+  .tour-points,
+  .tour-step-action {
     animation: tour-rise 400ms ease-out both;
   }
 
@@ -447,6 +457,10 @@
 
   .tour-points {
     animation-delay: 780ms;
+  }
+
+  .tour-step-action {
+    animation-delay: 840ms;
   }
 
   .tour-tile,

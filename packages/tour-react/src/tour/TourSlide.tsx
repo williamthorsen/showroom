@@ -1,7 +1,7 @@
 import { isValidElement, type ReactElement } from 'react';
 
 import { TourVisualView } from './TourVisualView.tsx';
-import type { TourDirection, TourStep } from './types.ts';
+import type { TourAction, TourDirection, TourStep } from './types.ts';
 
 export interface TourSlideProps {
   step: TourStep;
@@ -11,9 +11,9 @@ export interface TourSlideProps {
   direction: TourDirection;
 }
 
-/** One step of a tour, exposed as a slide with its position: eyebrow, title, lead, visual, and points. */
+/** One step of a tour, exposed as a slide with its position: eyebrow, title, lead, visual, points, and action. */
 export function TourSlide({ step, index, total, direction }: TourSlideProps): ReactElement {
-  const { eyebrow, title, lead, visual, points } = step;
+  const { eyebrow, title, lead, visual, points, action } = step;
   return (
     <div
       className="tour-slide"
@@ -40,6 +40,29 @@ export function TourSlide({ step, index, total, direction }: TourSlideProps): Re
           ))}
         </ul>
       )}
+      {action !== undefined && <ActionView action={action} />}
     </div>
   );
 }
+
+// region | Helpers
+
+interface ActionViewProps {
+  action: TourAction;
+}
+
+/** The step's call to action, as a link when it has a URL and as a button otherwise. */
+function ActionView({ action }: ActionViewProps): ReactElement {
+  const { label, href, onSelect } = action;
+  return href === undefined ? (
+    <button type="button" className="tour-button tour-step-action" data-variant="forward" onClick={onSelect}>
+      {label}
+    </button>
+  ) : (
+    <a href={href} className="tour-button tour-step-action" data-variant="forward" onClick={onSelect}>
+      {label}
+    </a>
+  );
+}
+
+// endregion | Helpers

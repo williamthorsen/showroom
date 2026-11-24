@@ -1,4 +1,4 @@
-import { type ReactElement, StrictMode } from 'react';
+import { type ReactElement, StrictMode, useMemo } from 'react';
 import { createRoot } from 'react-dom/client';
 
 import { Tour, type TourStep, useFirstRunTour } from '../src/index.ts';
@@ -74,6 +74,8 @@ const STEPS: readonly TourStep[] = [
 /** Shows the tour on the first visit, with controls that reopen it and reset its seen marker. */
 function App(): ReactElement {
   const tour = useFirstRunTour(STORAGE_KEY);
+  const { onOpenChange } = tour;
+  const steps = useMemo(() => buildSteps(() => onOpenChange(false)), [onOpenChange]);
   return (
     <main>
       <h1>tour-react</h1>
@@ -85,20 +87,30 @@ function App(): ReactElement {
           Reset first run
         </button>
       </div>
-      <Tour
-        {...tour}
-        steps={STEPS}
-        action={
-          <button type="button" className="tour-button" onClick={() => tour.onOpenChange(false)}>
-            Create your first project
-          </button>
-        }
-      />
+      <Tour {...tour} steps={steps} />
     </main>
   );
 }
 
 // region | Helpers
+
+/** Adds the actions to the steps: a link on the second step, and a button on the last that closes the tour. */
+function buildSteps(close: () => void): TourStep[] {
+  const lastIndex = STEPS.length - 1;
+  return STEPS.map((step, index) => {
+    if (index === 1) {
+      return {
+        ...step,
+        action: {
+          label: 'Read the docs',
+          href: 'https://github.com/williamthorsen/showroom/tree/main/packages/tour-react#readme',
+        },
+      };
+    }
+    if (index === lastIndex) return { ...step, action: { label: 'Create your first project', onSelect: close } };
+    return step;
+  });
+}
 
 /** A tall custom visual, which shows that the stage scrolls rather than grows. */
 function CustomDiagram(): ReactElement {
