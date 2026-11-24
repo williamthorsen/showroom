@@ -41,6 +41,7 @@ Each step has the same shape, which keeps every slide short:
 - `lead`: one or two sentences
 - `visual` (optional): a built-in visual, or a React element that renders in its place
 - `points` (optional): three or four short bullets
+- `action` (optional): a call to action at the end of the slide, `{ label, href?, onSelect? }`, which the tour renders as one of its own buttons
 
 ## Visuals
 
@@ -70,13 +71,32 @@ Any React element can take the visual's place: `visual: <MyDiagram />`.
 
 ## The tour
 
-`Tour` is controlled through `isOpen` and `onOpenChange`, and takes `steps`, an optional `label`, which names the dialog for assistive technology ("Product tour" by default), and an optional `action`, a call to action shown on the last step:
-
-```tsx
-<Tour {...tour} steps={steps} action={<a href="/projects/new">Create your first project</a>} />
-```
+`Tour` is controlled through `isOpen` and `onOpenChange`, and takes `steps` and an optional `label`, which names the dialog for assistive technology ("Product tour" by default).
 
 The left and right arrow keys move between steps, except while focus is in an editable field. Escape, the close button, and Finish on the last step report `onOpenChange(false)`. Each opening starts at the first step. Under `prefers-reduced-motion`, every animation is removed.
+
+## Actions
+
+A step's `action` renders as a link when it has an `href` and as a button otherwise. Its `label` is a short verb phrase in sentence case. `onSelect` receives the click event, so that an in-app link can prevent the navigation and route itself. The tour stays open unless `onSelect` closes it:
+
+```tsx
+const step: TourStep = {
+  eyebrow: 'Start',
+  title: 'Ready when you are',
+  lead: 'Create a project to begin.',
+  action: {
+    label: 'Create your first project',
+    href: '/projects/new',
+    onSelect: (event) => {
+      event.preventDefault();
+      tour.onOpenChange(false);
+      navigate('/projects/new');
+    },
+  },
+};
+```
+
+`TourAction` in the package's types documents each field.
 
 ## First run
 
