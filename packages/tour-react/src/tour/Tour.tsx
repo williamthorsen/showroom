@@ -1,7 +1,6 @@
 import {
   type KeyboardEvent,
   type ReactElement,
-  type ReactNode,
   type SyntheticEvent,
   useId,
   useLayoutEffect,
@@ -19,8 +18,6 @@ export interface TourProps {
   steps: readonly TourStep[];
   /** The dialog's accessible name, which stays the same from step to step. */
   label?: string | undefined;
-  /** The primary call to action, shown in the footer on the last step. */
-  action?: ReactNode;
 }
 
 /** Selects the elements in which the arrow keys edit text or choose a value rather than move between steps. */
@@ -30,7 +27,7 @@ const EDITABLE_SELECTOR = 'input, select, textarea, [contenteditable]:not([conte
  * A product tour: a modal dialog of fixed size that shows one step at a time, with progress dots, Previous, and a forward
  * button that reads Next until the last step and Finish on it. Each opening starts at the first step.
  */
-export function Tour({ isOpen, onOpenChange, steps, label = 'Product tour', action }: TourProps): ReactElement | null {
+export function Tour({ isOpen, onOpenChange, steps, label = 'Product tour' }: TourProps): ReactElement | null {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const forwardRef = useRef<HTMLButtonElement>(null);
   const labelId = useId();
@@ -103,7 +100,9 @@ export function Tour({ isOpen, onOpenChange, steps, label = 'Product tour', acti
           {label}
         </span>
         <button type="button" className="tour-close" aria-label="Close" onClick={dismiss}>
-          ×
+          <svg viewBox="0 0 16 16" aria-hidden="true" focusable="false">
+            <path d="M4 4l8 8M12 4l-8 8" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" />
+          </svg>
         </button>
       </div>
       <div className="tour-stage" aria-live="polite">
@@ -123,7 +122,6 @@ export function Tour({ isOpen, onOpenChange, steps, label = 'Product tour', acti
           ))}
         </div>
         <div className="tour-actions">
-          {isLast && action !== undefined && <div className="tour-action">{action}</div>}
           <button
             type="button"
             className="tour-button"

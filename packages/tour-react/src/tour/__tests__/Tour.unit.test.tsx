@@ -1,4 +1,4 @@
-import { cleanup, fireEvent, render, screen } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen, within } from '@testing-library/react';
 import { userEvent } from '@testing-library/user-event';
 import { afterEach, beforeAll, describe, expect, it, vi } from 'vitest';
 
@@ -8,7 +8,12 @@ import type { TourStep } from '../types.ts';
 
 const STEPS: readonly TourStep[] = [
   { eyebrow: 'Why', title: 'Scattered', lead: 'Notes live in five apps.' },
-  { eyebrow: 'What', title: 'One inbox', lead: 'Everything lands here.' },
+  {
+    eyebrow: 'What',
+    title: 'One inbox',
+    lead: 'Everything lands here.',
+    action: { label: 'Connect a source', href: '/sources' },
+  },
   { eyebrow: 'How', title: 'Sorted', lead: 'Rules file it for you.', visual: <input aria-label="Rule name" /> },
 ];
 
@@ -62,6 +67,14 @@ describe(Tour, () => {
   });
 
   describe('dismissal', () => {
+    it('draws the close button as an icon named "Close"', () => {
+      renderTour();
+
+      const close = getButton('Close');
+      expect(close.querySelector('svg[aria-hidden="true"]')).not.toBeNull();
+      expect(close.textContent).toBe('');
+    });
+
     it('reports a close from the close button', async () => {
       const user = userEvent.setup();
       const onOpenChange = vi.fn();
@@ -171,13 +184,15 @@ describe(Tour, () => {
   });
 
   describe('action', () => {
-    it('shows the call to action on the last step only', async () => {
+    it("shows a middle step's action inside that step's slide", async () => {
       const user = userEvent.setup();
-      renderTour({ action: <button type="button">Create a project</button> });
+      renderTour();
 
-      expect(screen.queryByRole('button', { name: 'Create a project' })).toBeNull();
-      await user.click(getButton('Step 3: Sorted'));
-      expect(getButton('Create a project')).toBeDefined();
+      expect(screen.queryByRole('link', { name: 'Connect a source' })).toBeNull();
+      await user.click(getButton('Next'));
+      expect(within(getCurrentSlide()).getByRole('link', { name: 'Connect a source' })).toBeDefined();
+      await user.click(getButton('Next'));
+      expect(screen.queryByRole('link', { name: 'Connect a source' })).toBeNull();
     });
   });
 });

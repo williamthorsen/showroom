@@ -147,6 +147,10 @@
   font-size: 0.9375rem;
 }
 
+.tour-step-action {
+  margin-block-start: 0.5rem;
+}
+
 /* -- Visuals -- */
 
 .tour-visual {
@@ -307,7 +311,10 @@
   margin-inline-start: auto;
 }
 
+/* A link with the class renders as the same button: one line of label, centred, without an underline. */
 .tour-button {
+  box-sizing: border-box;
+  display: inline-block;
   min-width: 6rem;
   padding-block: 0.5rem;
   padding-inline: 1rem;
@@ -319,6 +326,8 @@
   font-size: 0.875rem;
   font-weight: 600;
   line-height: 1.25rem;
+  text-align: center;
+  text-decoration: none;
   cursor: pointer;
 }
 
@@ -328,9 +337,13 @@
 }
 
 .tour-button:disabled {
-  border-style: dashed;
   color: var(--tour-text-secondary);
   cursor: default;
+}
+
+/* Previous on the first step keeps its box, so that Next stays in place from step to step. */
+.tour-footer .tour-button:disabled {
+  visibility: hidden;
 }
 
 .tour-button[data-variant='forward'] {
@@ -354,10 +367,12 @@
   border-radius: 999px;
   background-color: var(--tour-surface);
   color: var(--tour-text-secondary);
-  font: inherit;
-  font-size: 1.25rem;
-  line-height: 1;
   cursor: pointer;
+}
+
+.tour-close > svg {
+  width: 1rem;
+  height: 1rem;
 }
 
 .tour-close:hover {
@@ -429,7 +444,8 @@
   .tour-eyebrow,
   .tour-title,
   .tour-lead,
-  .tour-points {
+  .tour-points,
+  .tour-step-action {
     animation: tour-rise 400ms ease-out both;
   }
 
@@ -447,6 +463,10 @@
 
   .tour-points {
     animation-delay: 780ms;
+  }
+
+  .tour-step-action {
+    animation-delay: 840ms;
   }
 
   .tour-tile,

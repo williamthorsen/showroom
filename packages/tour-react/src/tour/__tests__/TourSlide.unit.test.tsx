@@ -1,5 +1,6 @@
 import { cleanup, render, screen, within } from '@testing-library/react';
-import { afterEach, describe, expect, it } from 'vitest';
+import { userEvent } from '@testing-library/user-event';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 
 import { TourSlide, type TourSlideProps } from '../TourSlide.tsx';
 import type { TourStep, TourTile } from '../types.ts';
@@ -84,6 +85,40 @@ describe(TourSlide, () => {
 
     expect(screen.getByText('Custom diagram')).toBeDefined();
     expect(container.querySelector('.tour-tile')).toBeNull();
+  });
+
+  it('renders an action without a URL as a tour button that calls onSelect', async () => {
+    const user = userEvent.setup();
+    const onSelect = vi.fn();
+    renderSlide({ step: { ...STEP, action: { label: 'Create a project', onSelect } } });
+
+    const button = screen.getByRole('button', { name: 'Create a project' });
+    expect(button.getAttribute('type')).toBe('button');
+    expect(button.className).toBe('tour-button tour-step-action');
+    expect(button.dataset['variant']).toBe('forward');
+    await user.click(button);
+    expect(onSelect).toHaveBeenCalledOnce();
+  });
+
+  it('renders an action with a URL as a link that lets onSelect prevent the navigation', async () => {
+    const user = userEvent.setup();
+    const onSelect = vi.fn((event: { defaultPrevented: boolean; preventDefault: () => void }) => {
+      event.preventDefault();
+    });
+    renderSlide({ step: { ...STEP, action: { label: 'Open the docs', href: '/docs', onSelect } } });
+
+    const link = screen.getByRole('link', { name: 'Open the docs' });
+    expect(link.getAttribute('href')).toBe('/docs');
+    expect(link.className).toBe('tour-button tour-step-action');
+    expect(link.dataset['variant']).toBe('forward');
+    await user.click(link);
+    expect(onSelect.mock.calls[0]?.[0].defaultPrevented).toBe(true);
+  });
+
+  it('omits the action when not given', () => {
+    const { container } = renderSlide();
+
+    expect(container.querySelector('.tour-step-action')).toBeNull();
   });
 
   it('exposes the direction of travel for the slide-in', () => {
