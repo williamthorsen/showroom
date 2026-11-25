@@ -43,7 +43,7 @@
   },
   "devDependencies": {
     "@williamthorsen/nmr": "catalog:",
-    "fast-check": "4.10.3",
+    "fast-check": "4.11.0",
     "vitest": "catalog:"
   },
   "peerDependencies": {
