@@ -1,5 +1,45 @@
 [
   {
+    "version": "0.4.0",
+    "date": "2026-11-26",
+    "sections": [
+      {
+        "title": "🎉 Features",
+        "audience": "all",
+        "items": [
+          {
+            "description": "Adds a visible header to `TankMeter` that shows the label and the current value, such as \"62%\", with new `icon` and `description` props, the description also becoming the meter's accessible description. (#46)",
+            "hash": "eac511b60bd63392825bd7a5290bf37caac8f8a9",
+            "entry": 1
+          },
+          {
+            "description": "Replaces `TankMeter`'s unlabelled mark at the `required` amount with a hatched segment as wide as `required`, which moves with the fill and which a legend under the bar names (\"Needs 40%\" by default, written by the new `formatRequired` prop). (#46)",
+            "breaking": true,
+            "migration": "Rename `--tank-meter-mark` to `--tank-meter-segment-edge` and `--tank-meter-mark-overhang` to `--tank-meter-segment-overhang` in a theme, and on a surface that is not white (or `#0d1117` in the dark scheme) set `--tank-meter-segment-halo` to the surface colour, or the segment's edges show a white or dark outline.",
+            "hash": "eac511b60bd63392825bd7a5290bf37caac8f8a9",
+            "entry": 2
+          },
+          {
+            "description": "Adds the visible value to the result of `useTankMeter` as `valueLabel`, written by a new `formatValue` option, and exports `formatDefaultValue`, `formatDefaultRequired`, and the `TankMeterValueInput` type so that a custom formatter can fall back to the defaults. (#46)",
+            "hash": "eac511b60bd63392825bd7a5290bf37caac8f8a9",
+            "entry": 3
+          }
+        ]
+      },
+      {
+        "title": "🐛 Bug fixes",
+        "audience": "all",
+        "items": [
+          {
+            "description": "Fixes the issue that the meter's default percentage text wrote some values one point low, such as 28% for a fraction of 0.29. (#46)",
+            "hash": "eac511b60bd63392825bd7a5290bf37caac8f8a9",
+            "entry": 4
+          }
+        ]
+      }
+    ]
+  },
+  {
     "version": "0.3.0",
     "date": "2026-11-23",
     "sections": [

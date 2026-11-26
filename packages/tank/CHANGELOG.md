@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file.
 
+## 0.4.0 — 2026-11-26
+
+### 🎉 Features
+
+- 🚨 **Breaking:** Show what the tank meter measures (#46)
+
+  Makes the `@williamthorsen/tank-react` meter readable at a glance: `TankMeter` now shows its label and value above the bar, and it replaces the unlabelled mark at the required amount with a hatched reservation segment and a legend that names it. A theme that set `--tank-meter-mark` or `--tank-meter-mark-overhang` must move to the new `--tank-meter-segment-*` custom properties.
+
 ## 0.3.0 — 2026-11-22
 
 ### 🎉 Features

@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## 0.3.0 — 2026-11-26
+
+### 🎉 Features
+
+- 🚨 **Breaking:** Replaces the `action` prop of `Tour` with an optional `action` field on `TourStep`, a `TourAction` of `{ label, href?, onSelect? }` that the tour renders at the end of that step's slide as a button styled like its own, or as a link when `href` is set. (#47)
+- Hides the disabled Previous button on the first step instead of drawing it with a dashed border, and keeps its space so that Next stays in the same place from step to step. (#47)
+
+### 🐛 Bug fixes
+
+- Fixes the issue that the "×" character in the round close button was off centre, and draws the X as an SVG icon that stays centred in any font. (#47)
+
 ## 0.2.0 — 2026-11-20
 
 ### 🎉 Features

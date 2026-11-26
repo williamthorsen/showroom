@@ -1,5 +1,23 @@
 [
   {
+    "version": "0.4.0",
+    "date": "2026-11-26",
+    "sections": [
+      {
+        "title": "🎉 Features",
+        "audience": "all",
+        "items": [
+          {
+            "description": "Show what the tank meter measures (#46)",
+            "body": "Makes the `@williamthorsen/tank-react` meter readable at a glance: `TankMeter` now shows its label and value above the bar, and it replaces the unlabelled mark at the required amount with a hatched reservation segment and a legend that names it. A theme that set `--tank-meter-mark` or `--tank-meter-mark-overhang` must move to the new `--tank-meter-segment-*` custom properties.",
+            "breaking": true,
+            "hash": "eac511b60bd63392825bd7a5290bf37caac8f8a9"
+          }
+        ]
+      }
+    ]
+  },
+  {
     "version": "0.3.0",
     "date": "2026-11-22",
     "sections": [

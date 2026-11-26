@@ -1,6 +1,6 @@
 {
   "name": "@williamthorsen/tank",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "private": false,
   "description": "A regenerating balance that gates and meters an action whose cost the site operator pays",
   "keywords": [

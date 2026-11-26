@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file.
 
+## 0.4.0 — 2026-11-26
+
+### 🎉 Features
+
+- Adds a visible header to `TankMeter` that shows the label and the current value, such as "62%", with new `icon` and `description` props, the description also becoming the meter's accessible description. (#46)
+- 🚨 **Breaking:** Replaces `TankMeter`'s unlabelled mark at the `required` amount with a hatched segment as wide as `required`, which moves with the fill and which a legend under the bar names ("Needs 40%" by default, written by the new `formatRequired` prop). (#46)
+- Adds the visible value to the result of `useTankMeter` as `valueLabel`, written by a new `formatValue` option, and exports `formatDefaultValue`, `formatDefaultRequired`, and the `TankMeterValueInput` type so that a custom formatter can fall back to the defaults. (#46)
+
+### 🐛 Bug fixes
+
+- Fixes the issue that the meter's default percentage text wrote some values one point low, such as 28% for a fraction of 0.29. (#46)
+
 ## 0.3.0 — 2026-11-23
 
 ### 🎉 Features

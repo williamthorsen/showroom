@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## 0.9.0 — 2026-11-26
+
+### 🎉 Features
+
+- Adds a visible header to `TankMeter` that shows the label and the current value, such as "62%", with new `icon` and `description` props, the description also becoming the meter's accessible description. (#46)
+- 🚨 **Breaking:** Replaces `TankMeter`'s unlabelled mark at the `required` amount with a hatched segment as wide as `required`, which moves with the fill and which a legend under the bar names ("Needs 40%" by default, written by the new `formatRequired` prop). (#46)
+- Adds the visible value to the result of `useTankMeter` as `valueLabel`, written by a new `formatValue` option, and exports `formatDefaultValue`, `formatDefaultRequired`, and the `TankMeterValueInput` type so that a custom formatter can fall back to the defaults. (#46)
+- 🚨 **Breaking:** Replaces the `action` prop of `Tour` with an optional `action` field on `TourStep`, a `TourAction` of `{ label, href?, onSelect? }` that the tour renders at the end of that step's slide as a button styled like its own, or as a link when `href` is set. (#47)
+- Hides the disabled Previous button on the first step instead of drawing it with a dashed border, and keeps its space so that Next stays in the same place from step to step. (#47)
+
+### 🐛 Bug fixes
+
+- Fixes the issue that the meter's default percentage text wrote some values one point low, such as 28% for a fraction of 0.29. (#46)
+- Fixes the issue that the "×" character in the round close button was off centre, and draws the X as an SVG icon that stays centred in any font. (#47)
+
 ## 0.8.0 — 2026-11-23
 
 ### 🎉 Features
